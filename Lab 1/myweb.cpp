@@ -11,7 +11,7 @@ using namespace std;
 
 int main(int argc, char * argv[]){
     char * hostname = argv[1];
-    string port  = "80";
+    string port  = "8080";
     char * path = argv[2];
 
     string str_path(path);
