@@ -8,7 +8,7 @@
 
 int main(int argc, char * argv[]){
     char * hostname = argv[1];
-    char * port = "80";
+    char * port = "8080";
     
     struct addrinfo hints, *res;
     int sockfd;
@@ -20,7 +20,8 @@ int main(int argc, char * argv[]){
     sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
     connect(sockfd,res->ai_addr,res->ai_addrlen);
     char * msg = "Hello";
-    send(sockfd, msg, sizeof(msg), 0)
+    char * get_request = "";
+    send(sockfd, msg, sizeof(msg), 0);
     
 
 
