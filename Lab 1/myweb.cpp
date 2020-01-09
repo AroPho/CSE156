@@ -15,7 +15,7 @@ int main(int argc, char * argv[]){
         warn("Insufficient number of arguements givin");
     }
     char * hostname = argv[1];
-    string port  = "8080";
+    string port  = "80";
     char * path = argv[2];
 
     string str_path(path);
@@ -43,12 +43,13 @@ int main(int argc, char * argv[]){
     int numbytes;
     
     char c;
-    char * get_request = "";
+    char buff[1];
+    //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
             printf("%c", c);
     }
     while(1){
-       read(0, &c, 1);
-       send(sockfd, c, 1, 0);
+       read(0, &buff, 1);
+       send(sockfd, buff, 1, 0);
     }
 }
