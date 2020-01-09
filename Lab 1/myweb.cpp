@@ -19,12 +19,13 @@ int main(int argc, char * argv[]){
 
     string str_path(path);
     string file = str_path.substr(str_path.find("/"));
-    if((int first = str_path.find(":") != -1)){
+    int first;
+    if((first = str_path.find(":") ) != -1){
         int last = str_path.find("/");
-        port = str_path.substr(str_path.find(:) + 1, last - first - 1 );
+        port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }
 
-    string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n"
+    string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     
     struct addrinfo hints, *res;
     int sockfd;
