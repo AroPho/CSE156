@@ -11,25 +11,29 @@ using namespace std;
 
 int main(int argc, char * argv[]){
     char * hostname = argv[1];
-    string port  = "8080";
-    
+    string port  = "80";
+    char * path = argv[2];
+
+    string str_path(path);
+    string file = str_path.substr(str_path.find("/"));
+
+
     struct addrinfo hints, *res;
     int sockfd;
 
     memset(&hints, 0,sizeof hints);
     hints.ai_family=AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
-    getaddrinfo(hostname,port.c_str(), &hints, &res);
+    getaddrinfo(hostname, port.c_str(), &hints, &res);
     sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
     connect(sockfd,res->ai_addr,res->ai_addrlen);
     //string  msg = "Hello";
     // int count = 1;
     int numbytes;
-    int n;
+    
     char c[1];
     //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
-      read(0, c, 1);
-      send(sockfd, c, 1, 0);
+       send(sockfd, c, 1, 0);
     }
 }
