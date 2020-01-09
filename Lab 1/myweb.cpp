@@ -10,6 +10,9 @@ using namespace std;
 
 
 int main(int argc, char * argv[]){
+    if(argc < 3){
+        warn("Insufficient number of arguements givin");
+    }
     char * hostname = argv[1];
     string port  = "8080";
     char * path = argv[2];
@@ -17,6 +20,7 @@ int main(int argc, char * argv[]){
     string str_path(path);
     string file = str_path.substr(str_path.find("/"));
 
+    string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n"
 
     struct addrinfo hints, *res;
     int sockfd;
