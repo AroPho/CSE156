@@ -33,7 +33,9 @@ int main(int argc, char * argv[]){
     
     char c[1];
     //char * get_request = "";
-    while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
+    /*while((numbytes = recv(sockfd, &c, 1, 0)) != 0)*/
+    while(1){
+       read(0, &c, 1)
        send(sockfd, c, 1, 0);
     }
 }
