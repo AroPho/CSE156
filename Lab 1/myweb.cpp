@@ -23,14 +23,11 @@ int main(int argc, char * argv[]){
     sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
     connect(sockfd,res->ai_addr,res->ai_addrlen);
     //string  msg = "Hello";
-    int count = 1;
+    // int count = 1;
     int n;
     char c[1];
     //char * get_request = "";
     while((n = read(0, c, 1)) > 0){
-      if(count == 1){
-        send(sockfd, c, 1, 0);
-        count--;
-      }
+      send(sockfd, c, 1, 0);
     }
 }
