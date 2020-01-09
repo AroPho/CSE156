@@ -24,10 +24,12 @@ int main(int argc, char * argv[]){
     connect(sockfd,res->ai_addr,res->ai_addrlen);
     //string  msg = "Hello";
     // int count = 1;
+    int numbytes;
     int n;
     char c[1];
     //char * get_request = "";
-    while((n = read(0, c, 1)) > 0){
+    while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
+      read(0, c, 1);
       send(sockfd, c, 1, 0);
     }
 }
