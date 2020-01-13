@@ -41,11 +41,14 @@ int main(int argc, char * argv[]){
     //string  msg = "Hello";
     // int count = 1;
     int numbytes;
-    
+    int written;
+    string filename = "output.dat"
     char c;
     char buff[1];
+    int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
+            written += write(fd, &c, 1);
             printf("%c", c);
     }
     while(1){
