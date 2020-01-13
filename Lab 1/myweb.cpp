@@ -59,7 +59,7 @@ int main(int argc, char * argv[]){
     }
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    string head_request = "HEAD" + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    string head_request = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     
     struct addrinfo hints, *res;
     int sockfd;
