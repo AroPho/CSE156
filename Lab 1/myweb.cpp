@@ -49,8 +49,7 @@ int main(int argc, char * argv[]){
     printf("%s, %s",argv[0], argv[1]);
 
     //char * hostname = argv[0];
-    string str_hostname = "www.example.com"; 
-    char * hostname = str_hostname.c_str();
+    char * hostname = "www.example.com";
     string port  = "80";
     //char * path = argv[1];
     string str_path = "93.184.216.34/index.html";
