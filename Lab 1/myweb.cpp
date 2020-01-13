@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <err.h>
+#include <fcntl.h>
 using namespace std;
 
 
@@ -56,10 +57,10 @@ int main(int argc, char * argv[]){
     //string  msg = "Hello";
     // int count = 1;
     int numbytes;
-    int written;
+    int written = 0;
     int end_header = 0;
     string temp;
-    string filename = "output.dat"
+    string filename = "output.dat";
     char c;
     char buff[1];
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
