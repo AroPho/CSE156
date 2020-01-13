@@ -78,7 +78,7 @@ int main(int argc, char * argv[]){
 
     if(header){
         request += header_request + hostname + "\r\n\r\n";
-        send(sockfd, equest.c_str(), request.length(), 0);
+        send(sockfd, request.c_str(), request.length(), 0);
     }else{
         request += get_request + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
         printf("%s", request.c_str());
