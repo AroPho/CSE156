@@ -10,6 +10,22 @@
 #include <fcntl.h>
 using namespace std;
 
+// Checks if string contains length of file
+int catch_length(string line){
+	int temp;
+	string temp_string;
+	if((temp = line.find("Content")) >= 0){
+		temp_string = line.substr(temp);
+		int first = (temp_string.find("Content") + 16);// Used to get filesize
+		int last = (temp_string.find("\r\n")) - first;
+		string ftemp = temp_string.substr(first,last);
+		int size;
+		size = stoi(ftemp);
+		return size;
+	}
+	return -1;
+}
+
 
 int main(int argc, char * argv[]){
     if(argc < 3){
@@ -65,6 +81,7 @@ int main(int argc, char * argv[]){
     int numbytes;
     int written = 0;
     int end_header = 0;
+    int length;
     string temp;
     string filename = "output.dat";
     char c;
@@ -75,14 +92,18 @@ int main(int argc, char * argv[]){
         temp += c;
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 end_header = 1;
+                length = catch_length(temp);
         }
         if(end_header == 1){
             written += write(fd, &c, 1);
             printf("%c", c);
         }
+        if(written == length){
+            break;
+        }
     }
-    while(1){
-       read(0, &buff, 1);
-       send(sockfd, buff, 1, 0);
-    }
+    // while(1){
+    //    read(0, &buff, 1);
+    //    send(sockfd, buff, 1, 0);
+    // }
 }
