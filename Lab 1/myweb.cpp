@@ -46,7 +46,7 @@ int main(int argc, char * argv[]){
     argc -= optind;
 	argv += optind;
 
-    printf("%s, %s",argv[0], argv[1]);
+    //printf("%s, %s",argv[0], argv[1]);
 
     char * hostname = argv[0];
     string port  = "80";
@@ -106,7 +106,7 @@ int main(int argc, char * argv[]){
         }
         if(end_header == 1){
             written += write(fd, &c, 1);
-            //printf("%c", c);
+            printf("%c", c);
         }
         if(written == length){
             break;
