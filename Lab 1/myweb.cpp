@@ -48,9 +48,11 @@ int main(int argc, char * argv[]){
 
     printf("%s, %s",argv[0], argv[1]);
 
-    char * hostname = argv[0];
+    //char * hostname = argv[0];
+    char * hostname = "www.example.com"
     string port  = "80";
-    char * path = argv[1];
+    //char * path = argv[1];
+    char * path = "93.184.216.34/index.html"
     string get_request = "GET ";
     string header_request = "HEAD ";
     string request = "";
