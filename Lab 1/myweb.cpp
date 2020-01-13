@@ -93,7 +93,7 @@ int main(int argc, char * argv[]){
     string temp;
     string filename = "output.dat";
     char c;
-    //char buff[1];
+    char buff[1];
     remove(filename.c_str());
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     //char * get_request = "";
@@ -113,10 +113,9 @@ int main(int argc, char * argv[]){
         }
     }
     close(fd);
-    close(sockfd);
-    
-    // while(1){
-    //    read(0, &buff, 1);
-    //    send(sockfd, buff, 1, 0);
-    // }
+    close(sockfd); 
+    while(1){
+       read(0, &buff, 1);
+       send(sockfd, buff, 1, 0);
+    }
 }
