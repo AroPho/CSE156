@@ -103,14 +103,15 @@ int main(int argc, char * argv[]){
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 end_header = 1;
                 length = catch_length(temp);
+                printf("%d", length);
         }
-        if(end_header == 1){
-            written += write(fd, &c, 1);
-            printf("%c", c);
-        }
-        if(written == length){
-            break;
-        }
+        //if(end_header == 1){
+        //    written += write(fd, &c, 1);
+           // printf("%c", c);
+        //}
+        // if(written == length){
+        //    break;
+        //}
     }
     close(fd);
     close(sockfd); 
