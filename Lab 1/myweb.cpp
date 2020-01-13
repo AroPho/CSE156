@@ -14,9 +14,24 @@ int main(int argc, char * argv[]){
     if(argc < 3){
         warn("Insufficient number of arguements givin");
     }
-    char * hostname = argv[1];
+    bool header;
+
+    char opt;
+	while((opt = getopt(argc, argv, "N:l:a:")) != -1){
+		switch(opt){
+			case 'h':
+				header = true;
+				break;
+			case '?':
+				break;
+		}
+	}
+    argc -= optind;
+	argv += optind;
+
+    char * hostname = argv[0];
     string port  = "80";
-    char * path = argv[2];
+    char * path = argv[1];
 
     string str_path(path);
     string file = str_path.substr(str_path.find("/"));
@@ -42,14 +57,22 @@ int main(int argc, char * argv[]){
     // int count = 1;
     int numbytes;
     int written;
+    int end_header = 0;
+    string temp;
     string filename = "output.dat"
     char c;
     char buff[1];
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
+        temp += c;
+        if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+                end_header = 1;
+        }
+        if(end_header == 1 || header){
             written += write(fd, &c, 1);
-            printf("%c", c);
+        }
+        printf("%c", c);
     }
     while(1){
        read(0, &buff, 1);
