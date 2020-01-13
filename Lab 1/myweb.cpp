@@ -61,11 +61,6 @@ int main(int argc, char * argv[]){
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }
     
-    if(header){
-        request += header_request + hostname + "\r\n\r\n";
-    }else{
-        request += get_request + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    }
     // get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     // head_request = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     
@@ -80,8 +75,10 @@ int main(int argc, char * argv[]){
     connect(sockfd,res->ai_addr,res->ai_addrlen);
 
     if(header){
+        request += header_request + hostname + "\r\n\r\n";
         send(sockfd, header_request.c_str(), header_request.length(), 0);
     }else{
+        request += get_request + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
         send(sockfd, get_request.c_str(), get_request.length(), 0);
     }
     //string  msg = "Hello";
