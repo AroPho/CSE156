@@ -113,8 +113,8 @@ int main(int argc, char * argv[]){
         //    break;
         //}
     }
-    close(fd);
-    close(sockfd); 
+    // close(fd);
+    // close(sockfd); 
     while(1){
        read(0, &buff, 1);
        send(sockfd, buff, 1, 0);
