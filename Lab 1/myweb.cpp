@@ -86,27 +86,32 @@ int main(int argc, char * argv[]){
     int numbytes;
     int written = 0;
     int end_header = 0;
-    int length;
+    int length = -1;
     string temp;
     string filename = "output.dat";
     char c;
-    char buff[1];
+    //char buff[1];
+    remove(filename.c_str());
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
         temp += c;
+        printf("%c", c);
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 end_header = 1;
                 length = catch_length(temp);
         }
         if(end_header == 1){
             written += write(fd, &c, 1);
-            printf("%c", c);
+            //printf("%c", c);
         }
         if(written == length){
             break;
         }
     }
+    close(fd);
+    close(sockfd);
+    
     // while(1){
     //    read(0, &buff, 1);
     //    send(sockfd, buff, 1, 0);
