@@ -46,6 +46,8 @@ int main(int argc, char * argv[]){
     argc -= optind;
 	argv += optind;
 
+    printf("%s, %s",argv[0], argv[1]);
+
     char * hostname = argv[0];
     string port  = "80";
     char * path = argv[1];
