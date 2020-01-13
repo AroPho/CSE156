@@ -34,7 +34,7 @@ int main(int argc, char * argv[]){
     bool header = false;
 
     char opt;
-	while((opt = getopt(argc, argv, "N:l:a:")) != -1){
+	while((opt = getopt(argc, argv, "h:")) != -1){
 		switch(opt){
 			case 'h':
 				header = true;
@@ -48,11 +48,9 @@ int main(int argc, char * argv[]){
 
     printf("%s, %s",argv[0], argv[1]);
 
-    //char * hostname = argv[0];
-    char * hostname = "www.example.com";
+    char * hostname = argv[0];
     string port  = "80";
-    //char * path = argv[1];
-    char * path = "93.184.216.34/index.html";
+    char * path = argv[1];
     string get_request = "GET ";
     string header_request = "HEAD ";
     string request = "";
@@ -80,10 +78,11 @@ int main(int argc, char * argv[]){
 
     if(header){
         request += header_request + hostname + "\r\n\r\n";
-        send(sockfd, header_request.c_str(), header_request.length(), 0);
+        send(sockfd, equest.c_str(), request.length(), 0);
     }else{
         request += get_request + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-        send(sockfd, get_request.c_str(), get_request.length(), 0);
+        printf("%s", request.c_str());
+        send(sockfd, request.c_str(), request.length(), 0);
     }
     //string  msg = "Hello";
     // int count = 1;
