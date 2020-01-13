@@ -49,6 +49,8 @@ int main(int argc, char * argv[]){
     char * hostname = argv[0];
     string port  = "80";
     char * path = argv[1];
+    string get_request = "GET "
+    string head_request = "HEAD "
 
     string str_path(path);
     string file = str_path.substr(str_path.find("/"));
@@ -57,9 +59,14 @@ int main(int argc, char * argv[]){
         int last = str_path.find("/");
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }
-
-    string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    const std::string head_request = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    
+    if(header){
+        head_request += hostname + "\r\n\r\n"
+    }else{
+        get_request += file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    }
+    // get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    // head_request = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     
     struct addrinfo hints, *res;
     int sockfd;
