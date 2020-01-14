@@ -56,9 +56,10 @@ int main(int argc, char * argv[]){
         int last = str_path.find("/");
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }
+    string str_hostname(hostname);
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    string header_send = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    string header_send = "HEAD HTTP/1.1\r\nHost: " + str_hostname + "\r\n\r\n";
     
     struct addrinfo hints, *res;
     int sockfd;
