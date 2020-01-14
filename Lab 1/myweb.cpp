@@ -101,6 +101,9 @@ int main(int argc, char * argv[]){
         }
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 end_header = 1;
+                if(head_bool){
+                    break;
+                }
                 length = catch_length(temp);
         }
         // printf("%c", c);
