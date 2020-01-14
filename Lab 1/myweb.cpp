@@ -56,12 +56,10 @@ int main(int argc, char * argv[]){
         int last = str_path.find("/");
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }
-    //string str_hostname(hostname);
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    // printf("%s\n", header_send.c_str());
-    
+
     struct addrinfo hints, *res;
     int sockfd;
 
@@ -77,8 +75,7 @@ int main(int argc, char * argv[]){
     if(!head_bool){
         send(sockfd, get_request.c_str(), get_request.length(), 0);
     }
-    //string  msg = "Hello";
-    // int count = 1;
+    
     int numbytes;
     int written = 0;
     int end_header = 0;
@@ -86,10 +83,8 @@ int main(int argc, char * argv[]){
     string temp;
     string filename = "output.dat";
     char c;
-    // char buff[1];
     remove(filename.c_str());
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-    //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
         temp += c;
         // printf("%c", c);
@@ -106,12 +101,7 @@ int main(int argc, char * argv[]){
                 }
                 length = catch_length(temp);
         }
-        // printf("%c", c);
     }
     close(fd);
     close(sockfd);
-    // while(1){
-    //    read(0, &buff, 1);
-    //    send(sockfd, buff, 1, 0);
-    // }
 }
