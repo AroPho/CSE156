@@ -10,21 +10,21 @@
 #include <fcntl.h>
 using namespace std;
 
-// Checks if string contains length of file
-int catch_length(string line){
-	int temp;
-	string temp_string;
-	if((temp = line.find("Content")) >= 0){
-		temp_string = line.substr(temp);
-		int first = (temp_string.find("Content") + 16);// Used to get filesize
-		int last = (temp_string.find("\r\n")) - first;
-		string ftemp = temp_string.substr(first,last);
-		int size;
-		size = stoi(ftemp);
-		return size;
-	}
-	return -1;
-}
+// // Checks if string contains length of file
+// int catch_length(string line){
+// 	int temp;
+// 	string temp_string;
+// 	if((temp = line.find("Content")) >= 0){
+// 		temp_string = line.substr(temp);
+// 		int first = (temp_string.find("Content") + 16);// Used to get filesize
+// 		int last = (temp_string.find("\r\n")) - first;
+// 		string ftemp = temp_string.substr(first,last);
+// 		int size;
+// 		size = stoi(ftemp);
+// 		return size;
+// 	}
+// 	return -1;
+// }
 
 int main(int argc, char * argv[]){
     if(argc < 3){
