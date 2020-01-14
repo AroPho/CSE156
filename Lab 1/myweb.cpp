@@ -22,7 +22,7 @@ int catch_length(string line){
 		int size;
 		size = stoi(ftemp);
 		return size;
-	}git 
+	}
 	return -1;
 }
 
