@@ -59,7 +59,7 @@ int main(int argc, char * argv[]){
     //string str_hostname(hostname);
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    string header_send = "HEAD " + file + "HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     // printf("%s\n", header_send.c_str());
     
     struct addrinfo hints, *res;
