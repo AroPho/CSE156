@@ -22,7 +22,7 @@ using namespace std;
 // 		int size;
 // 		size = stoi(ftemp);
 // 		return size;
-// 	}
+// 	}git 
 // 	return -1;
 // }
 
@@ -58,7 +58,7 @@ int main(int argc, char * argv[]){
     }
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    string head_ass = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    string header_send = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     
     struct addrinfo hints, *res;
     int sockfd;
@@ -70,7 +70,7 @@ int main(int argc, char * argv[]){
     sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
     connect(sockfd,res->ai_addr,res->ai_addrlen);
     if(head_bool){
-        send(sockfd, head_ass.c_str(), head_ass.length(), 0);
+        send(sockfd, header_send.c_str(), header_send.length(), 0);
     }
     if(!head_bool){
         send(sockfd, get_request.c_str(), get_request.length(), 0);
