@@ -56,10 +56,10 @@ int main(int argc, char * argv[]){
         int last = str_path.find("/");
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }
-    string str_hostname(hostname);
+    //string str_hostname(hostname);
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-    string header_send = "HEAD " + file + "HTTP/1.1\r\nHost: " + str_hostname + "\r\n\r\n";
+    string header_send = "HEAD " + file + "HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     // printf("%s\n", header_send.c_str());
     
     struct addrinfo hints, *res;
@@ -86,13 +86,13 @@ int main(int argc, char * argv[]){
     string temp;
     string filename = "output.dat";
     char c;
-    char buff[1];
+    // char buff[1];
     remove(filename.c_str());
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
         temp += c;
-        printf("%c", c);
+        // printf("%c", c);
         if(end_header == 1 || head_bool){
             written += write(fd, &c, 1);
         }
