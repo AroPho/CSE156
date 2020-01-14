@@ -10,18 +10,33 @@
 #include <fcntl.h>
 using namespace std;
 
+// Checks if string contains length of file
+int catch_length(string line){
+	int temp;
+	string temp_string;
+	if((temp = line.find("Content")) >= 0){
+		temp_string = line.substr(temp);
+		int first = (temp_string.find("Content") + 16);// Used to get filesize
+		int last = (temp_string.find("\r\n")) - first;
+		string ftemp = temp_string.substr(first,last);
+		int size;
+		size = stoi(ftemp);
+		return size;
+	}
+	return -1;
+}
 
 int main(int argc, char * argv[]){
     if(argc < 3){
         warn("Insufficient number of arguements givin");
     }
-    bool header;
+    bool head_bool = false;
 
     char opt;
-	while((opt = getopt(argc, argv, "N:l:a:")) != -1){
+	while((opt = getopt(argc, argv, "h:")) != -1){
 		switch(opt){
 			case 'h':
-				header = true;
+				head_bool = true;
 				break;
 			case '?':
 				break;
@@ -43,6 +58,7 @@ int main(int argc, char * argv[]){
     }
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+    string head_ass = "HEAD HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     
     struct addrinfo hints, *res;
     int sockfd;
@@ -53,7 +69,12 @@ int main(int argc, char * argv[]){
     getaddrinfo(hostname, port.c_str(), &hints, &res);
     sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
     connect(sockfd,res->ai_addr,res->ai_addrlen);
-    send(sockfd, get_request.c_str(), get_request.length(), 0);
+    if(head_bool){
+        send(sockfd, head_ass.c_str(), head_ass.length(), 0);
+    }
+    if(!head_bool){
+        send(sockfd, get_request.c_str(), get_request.length(), 0);
+    }
     //string  msg = "Hello";
     // int count = 1;
     int numbytes;
@@ -70,7 +91,7 @@ int main(int argc, char * argv[]){
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 end_header = 1;
         }
-        if(end_header == 1 || header){
+        if(end_header == 1){
             written += write(fd, &c, 1);
         }
         printf("%c", c);
