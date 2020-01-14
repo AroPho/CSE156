@@ -10,21 +10,21 @@
 #include <fcntl.h>
 using namespace std;
 
-// // Checks if string contains length of file
-// int catch_length(string line){
-// 	int temp;
-// 	string temp_string;
-// 	if((temp = line.find("Content")) >= 0){
-// 		temp_string = line.substr(temp);
-// 		int first = (temp_string.find("Content") + 16);// Used to get filesize
-// 		int last = (temp_string.find("\r\n")) - first;
-// 		string ftemp = temp_string.substr(first,last);
-// 		int size;
-// 		size = stoi(ftemp);
-// 		return size;
-// 	}git 
-// 	return -1;
-// }
+// Checks if string contains length of file
+int catch_length(string line){
+	int temp;
+	string temp_string;
+	if((temp = line.find("Content")) >= 0){
+		temp_string = line.substr(temp);
+		int first = (temp_string.find("Content-Length:") + 16);// Used to get filesize
+		int last = (temp_string.find("\r\n")) - first;
+		string ftemp = temp_string.substr(first,last);
+		int size;
+		size = stoi(ftemp);
+		return size;
+	}git 
+	return -1;
+}
 
 int main(int argc, char * argv[]){
     if(argc < 3){
@@ -81,19 +81,25 @@ int main(int argc, char * argv[]){
     int numbytes;
     int written = 0;
     int end_header = 0;
+    int length = -1;
     string temp;
     string filename = "output.dat";
     char c;
     char buff[1];
+    remove(filename.c_str());
     int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     //char * get_request = "";
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
         temp += c;
-        if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                end_header = 1;
-        }
         if(end_header == 1){
             written += write(fd, &c, 1);
+        }
+        if(written == length){
+            break;
+        }
+        if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+                end_header = 1;
+                length = catch_length(temp);
         }
         printf("%c", c);
     }
