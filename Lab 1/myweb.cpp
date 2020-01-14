@@ -93,7 +93,7 @@ int main(int argc, char * argv[]){
     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
         temp += c;
         printf("%c", c);
-        if(end_header == 1 || header){
+        if(end_header == 1 || head_bool){
             written += write(fd, &c, 1);
         }
         if(written == length){
