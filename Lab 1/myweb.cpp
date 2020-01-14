@@ -103,7 +103,7 @@ int main(int argc, char * argv[]){
         }
         printf("%c", c);
     }
-    close(fd)
+    close(fd);
     close(sockfd);
     // while(1){
     //    read(0, &buff, 1);
