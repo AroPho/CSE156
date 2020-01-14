@@ -33,7 +33,7 @@ int main(int argc, char * argv[]){
     bool head_bool = false;
 
     char opt;
-	while((opt = getopt(argc, argv, "h:")) != -1){
+	while((opt = getopt(argc, argv, "h")) != -1){
 		switch(opt){
 			case 'h':
 				head_bool = true;
@@ -101,7 +101,7 @@ int main(int argc, char * argv[]){
                 end_header = 1;
                 length = catch_length(temp);
         }
-        printf("%c", c);
+        // printf("%c", c);
     }
     close(fd);
     close(sockfd);
