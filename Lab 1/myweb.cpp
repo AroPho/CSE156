@@ -77,12 +77,14 @@ int main(int argc, char * argv[]){
     // getaddrinfo(hostname, port.c_str(), &hints, &res);
     // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
 
-    struct sockaddr_in my_addr, my_addr1; 
+    struct sockaddr_in my_addr; 
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     my_addr.sin_family = AF_INET; 
     my_addr.sin_addr.s_addr = INADDR_ANY; 
     my_addr.sin_port = htons(stoi(port)); 
+
+    bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr));
       
     // This ip address will change according to the machine 
     my_addr.sin_addr.s_addr = inet_addr(ip.c_str()); 
