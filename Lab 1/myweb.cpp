@@ -62,7 +62,7 @@ int main(int argc, char * argv[]){
         int last = str_path.find("/");
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }else{
-        ip = str_path.substr("/");
+        ip = str_path.substr(0, str_path.find("/");
     }
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
