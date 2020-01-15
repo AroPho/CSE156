@@ -82,7 +82,7 @@ int main(int argc, char * argv[]){
     sockfd=socket(AF_INET,SOCK_STREAM,0);
     bzero(&servaddr,sizeof servaddr);
     servaddr.sin_family=AF_INET;
-    servaddr.sin_port=htons(stoi(port);
+    servaddr.sin_port= htons(stoi(port);
     inet_pton(AF_INET, ip, &(servaddr.sin_addr));
 
     printf("%d", stoi(port));
