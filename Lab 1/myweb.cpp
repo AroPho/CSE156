@@ -63,6 +63,7 @@ int main(int argc, char * argv[]){
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
     }else{
         ip = str_path.substr(0, str_path.find("/"));
+        port = "80"
     }
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
