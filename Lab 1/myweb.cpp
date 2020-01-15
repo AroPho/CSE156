@@ -8,6 +8,7 @@
 #include <string.h>
 #include <err.h>
 #include <fcntl.h>
+#include <arpa/inet.h>
 using namespace std;
 
 // Checks if string contains length of file
