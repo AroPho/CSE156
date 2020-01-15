@@ -70,53 +70,57 @@ int main(int argc, char * argv[]){
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
 
-    // struct addrinfo hints, *res;
-    // int sockfd;
-
-    // memset(&hints, 0,sizeof hints);
-    // hints.ai_family=AF_UNSPEC;
-    // hints.ai_socktype = SOCK_STREAM;
-    // getaddrinfo(hostname, port.c_str(), &hints, &res);
-    // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
-
-    struct sockaddr_in servaddr, srcaddr;
+    struct addrinfo hints, *addrs;
+    struct sockaddr_storage their_addr;
     int sockfd;
+
+    memset(&hints, 0,sizeof hints);
+    hints.ai_family=AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    getaddrinfo(hostname, port.c_str(), &hints, &res);
+    sockfd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
+
+    // struct sockaddr_in servaddr, srcaddr;
+    // int sockfd;
  
-    sockfd=socket(AF_INET,SOCK_STREAM,0);
-    // bzero(&servaddr,sizeof servaddr);
+    // sockfd=socket(AF_INET,SOCK_STREAM,0);
+    // // bzero(&servaddr,sizeof servaddr);
 
 
  
-    servaddr.sin_family=AF_INET;
-    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
-    servaddr.sin_port=htons(stoi(port));
+    // servaddr.sin_family=AF_INET;
+    // servaddr.sin_addr.s_addr = htons(INADDR_ANY);
+    // servaddr.sin_port=htons(stoi(port));
  
-    inet_pton(AF_INET,ip.c_str(),&(servaddr.sin_addr));
+    // inet_pton(AF_INET,ip.c_str(),&(servaddr.sin_addr));
 
-    memset(&srcaddr, 0, sizeof(srcaddr));
-    srcaddr.sin_family = AF_INET;
-    srcaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    srcaddr.sin_port = htons(stoi(port));
+    // memset(&srcaddr, 0, sizeof(srcaddr));
+    // srcaddr.sin_family = AF_INET;
+    // srcaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    // srcaddr.sin_port = htons(stoi(port));
 
 
-    if(bind(sockfd, (struct sockaddr*) &srcaddr, sizeof(srcaddr)) == 0 /*bind(sockfd, res->ai_addr, res->ai_addrlen) == 0*/){
+    if(/*bind(sockfd, (struct sockaddr*) &srcaddr, sizeof(srcaddr)) == 0*/ bind(sockfd, addrs->ai_addr, addrs->ai_addrlen) == 0){
         printf("it works");
     }else{
         cout << "Fuck";
         printf("Error code: %d\n", errno);
     }
 
-    connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+    //connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+    listen (sockfd, 16);
+    int new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &addr_size);
+
        
 
     
     try{
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
         if(head_bool){
-            send(sockfd, header_send.c_str(), header_send.length(), 0);
+            send(newfd, header_send.c_str(), header_send.length(), 0);
         }
         if(!head_bool){
-            send(sockfd, get_request.c_str(), get_request.length(), 0);
+            send(newfd, get_request.c_str(), get_request.length(), 0);
         }
         
         int numbytes;
@@ -131,7 +135,7 @@ int main(int argc, char * argv[]){
             remove(filename.c_str());
             fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
         }
-        while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
+        while((numbytes = recv(newfd, &c, 1, 0)) != 0){
             temp += c;
             // printf("%c", c);
             if(end_header == 1){
