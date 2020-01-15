@@ -70,8 +70,8 @@ int main(int argc, char * argv[]){
 
 
     struct sockaddr_in my_addr, my_addr1; 
-    int client = socket(AF_INET, SOCK_STREAM, 0); 
-    if (client < 0) 
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0); 
+    if (sockfd < 0) 
     printf("Error in client creating\n"); 
     else
         printf("Client Created\n"); 
@@ -91,13 +91,13 @@ int main(int argc, char * argv[]){
       
     // This ip address will change according to the machine 
     my_addr1.sin_addr.s_addr = inet_addr(ip.c_str()); 
-    if (bind(client, (struct sockaddr*) &my_addr1, sizeof(struct sockaddr_in)) == 0) 
+    if (bind(sockfd, (struct sockaddr*) &my_addr1, sizeof(struct sockaddr_in)) == 0) 
         printf("Binded Correctly\n"); 
     else
         printf("Unable to bind\n"); 
       
     socklen_t addr_size = sizeof my_addr; 
-    connect(client, (struct sockaddr*) &my_addr, sizeof my_addr); 
+    connect(sockfd, (struct sockaddr*) &my_addr, sizeof my_addr); 
 
     try{
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
