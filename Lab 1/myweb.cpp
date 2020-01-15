@@ -30,6 +30,9 @@ int main(int argc, char * argv[]){
     if(argc < 3){
         warn("Insufficient number of arguements givin");
     }
+    if(argc > 4){
+        warn("To many arguements givin")
+    }
     bool head_bool = false;
 
     char opt;
@@ -68,40 +71,47 @@ int main(int argc, char * argv[]){
     hints.ai_socktype = SOCK_STREAM;
     getaddrinfo(hostname, port.c_str(), &hints, &res);
     sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
-    connect(sockfd,res->ai_addr,res->ai_addrlen);
-    if(head_bool){
-        send(sockfd, header_send.c_str(), header_send.length(), 0);
-    }
-    if(!head_bool){
-        send(sockfd, get_request.c_str(), get_request.length(), 0);
-    }
     
-    int numbytes;
-    int written = 0;
-    int end_header = 0;
-    int length = -1;
-    string temp;
-    string filename = "output.dat";
-    char c;
-    remove(filename.c_str());
-    int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-    while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
-        temp += c;
-        // printf("%c", c);
-        if(end_header == 1 || head_bool){
-            written += write(fd, &c, 1);
+    try{
+        connect(sockfd,res->ai_addr,res->ai_addrlen);
+        if(head_bool){
+            send(sockfd, header_send.c_str(), header_send.length(), 0);
         }
-        if(written == length){
-            break;
+        if(!head_bool){
+            send(sockfd, get_request.c_str(), get_request.length(), 0);
         }
-        if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                end_header = 1;
-                if(head_bool){
-                    break;
-                }
-                length = catch_length(temp);
+        
+        int numbytes;
+        int written = 0;
+        int end_header = 0;
+        int length = -1;
+        string temp;
+        string filename = "output.dat";
+        char c;
+        remove(filename.c_str());
+        int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
+        while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
+            temp += c;
+            // printf("%c", c);
+            if(end_header == 1 || head_bool){
+                written += write(fd, &c, 1);
+            }
+            if(written == length){
+                break;
+            }
+            if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+                    end_header = 1;
+                    if(head_bool){
+                        break;
+                    }
+                    length = catch_length(temp);
+            }
         }
+        close(fd);
+        close(sockfd);
+    }catch(...){
+        close(fd);
+        close(sockfd);
+        warn("Warning internal server error closing connections")
     }
-    close(fd);
-    close(sockfd);
 }
