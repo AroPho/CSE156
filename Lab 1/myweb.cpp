@@ -31,7 +31,7 @@ int main(int argc, char * argv[]){
         warn("Insufficient number of arguements givin");
     }
     if(argc > 4){
-        warn("To many arguements givin")
+        warn("To many arguements givin");
     }
     bool head_bool = false;
 
@@ -110,8 +110,7 @@ int main(int argc, char * argv[]){
         close(fd);
         close(sockfd);
     }catch(...){
-        close(fd);
         close(sockfd);
-        warn("Warning internal server error closing connections")
+        warn("Warning internal server error closing connections");
     }
 }
