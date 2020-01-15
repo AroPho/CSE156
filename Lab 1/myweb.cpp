@@ -117,10 +117,10 @@ int main(int argc, char * argv[]){
     try{
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
         if(head_bool){
-            send(newfd, header_send.c_str(), header_send.length(), 0);
+            send(new_fd, header_send.c_str(), header_send.length(), 0);
         }
         if(!head_bool){
-            send(newfd, get_request.c_str(), get_request.length(), 0);
+            send(new_fd, get_request.c_str(), get_request.length(), 0);
         }
         
         int numbytes;
@@ -135,7 +135,7 @@ int main(int argc, char * argv[]){
             remove(filename.c_str());
             fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
         }
-        while((numbytes = recv(newfd, &c, 1, 0)) != 0){
+        while((numbytes = recv(new_fd, &c, 1, 0)) != 0){
             temp += c;
             // printf("%c", c);
             if(end_header == 1){
