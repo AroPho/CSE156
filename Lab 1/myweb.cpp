@@ -68,37 +68,35 @@ int main(int argc, char * argv[]){
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
 
+    // struct addrinfo hints, *res;
+    // int sockfd;
 
-    struct sockaddr_in my_addr, my_addr1; 
-    int sockfd = socket(AF_INET, SOCK_STREAM, 0); 
-    if (sockfd < 0) 
-    printf("Error in client creating\n"); 
-    else
-        printf("Client Created\n"); 
-          
+    // memset(&hints, 0,sizeof hints);
+    // hints.ai_family=AF_UNSPEC;
+    // hints.ai_socktype = SOCK_STREAM;
+    // getaddrinfo(hostname, port.c_str(), &hints, &res);
+    // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+
+    struct sockaddr_in my_addr; 
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
     my_addr.sin_family = AF_INET; 
-    my_addr.sin_addr.s_addr = INADDR_ANY; 
     my_addr.sin_port = htons(8080); 
+    // printf("%d", stoi(port));
+
+    if(bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0){
+        printf("it works")
+    }else{
+        cout << "Fuck";
+    }
       
     // This ip address will change according to the machine 
     my_addr.sin_addr.s_addr = inet_addr(ip.c_str()); 
-  
-    // Explicitly assigning port number 12010 by  
-    // binding client with that port  
-    my_addr1.sin_family = AF_INET; 
-    my_addr1.sin_addr.s_addr = INADDR_ANY; 
-    my_addr1.sin_port = htons(8080); 
-      
-    // This ip address will change according to the machine 
-    my_addr1.sin_addr.s_addr = inet_addr(ip.c_str()); 
-    if (bind(sockfd, (struct sockaddr*) &my_addr1, sizeof(struct sockaddr_in)) == 0) 
-        printf("Binded Correctly\n"); 
-    else
-        printf("Unable to bind\n"); 
-      
-    socklen_t addr_size = sizeof my_addr; 
-    connect(sockfd, (struct sockaddr*) &my_addr, sizeof my_addr); 
 
+    socklen_t addr_size = sizeof my_addr;
+    connect(sockfd, (struct sockaddr*) &my_addr, addr_size); 
+
+    
     try{
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
         if(head_bool){
