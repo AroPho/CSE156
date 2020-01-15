@@ -110,13 +110,18 @@ int main(int argc, char * argv[]){
         string temp;
         string filename = "output.dat";
         char c;
-        remove(filename.c_str());
-        int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
+        if(!head_bool){
+            remove(filename.c_str());
+            int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
+        }
         while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
             temp += c;
             // printf("%c", c);
-            if(end_header == 1 || head_bool){
+            if(end_header == 1){
                 written += write(fd, &c, 1);
+            }
+            if(head_bool){
+                printf("%c", c);
             }
             if(written == length){
                 break;
