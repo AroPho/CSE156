@@ -51,29 +51,47 @@ int main(int argc, char * argv[]){
     char * hostname = argv[0];
     string port  = "80";
     char * path = argv[1];
+    string ip;
 
     string str_path(path);
     string file = str_path.substr(str_path.find("/"));
     int first;
     if((first = str_path.find(":") ) != -1){
+        ip = str_path.substr(0, first);
         int last = str_path.find("/");
         port = str_path.substr(str_path.find(":") + 1, last - first - 1 );
+    }else{
+        ip = str_path.substr("/");
     }
 
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
 
-    struct addrinfo hints, *res;
-    int sockfd;
+    // struct addrinfo hints, *res;
+    // int sockfd;
 
-    memset(&hints, 0,sizeof hints);
-    hints.ai_family=AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    getaddrinfo(hostname, port.c_str(), &hints, &res);
-    sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+    // memset(&hints, 0,sizeof hints);
+    // hints.ai_family=AF_UNSPEC;
+    // hints.ai_socktype = SOCK_STREAM;
+    // getaddrinfo(hostname, port.c_str(), &hints, &res);
+    // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+
+    struct sockaddr_in my_addr, my_addr1; 
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+    my_addr.sin_family = AF_INET; 
+    my_addr.sin_addr.s_addr = INADDR_ANY; 
+    my_addr.sin_port = htons(stoi(port)); 
+      
+    // This ip address will change according to the machine 
+    my_addr.sin_addr.s_addr = inet_addr(ip.c_str()); 
+
+    socklen_t addr_size = sizeof my_addr;
+    connect(sockfd, (struct sockaddr*) &my_addr, sizeof my_addr); 
+
     
     try{
-        connect(sockfd,res->ai_addr,res->ai_addrlen);
+        // connect(sockfd,res->ai_addr,res->ai_addrlen);
         if(head_bool){
             send(sockfd, header_send.c_str(), header_send.length(), 0);
         }
