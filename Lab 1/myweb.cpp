@@ -111,7 +111,7 @@ int main(int argc, char * argv[]){
     //connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
     listen (sockfd, 16);
     addr_size = sizeof their_addr;
-    int new_fd = connect(sockfd, (struct sockaddr *)&their_addr, &addr_size);
+    connect(sockfd, (struct sockaddr *)&their_addr, &addr_size);
 
        
 
@@ -119,10 +119,10 @@ int main(int argc, char * argv[]){
     try{
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
         if(head_bool){
-            send(new_fd, header_send.c_str(), header_send.length(), 0);
+            send(sockfd, header_send.c_str(), header_send.length(), 0);
         }
         if(!head_bool){
-            send(new_fd, get_request.c_str(), get_request.length(), 0);
+            send(sockfd, get_request.c_str(), get_request.length(), 0);
         }
         
         int numbytes;
@@ -137,7 +137,7 @@ int main(int argc, char * argv[]){
             remove(filename.c_str());
             fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
         }
-        while((numbytes = recv(new_fd, &c, 1, 0)) != 0){
+        while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
             temp += c;
             // printf("%c", c);
             if(end_header == 1){
