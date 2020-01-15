@@ -81,8 +81,8 @@ int main(int argc, char * argv[]){
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     my_addr.sin_family = AF_INET; 
-    // my_addr.sin_addr.s_addr = INADDR_ANY; 
-    my_addr.sin_port = htons(stoi(port)); 
+    my_addr.sin_port = htons(stoi(port));
+    my_addr.sin_addr.s_addr = INADDR_ANY; 
     // printf("%d", stoi(port));
 
     bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr));
@@ -91,7 +91,7 @@ int main(int argc, char * argv[]){
     my_addr.sin_addr.s_addr = inet_addr(ip.c_str()); 
 
     socklen_t addr_size = sizeof my_addr;
-    connect(sockfd, (struct sockaddr*) &my_addr, sizeof my_addr); 
+    connect(sockfd, (struct sockaddr*) &my_addr, addr_size); 
 
     
     try{
@@ -110,9 +110,10 @@ int main(int argc, char * argv[]){
         string temp;
         string filename = "output.dat";
         char c;
+        int fd;
         if(!head_bool){
             remove(filename.c_str());
-            int fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
+            fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
         }
         while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
             temp += c;
