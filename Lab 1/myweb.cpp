@@ -81,7 +81,7 @@ int main(int argc, char * argv[]){
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     my_addr.sin_family = AF_INET; 
-    my_addr.sin_port = htons(8080); 
+    my_addr.sin_port = htons(stoi(port)); 
     // printf("%d", stoi(port));
 
     if(bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0){
