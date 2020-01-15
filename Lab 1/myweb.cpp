@@ -84,7 +84,7 @@ int main(int argc, char * argv[]){
     // my_addr.sin_port = htons(stoi(port)); 
     // printf("%d", stoi(port));
 
-    if(/*bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0*/ bind(main_socket, res->ai_addr, res->ai_addrlen) == 0){
+    if(/*bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0*/ bind(sockfd, res->ai_addr, res->ai_addrlen) == 0){
         printf("it works");
         printf("Error code: %d\n", errno);
     }else{
