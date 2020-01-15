@@ -86,6 +86,7 @@ int main(int argc, char * argv[]){
 
     if(/*bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0*/ bind(main_socket, res->ai_addr, res->ai_addrlen) == 0){
         printf("it works");
+        printf("Error code: %d\n", errno);
     }else{
         cout << "Fuck";
     }
