@@ -111,7 +111,7 @@ int main(int argc, char * argv[]){
     //connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
     listen (sockfd, 16);
     addr_size = sizeof their_addr;
-    int new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &addr_size);
+    int new_fd = connect(sockfd, (struct sockaddr *)&their_addr, &addr_size);
 
        
 
