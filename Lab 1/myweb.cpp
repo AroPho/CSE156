@@ -83,9 +83,12 @@ int main(int argc, char * argv[]){
     int sockfd;
  
     sockfd=socket(AF_INET,SOCK_STREAM,0);
-    bzero(&servaddr,sizeof servaddr);
+    // bzero(&servaddr,sizeof servaddr);
+
+
  
     servaddr.sin_family=AF_INET;
+    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
     servaddr.sin_port=htons(stoi(port));
  
     inet_pton(AF_INET,ip.c_str(),&(servaddr.sin_addr));
