@@ -81,7 +81,7 @@ int main(int argc, char * argv[]){
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     my_addr.sin_family = AF_INET; 
-    my_addr.sin_addr.s_addr = INADDR_ANY; 
+    // my_addr.sin_addr.s_addr = INADDR_ANY; 
     my_addr.sin_port = htons(stoi(port)); 
     printf("%d", stoi(port));
 
