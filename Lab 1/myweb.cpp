@@ -68,38 +68,42 @@ int main(int argc, char * argv[]){
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
 
-    struct addrinfo hints, *res;
+    //struct addrinfo hints, *res;
     int sockfd;
 
-    memset(&hints, 0,sizeof hints);
-    hints.ai_family=AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    getaddrinfo(hostname, port.c_str(), &hints, &res);
-    sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+    // memset(&hints, 0,sizeof hints);
+    // hints.ai_family=AF_UNSPEC;
+    // hints.ai_socktype = SOCK_STREAM;
+    // getaddrinfo(hostname, port.c_str(), &hints, &res);
+    // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
 
-    // struct sockaddr_in my_addr; 
-    // int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    struct sockaddr_in servaddr;
+ 
+    sockfd=socket(AF_INET,SOCK_STREAM,0);
+    bzero(&servaddr,sizeof servaddr);
+    servaddr.sin_family=AF_INET;
+    servaddr.sin_port=htons(stoi(port);
+    inet_pton(AF_INET, ip, &(servaddr.sin_addr));
 
-    // my_addr.sin_family = AF_INET; 
-    // my_addr.sin_port = htons(stoi(port)); 
-    // printf("%d", stoi(port));
+    printf("%d", stoi(port));
 
-    if(/*bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0*/ bind(sockfd, res->ai_addr, res->ai_addrlen) == 0){
+    if(bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0 /*bind(sockfd, res->ai_addr, res->ai_addrlen) == 0*/){
         printf("it works");
     }else{
         cout << "Fuck";
         printf("Error code: %d\n", errno);
     }
+
+    connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
       
-    // This ip address will change according to the machine 
-    // my_addr.sin_addr.s_addr = inet_addr(ip.c_str()); 
+    // This ip address will change according to the machine  
 
     // socklen_t addr_size = sizeof my_addr;
     // connect(sockfd, (struct sockaddr*) &my_addr, addr_size); 
 
     
     try{
-        connect(sockfd,res->ai_addr,res->ai_addrlen);
+        //connect(sockfd,res->ai_addr,res->ai_addrlen);
         if(head_bool){
             send(sockfd, header_send.c_str(), header_send.length(), 0);
         }
