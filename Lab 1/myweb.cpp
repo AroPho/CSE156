@@ -111,7 +111,7 @@ int main(int argc, char * argv[]){
     //connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
     listen (sockfd, 16);
     addr_size = sizeof their_addr;
-    connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+    connect(sockfd,(struct sockaddr *)&addrs,sizeof(addrs));
 
        
 
