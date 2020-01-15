@@ -72,12 +72,13 @@ int main(int argc, char * argv[]){
 
     struct addrinfo hints, *addrs;
     struct sockaddr_storage their_addr;
+    socklen_t addr_size;
     int sockfd;
 
     memset(&hints, 0,sizeof hints);
     hints.ai_family=AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
-    getaddrinfo(hostname, port.c_str(), &hints, &res);
+    getaddrinfo(hostname, port.c_str(), &hints, &addrs);
     sockfd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
 
     // struct sockaddr_in servaddr, srcaddr;
@@ -109,6 +110,7 @@ int main(int argc, char * argv[]){
 
     //connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
     listen (sockfd, 16);
+    addr_size = sizeof their_addr
     int new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &addr_size);
 
        
