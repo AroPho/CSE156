@@ -79,7 +79,7 @@ int main(int argc, char * argv[]){
     // getaddrinfo(hostname, port.c_str(), &hints, &res);
     // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
 
-    struct sockaddr_in servaddr;
+    struct sockaddr_in servaddr, srcaddr;
     int sockfd;
  
     sockfd=socket(AF_INET,SOCK_STREAM,0);
@@ -88,13 +88,18 @@ int main(int argc, char * argv[]){
 
  
     servaddr.sin_family=AF_INET;
-    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
-    servaddr.sin_port=htons(stoi(port));
+    servaddr.sin_addr.s_addr = INADDR_ANY;
+    servaddr.sin_port= stoi(port);
  
     inet_pton(AF_INET,ip.c_str(),&(servaddr.sin_addr));
 
+    memset(&srcaddr, 0, sizeof(srcaddr));
+    srcaddr.sin_family = AF_INET;
+    srcaddr.sin_addr.s_addr = INADDR_ANY;
+    srcaddr.sin_port = stoi(port);
 
-    if(bind(sockfd, (struct sockaddr*) &servaddr, sizeof(servaddr)) == 0 /*bind(sockfd, res->ai_addr, res->ai_addrlen) == 0*/){
+
+    if(bind(sockfd, (struct sockaddr*) &srcaddr, sizeof(srcaddr)) == 0 /*bind(sockfd, res->ai_addr, res->ai_addrlen) == 0*/){
         printf("it works");
     }else{
         cout << "Fuck";
