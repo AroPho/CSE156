@@ -88,15 +88,15 @@ int main(int argc, char * argv[]){
 
  
     servaddr.sin_family=AF_INET;
-    servaddr.sin_addr.s_addr = INADDR_ANY;
-    servaddr.sin_port= stoi(port);
+    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
+    servaddr.sin_port=htons(stoi(port));
  
     inet_pton(AF_INET,ip.c_str(),&(servaddr.sin_addr));
 
     memset(&srcaddr, 0, sizeof(srcaddr));
     srcaddr.sin_family = AF_INET;
-    srcaddr.sin_addr.s_addr = INADDR_ANY;
-    srcaddr.sin_port = stoi(port);
+    srcaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    srcaddr.sin_port = htons(stoi(port));
 
 
     if(bind(sockfd, (struct sockaddr*) &srcaddr, sizeof(srcaddr)) == 0 /*bind(sockfd, res->ai_addr, res->ai_addrlen) == 0*/){
