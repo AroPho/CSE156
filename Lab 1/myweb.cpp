@@ -89,7 +89,7 @@ int main(int argc, char * argv[]){
     inet_pton(AF_INET,ip.c_str(),&(servaddr.sin_addr));
 
 
-    if(bind(sockfd, (struct sockaddr*) &my_addr, sizeof(my_addr)) == 0 /*bind(sockfd, res->ai_addr, res->ai_addrlen) == 0*/){
+    if(bind(sockfd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) == 0 /*bind(sockfd, res->ai_addr, res->ai_addrlen) == 0*/){
         printf("it works");
     }else{
         cout << "Fuck";
