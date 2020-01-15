@@ -50,7 +50,7 @@ int main(int argc, char * argv[]){
 	argv += optind;
 
     char * hostname = argv[0];
-    string port  = "80";
+    string port  = "";
     char * path = argv[1];
     string ip;
 
