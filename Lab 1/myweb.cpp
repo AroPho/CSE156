@@ -15,7 +15,7 @@ using namespace std;
 int catch_length(string line){
 	int temp;
 	string temp_string;
-	if((temp = line.find("Content")) >= 0){
+	if((temp = line.find("Content-Length")) >= 0){
 		temp_string = line.substr(temp);
 		int first = (temp_string.find("Content-Length:") + 16);// Used to get filesize
 		int last = (temp_string.find("\r\n")) - first;
@@ -100,7 +100,7 @@ int main(int argc, char * argv[]){
         if(!head_bool){
             send(sockfd, get_request.c_str(), get_request.length(), 0);
         }
-        
+        // cout << "here";
         int numbytes;
         int written = 0;
         int end_header = 0;
@@ -113,9 +113,13 @@ int main(int argc, char * argv[]){
             remove(filename.c_str());
             fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
         }
+        // cout << "here2\n";
         while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
-            temp += c;
-            // printf("%c", c);
+            if(end_header != 1){
+              temp += c;
+            }
+            // cout << end_header;
+            //printf("%c", c);
             if(end_header == 1){
                 written += write(fd, &c, 1);
             }
@@ -130,7 +134,9 @@ int main(int argc, char * argv[]){
                     if(head_bool){
                         break;
                     }
+                    // cout << "1";
                     length = catch_length(temp);
+                    // printf("here");
             }
         }
         close(fd);
