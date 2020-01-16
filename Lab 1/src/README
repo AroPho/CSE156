@@ -1,0 +1,20 @@
+Aaron Nguyen
+ID: 1585632
+anguy200@ucsc.edu
+Winter 2020
+CSE 156
+
+Table of Contents:
+
+- Src:
+myweb.cpp
+README
+MAKEFILE
+
+-Doc
+Design.pdf
+
+- Bin
+myweb
+myweb.d
+myweb.o
