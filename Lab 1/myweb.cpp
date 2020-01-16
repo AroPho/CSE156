@@ -28,6 +28,8 @@ int catch_length(string line){
 }
 
 int main(int argc, char * argv[]){
+    
+    //Checks for appropriate number of args
     if(argc < 3){
         warn("Insufficient number of arguements givin");
     }
@@ -36,6 +38,7 @@ int main(int argc, char * argv[]){
     }
     bool head_bool = false;
 
+    // checks if there is a -h present in args
     char opt;
 	while((opt = getopt(argc, argv, "h")) != -1){
 		switch(opt){
@@ -49,11 +52,14 @@ int main(int argc, char * argv[]){
     argc -= optind;
 	argv += optind;
 
+    // Getting port/path/hostname from args
     char * hostname = argv[0];
     string port  = "";
     char * path = argv[1];
     string ip;
 
+
+    // Use to determine path and ip of request
     string str_path(path);
     string file = str_path.substr(str_path.find("/"));
     int first;
@@ -67,6 +73,7 @@ int main(int argc, char * argv[]){
     
     }
 
+    // Creates appropriate GET and HEAD HTTP Request
     string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
 
@@ -79,6 +86,7 @@ int main(int argc, char * argv[]){
     // getaddrinfo(hostname, port.c_str(), &hints, &res);
     // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
 
+    // Creates and establishes socket connection
     struct sockaddr_in servaddr;
     int sockfd;
     sockfd=socket(AF_INET,SOCK_STREAM,0);
@@ -94,6 +102,8 @@ int main(int argc, char * argv[]){
     
     try{
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
+        
+        // Checks for what type of http request needs to be sent
         if(head_bool){
             send(sockfd, header_send.c_str(), header_send.length(), 0);
         }
@@ -109,17 +119,21 @@ int main(int argc, char * argv[]){
         string filename = "output.dat";
         char c;
         int fd;
+
+        // If GET request create output.dat file
         if(!head_bool){
             remove(filename.c_str());
             fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
         }
         // cout << "here2\n";
+
+        // Starts recieving response from server
         while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
             if(end_header != 1){
               temp += c;
             }
-            // cout << end_header;
-            //printf("%c", c);
+
+            //Writes to file if end of header
             if(end_header == 1){
                 written += write(fd, &c, 1);
             }
@@ -129,6 +143,8 @@ int main(int argc, char * argv[]){
             if(written == length){
                 break;
             }
+
+            // Checks for end of header
             if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                     end_header = 1;
                     if(head_bool){
