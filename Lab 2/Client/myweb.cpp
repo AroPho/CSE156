@@ -174,14 +174,16 @@ void *establish_connection(void *){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
-    if(argc < 4){
+    if(argc < 2){
         warn("Insufficient number of arguements givin");
     }
+    
     
 
     char * ip_file = argv[1];
     num_args = atoi(argv[2]);
     filename = argv[3];
+    printf("%s, %d, %s", ip_file, num_args, filename.c_str();)
     int f = open(ip_file, O_RDONLY);
     char c;
     string hostname;
