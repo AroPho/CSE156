@@ -179,13 +179,13 @@ int main(int argc, char * argv[]){
     //     warn("Insufficient number of arguements givin");
     // }
     
-    cout << "here";
+    cout << "here\n";
     
 
     char * ip_file = argv[1];
     num_args = atoi(argv[2]);
     filename = argv[3];
-    printf("%s, %d, %s", ip_file, num_args, filename.c_str());
+    printf("%s, %d, %s\n", ip_file, num_args, filename.c_str());
     int f = open(ip_file, O_RDONLY);
     char c;
     string hostname;
@@ -195,7 +195,7 @@ int main(int argc, char * argv[]){
     // int size_of_chunks = 4;
     // int length= -1;
     // int chunk;
-    cout << 1;
+    cout << 1 << "\n";
 
 
     
@@ -211,7 +211,7 @@ int main(int argc, char * argv[]){
         buff = (int*) malloc(sizeof(int)*(num_args*800));
         host_buff = (string*) malloc(sizeof(string)*(num_args*800));
 
-        cout << 2;
+        cout << 2 << "\n";
 
         // while(read(f, &c, 1) != 0){
     	//     temp += c;
