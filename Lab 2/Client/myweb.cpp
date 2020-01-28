@@ -94,6 +94,7 @@ int head_parse(int sock){
     char c;
     int end_header = 0;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
+        printf("%c", c);
         if(end_header != 1){
             temp += c;
         }
@@ -147,6 +148,7 @@ void *establish_connection(void *){
         // Starts recieving response from server
         while((numbytes = recv(socket, &c, 1, 0)) != 0){
             temp += c;
+            printf("%c", c);
             // Checks for end of header
             if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 end_header = 1;
