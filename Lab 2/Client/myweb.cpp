@@ -218,18 +218,20 @@ int main(int argc, char * argv[]){
     	    temp += c;
             //printf("%c", c);
             if(temp.find("\n") != -1){
-                hostname = temp.substr(0, temp.find(" ")).c_str();
-                port =  temp.substr(temp.find(" ") +1, temp.find("\n")).c_str();
+                hostname = temp.substr(0, temp.find(" "));
+                port =  temp.substr(temp.find(" ") +1, temp.find("\n"));
 
                 cout << hostname << "\n";
                 cout << port << "\n";
                 
                 getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
+                cout << new_fd << "\n";
                 
                 temp = "";
             }
 
+            cout << 3 << "\n";
             if(!first_connect && new_fd > 0){
 
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
