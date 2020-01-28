@@ -215,16 +215,16 @@ int main(int argc, char * argv[]){
         
 
         while(read(f, &c, 1) != 0){
-    	    temp += c;
-            //printf("%c", c);
+            temp += c;
+            printf("%c", c);
             if(temp.find("\n") != -1){
                 hostname = temp.substr(0, temp.find(" "));
-                port =  temp.substr(temp.find(" ") +1, temp.find("\n"));
+                // port =  temp.substr(temp.find(" ") +1, temp.find("\n"));
 
                 cout << hostname << "\n";
                 cout << port << "\n";
                 
-                getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
+                getaddrinfo(hostname.c_str(), "8080", &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 cout << new_fd << "\n";
                 
