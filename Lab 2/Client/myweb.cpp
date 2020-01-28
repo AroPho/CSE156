@@ -232,7 +232,7 @@ int main(int argc, char * argv[]){
                 temp = "";
             }
 
-            cout << 3 << "\n";
+            // cout << 3 << "\n";
             if(!first_connect && new_fd > 0){
 
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
