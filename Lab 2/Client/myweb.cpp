@@ -226,10 +226,10 @@ int main(int argc, char * argv[]){
                 
                 getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
+                printf("%\n", new_fd);
                 
                 temp = "";
             }
-            cout << new_fd;
 
             //cout << 3 << "\n";
             // if(!first_connect && new_fd > 0){
