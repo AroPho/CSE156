@@ -79,7 +79,6 @@ void writing(string c, int begin, int* local_written){
 
 void http_requests(int sock, int type, string file, string hostname){
     string temp = "";
-    cout << "here\n";
     if(type == 0){
         temp += "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n" ;
     }
@@ -225,14 +224,14 @@ int main(int argc, char * argv[]){
                 cout << hostname << "\n";
                 cout << port << "\n";
                 
-                getaddrinfo(hostname.c_str(), "8080", &hints, &addrs);
+                getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 cout << new_fd << "\n";
                 
                 temp = "";
             }
 
-            // cout << 3 << "\n";
+            cout << 3 << "\n";
             if(!first_connect && new_fd > 0){
 
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
