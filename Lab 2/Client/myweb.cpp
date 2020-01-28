@@ -226,7 +226,8 @@ int main(int argc, char * argv[]){
                 
                 getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
-                cout << errno;
+                cout << errno << "\n";
+                cout << new_fd << "\n";
                 
                 temp = "";
             }
