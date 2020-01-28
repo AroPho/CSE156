@@ -224,7 +224,7 @@ int main(int argc, char * argv[]){
                 cout << hostname << "\n";
                 cout << port << "\n";
                 
-                getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
+                getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 cout << errno;
                 
