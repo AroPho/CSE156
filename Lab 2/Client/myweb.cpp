@@ -213,48 +213,49 @@ int main(int argc, char * argv[]){
 
         cout << 2;
 
-        while(read(f, &c, 1) != 0){
-    	    temp += c;
-            if(temp.find("\n") >= 0){
-                hostname = temp.substr(0, temp.find(" ")).c_str();
-                port =  temp.substr(temp.find(" ") + 1).c_str();
+        // while(read(f, &c, 1) != 0){
+    	//     temp += c;
+        //     if(temp.find("\n") >= 0){
+        //         hostname = temp.substr(0, temp.find(" ")).c_str();
+        //         port =  temp.substr(temp.find(" ") + 1).c_str();
                 
-                getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
-                new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
+        //         getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
+        //         new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 
-                temp = "";
-            }
-            cout << 3;
-            if(!first_connect){
+        //         temp = "";
+        //     }
+        //     cout << 3;
+        //     if(!first_connect){
 
-                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-                http_requests(new_fd, 0, filename, hostname);
-                length = head_parse(new_fd);
-                if(length == -1){
-                    new_fd = 0;
-                }
-                size_of_chunks = (length / num_args);
-                first_connect = true;
-            }
-            if(new_fd > 0){
+        //         connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+        //         http_requests(new_fd, 0, filename, hostname);
+        //         length = head_parse(new_fd);
+        //         if(length == -1){
+        //             new_fd = 0;
+        //         }
+        //         size_of_chunks = (length / num_args);
+        //         first_connect = true;
+        //     }
+        //     if(new_fd > 0){
 
-				//printf("%d\n", new_fd);
+		// 		//printf("%d\n", new_fd);
 
-                pthread_t tidsi;
-                pthread_create(&tidsi, NULL, establish_connection, NULL);
+        //         pthread_t tidsi;
+        //         pthread_create(&tidsi, NULL, establish_connection, NULL);
 
-				sem_wait(&empty);
-				pthread_mutex_lock(&mutex1);
+		// 		sem_wait(&empty);
+		// 		pthread_mutex_lock(&mutex1);
 
-                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-				buff[in] = new_fd;
-                host_buff[in] = hostname;
-				in = (in + 1) % num_args;
+        //         connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+		// 		buff[in] = new_fd;
+        //         host_buff[in] = hostname;
+		// 		in = (in + 1) % num_args;
 
-				pthread_mutex_unlock(&mutex1);
-				sem_post(&full);
-			}
-        }
+		// 		pthread_mutex_unlock(&mutex1);
+		// 		sem_post(&full);
+		// 	}
+        // }
+        exit(1);
     }catch(...){
         warn("Warning internal server error closing connections");
     }
