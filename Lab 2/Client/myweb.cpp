@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/stat.h>
+#include <iostream>
 using namespace std;
 
 int num_args = 4;
