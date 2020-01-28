@@ -219,32 +219,29 @@ int main(int argc, char * argv[]){
             //printf("%c", c);
             if(temp.find("\n") != -1){
                 hostname = temp.substr(0, temp.find(" ")).c_str();
-                port =  temp.substr(temp.find(" ") + 1).c_str();
+                port =  temp.substr(temp.find(" ") +1, temp.find("\n")).c_str();
 
                 cout << hostname << "\n";
                 cout << port << "\n";
                 
-                getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
+                getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
-                cout << errno << "\n";
-                cout << new_fd << "\n";
                 
                 temp = "";
             }
 
-            //cout << 3 << "\n";
-            // if(!first_connect && new_fd > 0){
+            if(!first_connect && new_fd > 0){
 
-            //     connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-            //     http_requests(new_fd, 0, filename, hostname);
-            //     length = head_parse(new_fd);
-            //     cout << length << "\n";
-            //     if(length == -1){
-            //         new_fd = 0;
-            //     }
-            //     size_of_chunks = (length / num_args);
-            //     first_connect = true;
-            // }
+                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+                http_requests(new_fd, 0, filename, hostname);
+                length = head_parse(new_fd);
+                cout << length << "\n";
+                if(length == -1){
+                    new_fd = 0;
+                }
+                size_of_chunks = (length / num_args);
+                first_connect = true;
+            }
             // if(new_fd > 0){
 
 			// 	//printf("%d\n", new_fd);
