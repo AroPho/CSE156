@@ -231,6 +231,7 @@ int main(int argc, char * argv[]){
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 http_requests(new_fd, 0, filename, hostname);
                 length = head_parse(new_fd);
+                cout << length << "\n";
                 if(length == -1){
                     new_fd = 0;
                 }
