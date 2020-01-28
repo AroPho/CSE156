@@ -219,6 +219,9 @@ int main(int argc, char * argv[]){
             if(temp.find("\n") >= 0){
                 hostname = temp.substr(0, temp.find(" ")).c_str();
                 port =  temp.substr(temp.find(" ") + 1).c_str();
+
+                cout << hostname << "\n";
+                cout << port << "\n";
                 
                 getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
