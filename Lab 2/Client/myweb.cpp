@@ -219,7 +219,7 @@ int main(int argc, char * argv[]){
             //printf("%c", c);
             if(temp.find("\n") != -1){
                 hostname = temp.substr(0, temp.find(" ")).c_str();
-                port =  temp.substr(temp.find(" ")).c_str();
+                port =  temp.substr(temp.find(" ") + 1).c_str();
 
                 cout << hostname << "\n";
                 cout << port << "\n";
