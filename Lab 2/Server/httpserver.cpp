@@ -137,11 +137,11 @@ void *parse_recv(void *){
 	string body;
 	string temp;
 	string filename = "no";
-	int fd;
-	int length = -1;
-	int written = 0;
+	// int fd;
+	// int length = -1;
+	// int written = 0;
 	int socket;
-	int put_phase = 0;
+	// int put_phase = 0;
 	//int patch_phase = 0;
 	
 	// This is the start of the thread code
@@ -211,7 +211,7 @@ int main(int argc, char * argv[]){
 
 	//Assigns argv to port and host
 	char * port = argv[1];
-	char * hostname = "127.0.0.1";
+	string hostname = "127.0.0.1";
 
 	//printf("%s %s\n",hostname, port);
 
@@ -227,7 +227,7 @@ int main(int argc, char * argv[]){
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 
-	getaddrinfo(hostname, port, &hints, &addrs);
+	getaddrinfo(hostname.c_str(), port, &hints, &addrs);
 	int main_socket = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
 	int enable = 1;
 

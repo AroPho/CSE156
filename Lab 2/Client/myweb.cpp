@@ -105,7 +105,7 @@ int head_parse(int sock){
             end_header = 1;
         }
     }
-
+    return -1;
 }
 
 void *establish_connection(void *){
@@ -160,7 +160,7 @@ void *establish_connection(void *){
         while(!written_file){
             writing(temp, chunk, &local_written);
             written += local_written;
-            if(local_written = local_length){
+            if(local_written == local_length){
                 written_file = true;
             }
             if(written == length){
@@ -187,8 +187,8 @@ int main(int argc, char * argv[]){
     string temp = "";
     int new_fd;
     // int size_of_chunks = 4;
-    int length= -1;
-    int chunk;
+    // int length= -1;
+    // int chunk;
 
 
     
@@ -206,7 +206,7 @@ int main(int argc, char * argv[]){
 
         while(read(f, &c, 1) != 0){
     	    temp += c;
-            if(temp.find("\n") != -1){
+            if(temp.find("\n") >= 0){
                 hostname = temp.substr(0, temp.find(" ")).c_str();
                 port =  temp.substr(temp.find(" ") + 1).c_str();
                 
