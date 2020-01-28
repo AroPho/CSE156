@@ -174,10 +174,11 @@ void *establish_connection(void *){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
-    if(argc < 2){
-        warn("Insufficient number of arguements givin");
-    }
+    // if(argc < 2){
+    //     warn("Insufficient number of arguements givin");
+    // }
     
+    cout << "here";
     
 
     char * ip_file = argv[1];
@@ -193,6 +194,7 @@ int main(int argc, char * argv[]){
     // int size_of_chunks = 4;
     // int length= -1;
     // int chunk;
+    cout << 1;
 
 
     
@@ -208,6 +210,8 @@ int main(int argc, char * argv[]){
         buff = (int*) malloc(sizeof(int)*(num_args*800));
         host_buff = (string*) malloc(sizeof(string)*(num_args*800));
 
+        cout << 2;
+
         while(read(f, &c, 1) != 0){
     	    temp += c;
             if(temp.find("\n") >= 0){
@@ -219,6 +223,7 @@ int main(int argc, char * argv[]){
                 
                 temp = "";
             }
+            cout << 3;
             if(!first_connect){
 
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
