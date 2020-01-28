@@ -87,16 +87,19 @@ int main(int argc, char * argv[]){
     // sockfd = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
 
     // Creates and establishes socket connection
-    struct sockaddr_in servaddr;
-    int sockfd;
-    sockfd=socket(AF_INET,SOCK_STREAM,0);
-    bzero(&servaddr,sizeof servaddr);
- 
-    servaddr.sin_family=AF_INET;
-    servaddr.sin_addr.s_addr = inet_addr (ip.c_str());
-    servaddr.sin_port=htons(stoi(port));
- 
-    connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+    // struct addrinfo hints, *res;
+    // int sockfd;
+
+    struct addrinfo hints, *addrs;
+	struct sockaddr_storage their_addr;
+	socklen_t addr_size;
+
+    memset(&hints, 0,sizeof hints);
+    hints.ai_family=AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    getaddrinfo(hostname, port.c_str(), &hints, &addrs);
+    int sockfd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
+    connect(sockfd,addrs->ai_addr,addrs->ai_addrlen);
        
 
     
