@@ -82,6 +82,9 @@ void get_parse(string header, int socket){
 	int first = (header.find("GET ") + 4);// Used to get Filename
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
+	if(temp.find("/") == 0){
+		temp = temp.substr(1);
+	}
 	string request_type = "GET";
 	if(temp.length() == 28 && temp.at(0) == '/'){// Checks for / at start of filename and ignores
 		temp = temp.substr(1, 27);
