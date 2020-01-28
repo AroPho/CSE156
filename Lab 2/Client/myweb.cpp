@@ -79,6 +79,7 @@ void writing(string c, int begin, int* local_written){
 
 void http_requests(int sock, int type, string file, string hostname){
     string temp = "";
+    cout << "here\n";
     if(type == 0){
         temp += "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n" ;
     }
@@ -235,6 +236,7 @@ int main(int argc, char * argv[]){
             if(!first_connect && new_fd > 0){
 
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+                cout << "fuck\n";
                 http_requests(new_fd, 0, filename, hostname);
                 length = head_parse(new_fd);
                 cout << length << "\n";
