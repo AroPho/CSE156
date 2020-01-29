@@ -37,6 +37,9 @@ void catch_range(string line, int *start, int *end){
 		// printf("%d, %d\n", middle - first, last);
 		*start = stoi(temp_string.substr(first, middle - first));
 		*end = stoi(temp_string.substr(middle + 1, last)); 
+	}else{
+		*start = -1;
+		*end = -1;
 	}
 }
 
@@ -85,7 +88,7 @@ void get_parse(string header, int socket){
 	string temp = header.substr(first, last);
 	int beginning, size;
 	catch_range(header, &beginning, &size);
-	printf("%d %d\n", beginning, size);
+	// printf("%d %d\n", beginning, size);
 	if(temp.find("/") == 0){
 		temp = temp.substr(1);
 	}
