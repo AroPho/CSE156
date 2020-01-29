@@ -260,6 +260,7 @@ int main(int argc, char * argv[]){
                 // cout << "fuck";
                 length = head_parse(new_fd);
                 cout << length << "\n";
+                first_connect = true;
                 }
 
                 if(new_fd > 0){
@@ -268,11 +269,13 @@ int main(int argc, char * argv[]){
 
                     pthread_t tidsi;
                     pthread_create(&tidsi, NULL, establish_connection, NULL);
+                    printf("1");
 
                     sem_wait(&empty);
                     pthread_mutex_lock(&mutex1);
-
+                    if(first_connect){
                     connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+                    }
                     buff[in] = new_fd;
                     host_buff[in] = hostname;
                     in = (in + 1) % num_args;
