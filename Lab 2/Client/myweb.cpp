@@ -95,7 +95,7 @@ int head_parse(int sock){
     char c;
     int end_header = 0;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
-        // printf("%c", c);
+        printf("%c", c);
         if(end_header != 1){
             temp += c;
         }
@@ -254,7 +254,7 @@ int main(int argc, char * argv[]){
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 http_requests(new_fd, 0, filename, "127.0.0.1");
                 length = head_parse(new_fd);
-                cout << length << "\n";
+                printf("%d\n", length);
                 if(length == -1){
                     new_fd = 0;
                 }
