@@ -220,11 +220,6 @@ int main(int argc, char * argv[]){
         //cout << 2 << "\n";
 
         struct sockaddr_in servaddr;
- 
-        new_fd=socket(AF_INET,SOCK_STREAM,0);
-        bzero(&servaddr,sizeof servaddr);
-    
-        servaddr.sin_family=AF_INET;
 
         ifstream ips(ip_file);
         string line;
@@ -239,7 +234,14 @@ int main(int argc, char * argv[]){
             // port = line.substr(first + 1);
 
             // cout << hostname << " " << port << "\n";
-            
+
+            new_fd=socket(AF_INET,SOCK_STREAM,0);
+            bzero(&servaddr,sizeof servaddr);
+        
+            servaddr.sin_family=AF_INET;
+            servaddr.sin_port=htons(12345);
+        
+            inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
             
             
 
