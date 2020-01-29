@@ -105,7 +105,7 @@ void head_parse(string header, int socket){
 	int first = (header.find("HEAD " + 5));
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
-	//printf("%s\n", temp.c_str());	
+	printf("%s\n", temp.c_str());	
 	int f = open(temp.c_str(), O_RDONLY);
 	if(errno == 13){
     	error_print(403, socket);
@@ -161,7 +161,7 @@ void *parse_recv(void *){
 		// Start of Consumer consume code
 		try{
 			while((numbytes = recv(socket, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
-				printf("%c", c);
+				// printf("%c", c);
 				if(end_header != 1){
 					temp += c;
 				}
