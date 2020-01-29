@@ -163,10 +163,10 @@ void *establish_connection(void *){
             if(end_header == 1){
                 // printf("why");
                 writing(c, chunk + local_written, &local_written);
-                printf("%d\n", written);
                 if(local_written == local_length){
                     done = true;
                     written += local_written;
+                    printf("%d\n", written);
                 }
                 if(written == length){
                     exit(1);
