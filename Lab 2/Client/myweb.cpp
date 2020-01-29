@@ -179,13 +179,10 @@ void *establish_connection(void *){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
-    // if(argc < 2){
-    //     warn("Insufficient number of arguements givin");
-    // }
+    if(argc < 2){
+        warn("Insufficient number of arguements givin");
+    }
     
-    //cout << "here\n";
-    
-
     char * ip_file = argv[1];
     num_args = atoi(argv[2]);
     filename = argv[3];
@@ -225,13 +222,18 @@ int main(int argc, char * argv[]){
     
         // servaddr.sin_family=AF_INET;
         
+        int first;
+        int last;
 
         while(read(f, &c, 1) > 0){
             temp += c;
             printf("%c", c);
             if(temp.find("\n") != -1){
-                hostname = temp.substr(0, temp.find(" "));
-                port =  temp.substr(temp.find(" ") +1, temp.find("\n"));
+                first = temp.find(" ");
+                last = temp.find("\n");
+                hostname = temp.substr(0, first);
+                port = temp.substr(first + 1, last - first);
+
 
                 cout << hostname << " ";
                 cout << port << "\n";
