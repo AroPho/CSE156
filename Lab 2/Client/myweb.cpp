@@ -241,47 +241,49 @@ int main(int argc, char * argv[]){
         // inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
 
         // connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
-
-        while(getline(ips, line)){
-            // cout << line;
-            hostname = line.substr(0, line.find(" "));
-            port = line.substr((line.find(" ") + 1));
-            
-            // cout << port;
-            // printf("%s", hostname.c_str());
-
-            getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
-            new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
-
-        }
-
-        if(!first_connect && new_fd > 0){
-            connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+        while(written != length){
+            while(getline(ips, line)){
+                // cout << line;
+                hostname = line.substr(0, line.find(" "));
+                port = line.substr((line.find(" ") + 1));
                 
-            http_requests(new_fd, 0, filename, "127.0.0.1");
-            // cout << "fuck";
-            length = head_parse(new_fd);
-            cout << length << "\n";
+                // cout << port;
+                // printf("%s", hostname.c_str());
+
+                getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
+                new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
+
+                if(!first_connect && new_fd > 0){
+                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+                    
+                http_requests(new_fd, 0, filename, "127.0.0.1");
+                // cout << "fuck";
+                length = head_parse(new_fd);
+                cout << length << "\n";
+                }
+
+                if(new_fd > 0){
+
+                    printf("%d\n", new_fd);
+
+                    pthread_t tidsi;
+                    pthread_create(&tidsi, NULL, establish_connection, NULL);
+
+                    sem_wait(&empty);
+                    pthread_mutex_lock(&mutex1);
+
+                    connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+                    buff[in] = new_fd;
+                    host_buff[in] = hostname;
+                    in = (in + 1) % num_args;
+
+                    pthread_mutex_unlock(&mutex1);
+                    sem_post(&full);
+                }
+            }
+
         }
 
-        if(new_fd > 0){
-
-            printf("%d\n", new_fd);
-
-            pthread_t tidsi;
-            pthread_create(&tidsi, NULL, establish_connection, NULL);
-
-            sem_wait(&empty);
-            pthread_mutex_lock(&mutex1);
-
-            connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-            buff[in] = new_fd;
-            host_buff[in] = hostname;
-            in = (in + 1) % num_args;
-
-            pthread_mutex_unlock(&mutex1);
-            sem_post(&full);
-        }
         
 
         
