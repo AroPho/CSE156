@@ -166,6 +166,7 @@ void *establish_connection(void *){
             // printf("%c", c);
             // Checks for end of header
             if(end_header == 1){
+                printf("here");
                 // printf("why");
                 if(chunk == written || started){
                     writing(c, chunk + local_written, &local_written);
