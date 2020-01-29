@@ -238,13 +238,6 @@ int main(int argc, char * argv[]){
                 // getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
                 // new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 // cout << new_fd << "\n";
-                
-                temp = "";
-            }
-
-            cout << 3 << "\n";
-            if(!first_connect && new_fd > 0){
-                
                 connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 cout << "fuck\n";
@@ -252,6 +245,12 @@ int main(int argc, char * argv[]){
                 while((n = read(0, &c, 1)) > 0){
                     send(new_fd, &c, 1, 0);
                 }
+                
+                temp = "";
+            }
+
+            // cout << 3 << "\n";
+            if(!first_connect && new_fd > 0){
                 // http_requests(new_fd, 0, filename, "127.0.0.1");
                 // length = head_parse(new_fd);
                 // cout << length << "\n";
@@ -280,7 +279,7 @@ int main(int argc, char * argv[]){
 			// 	sem_post(&full);
 			// }
         }
-        exit(1);
+        // exit(1);
     }catch(...){
         warn("Warning internal server error closing connections");
     }
