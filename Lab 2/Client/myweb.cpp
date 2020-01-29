@@ -240,7 +240,7 @@ int main(int argc, char * argv[]){
  
                 // inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
                 
-                getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
+                getaddrinfo(hostname.c_str(), "12345", &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 cout << new_fd << "\n";
                 
@@ -253,7 +253,7 @@ int main(int argc, char * argv[]){
             if(!first_connect && new_fd > 0){
                 // connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-                http_requests(new_fd, 0, filename, "127.0.0.1");
+                http_requests(new_fd, 0, filename, hostname);
                 length = head_parse(new_fd);
                 printf("%d\n", length);
                 if(length == -1){
