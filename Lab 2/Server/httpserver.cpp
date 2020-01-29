@@ -165,7 +165,7 @@ void *parse_recv(void *){
 		try{
 			while((numbytes = recv(socket, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
 				printf("%c", c);
-				printf("here");
+				// printf("here");
 				if(end_header != 1){
 					temp += c;
 				}
