@@ -135,10 +135,13 @@ void *establish_connection(void *){
 
         int local_length = -1;
         int local_written = 0;
+        int chunk = -1;
         bool written_file = false;
 
-        int chunk = size_of_chunks*offset;
-        offset = (offset + 1) % num_args;
+        while(chunk < written){
+            chunk = size_of_chunks*offset;
+            offset = (offset + 1) % num_args;
+        }
 
         // printf("nani");
         printf("%d\n", chunk);
