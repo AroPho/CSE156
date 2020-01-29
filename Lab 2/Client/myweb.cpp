@@ -32,6 +32,7 @@ bool first_connect = false;
 string filename;
 //int patch_offset= 0;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
 // prints out http error response codes
 void error_print(int err, int socket){
@@ -170,7 +171,9 @@ void *establish_connection(void *){
                 }
                 if(local_written == local_length){
                     done = true;
-                    written += local_written;
+                    pthread_mutex_lock(&mutex_write);
+                        written += local_written;
+	                pthread_mutex_unlock(&mutex_write);
                     printf("%d\n", written);
                 }
                 if(written == length){
