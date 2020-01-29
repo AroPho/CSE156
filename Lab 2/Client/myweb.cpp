@@ -240,7 +240,9 @@ int main(int argc, char * argv[]){
         cout << length << "\n";
 
         while(getline(ips, line)){
-            cout << line;
+            // cout << line;
+            hostname = line.substr(0, line.find(" "));
+            printf("%s", hostname);
         }
 
         // if(new_fd > 0){
