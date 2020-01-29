@@ -234,7 +234,7 @@ int main(int argc, char * argv[]){
                 cout << hostname << "\n";
                 cout << port << "\n";
 
-                servaddr.sin_port=htons(8080);
+                servaddr.sin_port=htons(stoi(port));
  
                 inet_pton(AF_INET, "127.0.0.1", &(servaddr.sin_addr));
                 
