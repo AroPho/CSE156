@@ -240,7 +240,7 @@ int main(int argc, char * argv[]){
  
                 // inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
                 
-                getaddrinfo(hostname.c_str(), "12345", &hints, &addrs);
+                getaddrinfo("127.0.0.1", "12345", &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 cout << new_fd << "\n";
                 
