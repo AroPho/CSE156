@@ -231,10 +231,10 @@ int main(int argc, char * argv[]){
             printf("%c", c);
             if(temp.find("\n") != -1){
                 hostname = temp.substr(0, temp.find(" "));
-                port =  temp.substr(temp.find(" ") +1, temp.find("\n") - 1);
+                port =  temp.substr(temp.find(" ") +1, temp.find("\n"));
 
-                // cout << hostname << "\n";
-                // cout << port << "\n";
+                cout << hostname << "\n";
+                cout << port << "\n";
 
                 // servaddr.sin_port=htons(stoi(port));
  
