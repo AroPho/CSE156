@@ -245,7 +245,7 @@ int main(int argc, char * argv[]){
             cout << 3 << "\n";
             if(!first_connect && new_fd > 0){
                 
-                connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+                connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 cout << "fuck\n";
                 http_requests(new_fd, 0, filename, hostname);
