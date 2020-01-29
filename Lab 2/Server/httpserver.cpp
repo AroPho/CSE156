@@ -63,12 +63,14 @@ void error_print(int err, int socket){
 }
 
 //Used for get method and parse through a file and sends to client
-void printing(int type, int f, int socket ){
+void printing(int type, int f, int socket, int beginning, int end){
     string temp, header;
-    int size;
+	int temp_begin = beginning;
+    int size, numbytes;
     char c;
-    while(read(f, &c, 1) > 0){
+    while((numbytes = pread(f, &c, 1, temp_begin)) > 0 || temp_begin == end){
     	temp += c;
+		temp_begin += numbytes;
     }
     size = temp.length();
     string content = "Content-Length: " + to_string(size) + "\r\n\r\n";
@@ -86,8 +88,8 @@ void get_parse(string header, int socket){
 	int first = (header.find("GET ") + 4);// Used to get Filename
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
-	int beginning, size;
-	catch_range(header, &beginning, &size);
+	int beginning, end;
+	catch_range(header, &beginning, &end);
 	// printf("%d %d\n", beginning, size);
 	if(temp.find("/") == 0){
 		temp = temp.substr(1);
@@ -104,7 +106,7 @@ void get_parse(string header, int socket){
 	if(f == -1){
 		error_print(404, socket);
 	}else{
-    	printing(1, f, socket); // Calls file to start sending client data
+    	printing(1, f, socket, beginning, end); // Calls file to start sending client data
    	}
 }
 
@@ -123,7 +125,7 @@ void head_parse(string header, int socket){
 	if(f == -1){
 		error_print(404, socket);
 	}else{
-    	printing(2, f, socket); // Calls file to start sending client data
+    	printing(2, f, socket, 0, -1); // Calls file to start sending client data
    	}
 }
 

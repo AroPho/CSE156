@@ -135,7 +135,9 @@ void *establish_connection(void *){
         int chunk = -1;
         int end_header = 0;
         temp = "";
+        request = "";
         bool done = false;
+        bool started = false;
 
         while(chunk < written){
             chunk = size_of_chunks*offset;
@@ -162,7 +164,10 @@ void *establish_connection(void *){
             // Checks for end of header
             if(end_header == 1){
                 // printf("why");
-                writing(c, chunk + local_written, &local_written);
+                if(chunk == written || started){
+                    writing(c, chunk + local_written, &local_written);
+                    started = true;
+                }
                 if(local_written == local_length){
                     done = true;
                     written += local_written;
