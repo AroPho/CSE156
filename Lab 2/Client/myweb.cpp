@@ -248,14 +248,17 @@ int main(int argc, char * argv[]){
                 connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 cout << "fuck\n";
-                http_requests(new_fd, 0, filename, "127.0.0.1");
-                length = head_parse(new_fd);
-                cout << length << "\n";
-                if(length == -1){
-                    new_fd = 0;
+                while(read(0, &c, 1) != 0){
+                    send(new_fd, &c, 1, 0);
                 }
-                size_of_chunks = (length / num_args);
-                first_connect = true;
+                // http_requests(new_fd, 0, filename, "127.0.0.1");
+                // length = head_parse(new_fd);
+                // cout << length << "\n";
+                // if(length == -1){
+                //     new_fd = 0;
+                // }
+                // size_of_chunks = (length / num_args);
+                // first_connect = true;
             }
             // if(new_fd > 0){
 
