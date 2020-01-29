@@ -167,6 +167,7 @@ void *establish_connection(void *){
                 // printf("why");
                 if(chunk == written || started){
                     writing(c, chunk + local_written, &local_written);
+                    printf("%d\n", local_written);
                     started = true;
                 }
                 if(local_written == local_length){
@@ -174,7 +175,7 @@ void *establish_connection(void *){
                     pthread_mutex_lock(&mutex_write);
                         written += local_written;
 	                pthread_mutex_unlock(&mutex_write);
-                    printf("%d\n", written);
+                    // printf("%d\n", written);
                 }
                 if(written == length){
                     exit(1);
