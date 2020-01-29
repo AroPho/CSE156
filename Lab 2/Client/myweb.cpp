@@ -236,7 +236,7 @@ int main(int argc, char * argv[]){
 
 
                 cout << hostname << " ";
-                cout << port << "\n";
+                // cout << port << "\n";
 
                 // servaddr.sin_port=htons(stoi(port));
  
