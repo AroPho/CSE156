@@ -184,6 +184,7 @@ void *establish_connection(void *){
             }
             if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 printf("here");
+                printf("%d, %d", chunk, written);
                 end_header = 1;
                 local_length = catch_length(temp);
             }
