@@ -192,8 +192,9 @@ int main(int argc, char * argv[]){
     
 
     char * ip_file = argv[1];
-    num_args = atoi(argv[2]);
+    char * num_args_char = argv[2];
     filename = argv[3];
+    num_args = atoi(num_args_char);
     //printf("%s, %d, %s\n", ip_file, num_args, filename.c_str());
     // int f = open(ip_file, O_RDONLY);
     // char c;
@@ -262,8 +263,7 @@ int main(int argc, char * argv[]){
                 new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
 
                 if(!first_connect && new_fd > 0){
-                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-                    
+                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen); 
                 http_requests(new_fd, 0, filename, "127.0.0.1");
                 // cout << "fuck";
                 length = head_parse(new_fd);
