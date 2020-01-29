@@ -165,9 +165,8 @@ void *establish_connection(void *){
                 end_header = 1;
                 local_length = catch_length(temp);
                 temp = "";
-                break;
             }
-            if(end_header == 1 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n"){
+            if(end_header == 1 && temp.length() > 3 && temp.substr(temp.length() - 2) == "\r\n"){
                 break;
             }
         }
