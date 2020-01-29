@@ -238,47 +238,32 @@ int main(int argc, char * argv[]){
         http_requests(new_fd, 0, filename, "127.0.0.1");
         length = head_parse(new_fd);
         cout << length << "\n";
+
+        while(getline(ips, line)){
+            cout << line;
+        }
+
+        // if(new_fd > 0){
+
+        //     //printf("%d\n", new_fd);
+
+        //     pthread_t tidsi;
+        //     pthread_create(&tidsi, NULL, establish_connection, NULL);
+
+        //     sem_wait(&empty);
+        //     pthread_mutex_lock(&mutex1);
+
+        //     // connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+        //     buff[in] = new_fd;
+        //     host_buff[in] = hostname;
+        //     in = (in + 1) % num_args;
+
+        //     pthread_mutex_unlock(&mutex1);
+        //     sem_post(&full);
+        // }
         
 
-        while(getline(cin, line)){
-            cout << line;
-            // first = line.find(" ");
-            // // last = line.find("")
-            // hostname = line.substr(0, first);
-            // port = line.substr(first + 1);
-
-            // cout << hostname << " " << port << "\n";
-
-            
-            
-
-            // cout << 3 << "\n";
-            // if(!first_connect && new_fd > 0){
-            //     if(length == -1){
-            //         new_fd = 0;
-            //     }
-            //     // size_of_chunks = (length / num_args);
-            //     // first_connect = true;
-            // }
-            // if(new_fd > 0){
-
-			// 	//printf("%d\n", new_fd);
-
-            //     pthread_t tidsi;
-            //     pthread_create(&tidsi, NULL, establish_connection, NULL);
-
-			// 	sem_wait(&empty);
-			// 	pthread_mutex_lock(&mutex1);
-
-            //     connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-			// 	buff[in] = new_fd;
-            //     host_buff[in] = hostname;
-			// 	in = (in + 1) % num_args;
-
-			// 	pthread_mutex_unlock(&mutex1);
-			// 	sem_post(&full);
-			// }
-        }
+        
         // exit(1);
     }catch(...){
         warn("Warning internal server error closing connections");
