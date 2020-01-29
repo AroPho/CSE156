@@ -100,7 +100,8 @@ int head_parse(int sock){
             temp += c;
         }
         if(end_header == 1){
-            return catch_length(temp);
+            cout << catch_length(temp);
+            return 1;
         }
         // Checks for end of header
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
@@ -205,8 +206,8 @@ int main(int argc, char * argv[]){
     try{
 
         struct addrinfo hints, *addrs;
-	    struct sockaddr_storage their_addr;
-	    socklen_t addr_size;
+	    // struct sockaddr_storage their_addr;
+	    // socklen_t addr_size;
         memset(&hints, 0,sizeof hints);
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
