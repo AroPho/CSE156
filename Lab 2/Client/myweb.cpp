@@ -166,7 +166,6 @@ void *establish_connection(void *){
             // printf("%c", c);
             // Checks for end of header
             if(end_header == 1){
-                printf("here");
                 // printf("why");
                 if(chunk == written || started){
                     writing(c, chunk + local_written, &local_written);
@@ -183,7 +182,7 @@ void *establish_connection(void *){
                 }
             }
             if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                // printf("here");
+                printf("here");
                 end_header = 1;
                 local_length = catch_length(temp);
             }
