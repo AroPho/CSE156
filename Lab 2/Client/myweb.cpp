@@ -71,7 +71,7 @@ int catch_length(string line){
 
 void writing(char c, int begin, int* local_written){
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-    *local_written += pwrite(file_num, &c, 1, begin);
+    *local_written = pwrite(file_num, &c, 1, begin);
     close(file_num);
 
 }
