@@ -192,9 +192,9 @@ int main(int argc, char * argv[]){
     
 
     char * ip_file = argv[1];
-    char * num_args_char = argv[2];
+    num_args = atoi(argv[2]);
     filename = argv[3];
-    num_args = atoi(num_args_char);
+    // num_args = atoi(num_args_char);
     //printf("%s, %d, %s\n", ip_file, num_args, filename.c_str());
     // int f = open(ip_file, O_RDONLY);
     // char c;
