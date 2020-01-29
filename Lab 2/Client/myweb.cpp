@@ -240,7 +240,7 @@ int main(int argc, char * argv[]){
         while(getline(ips, line)){
             // cout << line;
             hostname = line.substr(0, line.find(" "));
-            printf("%s", hostname.c_str());
+            // printf("%s", hostname.c_str());
 
             getaddrinfo(hostname.c_str(), "12345", &hints, &addrs);
             new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
@@ -248,6 +248,7 @@ int main(int argc, char * argv[]){
             connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 
             http_requests(new_fd, 0, filename, "127.0.0.1");
+            cout << "fuck";
             length = head_parse(new_fd);
             cout << length << "\n";
         }
