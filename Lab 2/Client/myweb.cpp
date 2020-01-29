@@ -100,6 +100,7 @@ int head_parse(int sock){
             temp += c;
         }
         if(end_header == 1){
+            cout << "fuck";
             cout << catch_length(temp);
             return 1;
         }
