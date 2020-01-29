@@ -107,9 +107,9 @@ void get_parse(string header, int socket){
     }
 	if(f == -1){
 		error_print(404, socket);
-	}if(beginning != -1){
+	}/*if(beginning != -1){
     	printing(1, f, socket, beginning, end); // Calls file to start sending client data
-   	}else{
+   	}*/else{
 		printing(1, f, socket, 0, -1); // Calls file to start sending client data
 	}
 	   
