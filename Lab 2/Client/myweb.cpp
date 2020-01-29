@@ -229,13 +229,13 @@ int main(int argc, char * argv[]){
             temp += c;
             printf("%c", c);
             if(temp.find("\n") != -1){
-                first = temp.find(" ");
+                first = temp.find(" ") - 1;
                 last = temp.find("\n");
                 hostname = temp.substr(0, first);
-                // port = temp.substr(first + 1, last - first);
+                port = temp.substr(first + 1, (last - first));
 
 
-                // cout << hostname << " ";
+                cout << hostname << " ";
                 cout << (last - first) << "\n";
 
                 // servaddr.sin_port=htons(stoi(port));
