@@ -25,7 +25,7 @@ int offset = 0;
 int length = -1;
 sem_t empty, full;
 int * buff;
-string * host_buff;
+// string * host_buff;
 int written = 0;
 int size_of_chunks;
 bool first_connect = false;
@@ -126,7 +126,7 @@ void *establish_connection(void *){
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
 		socket = buff[out];
-        hostname = host_buff[out];
+        // hostname = host_buff[out];
 		out = (out + 1) % num_args;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
@@ -144,10 +144,10 @@ void *establish_connection(void *){
         printf("%d\n", chunk);
 
         if((size_of_chunks + chunk) <= length){
-            request += "GET " + filename + " HTTP/1.1\r\nHost: " + hostname + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
+            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
         }else{
             int right_size = (size_of_chunks + chunk) - length;
-            request += "GET " + filename + " HTTP/1.1\r\nHost: " + hostname + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + right_size) + "/" + to_string(length) + "\r\n\r\n";
+            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + right_size) + "/" + to_string(length) + "\r\n\r\n";
         }
 
         send(socket, request.c_str(), request.length(), 0);
@@ -222,7 +222,7 @@ int main(int argc, char * argv[]){
         
         
         buff = (int*) malloc(sizeof(int)*(num_args*800));
-        host_buff = (string*) malloc(sizeof(string)*(num_args*800));
+        // host_buff = (string*) malloc(sizeof(string)*(num_args*800));
 
         //cout << 2 << "\n";
 
@@ -286,7 +286,7 @@ int main(int argc, char * argv[]){
                         connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                     }
                     buff[in] = new_fd;
-                    host_buff[in] = hostname;
+                    // host_buff[in] = hostname;
                     in = (in + 1) % num_args;
 
                     pthread_mutex_unlock(&mutex1);
