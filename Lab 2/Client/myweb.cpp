@@ -95,18 +95,17 @@ int head_parse(int sock){
     char c;
     int end_header = 0;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
-        printf("%c", c);
-        printf("%d\n", end_header);
+        // printf("%c", c);
+        // printf("%d\n", end_header);
         if(end_header != 1){
             temp += c;
-        }
-        if(end_header == 1){
-            cout << catch_length(temp);
-            return 1;
         }
         // Checks for end of header
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
             end_header = 1;
+        }
+        if(end_header == 1){
+            return catch_length(temp);
         }
     }
     return -1;
