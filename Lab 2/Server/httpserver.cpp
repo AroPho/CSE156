@@ -36,7 +36,7 @@ void catch_range(string line, int *start, int *end){
 		string ftemp = temp_string.substr(first,last);
 		// printf("%d, %d\n", middle - first, last);
 		*start = stoi(temp_string.substr(first, middle - first));
-		*end = stoi(temp_string.substr(middle - 1, last)); 
+		*end = stoi(temp_string.substr(middle, last)); 
 	}
 }
 
