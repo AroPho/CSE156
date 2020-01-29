@@ -191,7 +191,7 @@ int main(int argc, char * argv[]){
     filename = argv[3];
     //printf("%s, %d, %s\n", ip_file, num_args, filename.c_str());
     // int f = open(ip_file, O_RDONLY);
-    char c;
+    // char c;
     string hostname;
     string port;
     string temp = "";
@@ -226,7 +226,7 @@ int main(int argc, char * argv[]){
     
         servaddr.sin_family=AF_INET;
 
-        ifstream ips(filename);
+        ifstream ips(ip_file);
         string line;
         int first, last;
         
