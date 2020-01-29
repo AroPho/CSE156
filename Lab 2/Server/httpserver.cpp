@@ -70,7 +70,7 @@ void printing(int type, int f, int socket, int beginning, int end){
     char c;
     while((numbytes = pread(f, &c, 1, temp_begin)) > 0 || temp_begin == end){
     	//printf("%c", c);
-		printf("%c", temp_begin);
+		printf("%d", temp_begin);
 		temp += c;
 		temp_begin += numbytes;
     }
