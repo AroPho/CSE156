@@ -228,7 +228,7 @@ int main(int argc, char * argv[]){
         while(read(f, &c, 1) > 0){
             temp += c;
             printf("%c", c);
-            if(temp.find("\n") != -1){
+            if(temp.find("\n") >= 0){
                 first = temp.find(" ");
                 last = temp.find("\n");
                 hostname = temp.substr(0, first);
