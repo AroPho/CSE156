@@ -206,8 +206,8 @@ int main(int argc, char * argv[]){
     try{
 
         struct addrinfo hints, *addrs;
-	    struct sockaddr_storage their_addr;
-	    socklen_t addr_size;
+	    // struct sockaddr_storage their_addr;
+	    // socklen_t addr_size;
         memset(&hints, 0,sizeof hints);
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
@@ -248,7 +248,7 @@ int main(int argc, char * argv[]){
             connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 
             http_requests(new_fd, 0, filename, "127.0.0.1");
-            cout << "fuck";
+            // cout << "fuck";
             length = head_parse(new_fd);
             cout << length << "\n";
         }
