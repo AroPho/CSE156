@@ -228,6 +228,11 @@ int main(int argc, char * argv[]){
 
         ifstream ips(ip_file);
         string line;
+
+        for(int i = 0; i < num_args; i++){
+			pthread_t tidsi;
+			pthread_create(&tidsi, NULL, establish_connection, NULL);
+		}
         // int first, last;
 
         // struct sockaddr_in servaddr;
@@ -259,22 +264,23 @@ int main(int argc, char * argv[]){
                 http_requests(new_fd, 0, filename, "127.0.0.1");
                 // cout << "fuck";
                 length = head_parse(new_fd);
+                if(length == -1){
+
+                }
                 cout << length << "\n";
-                first_connect = true;
                 }
 
                 if(new_fd > 0){
 
                     printf("%d\n", new_fd);
-
-                    pthread_t tidsi;
-                    pthread_create(&tidsi, NULL, establish_connection, NULL);
                     printf("1");
 
                     sem_wait(&empty);
                     pthread_mutex_lock(&mutex1);
-                    if(first_connect){
-                    connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+                    if(!first_connect){
+                        first_connect = true;
+                    }else{
+                        connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                     }
                     buff[in] = new_fd;
                     host_buff[in] = hostname;
