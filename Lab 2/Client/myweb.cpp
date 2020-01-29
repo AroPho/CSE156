@@ -96,11 +96,11 @@ int head_parse(int sock){
     int end_header = 0;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
         printf("%c", c);
+        printf("%d\n", end_header);
         if(end_header != 1){
             temp += c;
         }
         if(end_header == 1){
-            cout << "fuck";
             cout << catch_length(temp);
             return 1;
         }
