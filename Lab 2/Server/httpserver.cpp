@@ -32,11 +32,11 @@ void catch_range(string line, int *start, int *end){
 		int first = (temp_string.find("Content-Range:") + 15);// Used to get filesize
 		string temp2 = temp_string.substr(first);
 		int middle = (temp2.find("-") + first);
-		int last = ((temp_string.find("/")) - middle) - 1;
+		int last = ((temp_string.find("/")) - middle) -1 ;
 		string ftemp = temp_string.substr(first,last);
 		// printf("%d, %d\n", middle - first, last);
 		*start = stoi(temp_string.substr(first, middle - first));
-		*end = stoi(temp_string.substr(middle, last)); 
+		*end = stoi(temp_string.substr(middle + 1, last)); 
 	}
 }
 
