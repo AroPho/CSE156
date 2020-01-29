@@ -248,7 +248,7 @@ int main(int argc, char * argv[]){
                 connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 cout << "fuck\n";
-                http_requests(new_fd, 0, filename, hostname);
+                http_requests(new_fd, 0, filename, "127.0.0.1");
                 length = head_parse(new_fd);
                 cout << length << "\n";
                 if(length == -1){
