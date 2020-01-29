@@ -232,11 +232,11 @@ int main(int argc, char * argv[]){
                 first = temp.find(" ");
                 last = temp.find("\n");
                 hostname = temp.substr(0, first);
-                port = temp.substr(first + 1, last - first);
+                // port = temp.substr(first + 1, last - first);
 
 
-                cout << hostname << " ";
-                // cout << port << "\n";
+                // cout << hostname << " ";
+                cout << (last - first) << "\n";
 
                 // servaddr.sin_port=htons(stoi(port));
  
