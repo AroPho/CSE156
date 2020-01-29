@@ -140,10 +140,12 @@ void *establish_connection(void *){
         bool done = false;
         bool started = false;
 
+        pthread_mutex_lock(&mutex_write);
         while(chunk < written){
             chunk = size_of_chunks*offset;
             offset = (offset + 1) % num_args;
         }
+	    pthread_mutex_unlock(&mutex_write);
 
         // printf("nani");
         //printf("%d\n", chunk);
@@ -172,9 +174,7 @@ void *establish_connection(void *){
                 }
                 if(local_written == local_length){
                     done = true;
-                    pthread_mutex_lock(&mutex_write);
-                        written += local_written;
-	                pthread_mutex_unlock(&mutex_write);
+                    written += local_written;
                     // printf("%d\n", written);
                 }
                 if(written == length){
