@@ -233,10 +233,10 @@ int main(int argc, char * argv[]){
 
         while(getline(cin, line)){
             cout << line;
-            first = line.find(" ");
-            // last = line.find("")
-            hostname = line.substr(0, first);
-            port = line.substr(first + 1);
+            // first = line.find(" ");
+            // // last = line.find("")
+            // hostname = line.substr(0, first);
+            // port = line.substr(first + 1);
 
             // cout << hostname << " " << port << "\n";
             
