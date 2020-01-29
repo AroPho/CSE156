@@ -229,6 +229,9 @@ int main(int argc, char * argv[]){
         ifstream ips(ip_file);
         string line;
 
+        sem_init(&empty, 0, num_args);
+	    sem_init(&full, 0, 0);
+
         for(int i = 0; i < num_args; i++){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, establish_connection, NULL);
@@ -272,7 +275,7 @@ int main(int argc, char * argv[]){
 
                 if(new_fd > 0){
 
-                    printf("%d\n", new_fd);
+                    // printf("%d\n", new_fd);
                     printf("1");
 
                     sem_wait(&empty);
