@@ -205,12 +205,13 @@ int main(int argc, char * argv[]){
     
     try{
 
-        // struct addrinfo hints, *addrs;
-	    // struct sockaddr_storage their_addr;
-	    // socklen_t addr_size;
-        // memset(&hints, 0,sizeof hints);
-        // hints.ai_family=AF_UNSPEC;
-        // hints.ai_socktype = SOCK_STREAM;
+        struct addrinfo hints, *addrs;
+	    struct sockaddr_storage their_addr;
+	    socklen_t addr_size;
+        memset(&hints, 0,sizeof hints);
+        hints.ai_family=AF_UNSPEC;
+        hints.ai_socktype = SOCK_STREAM;
+
         // int count = 0;
         
         
@@ -219,21 +220,25 @@ int main(int argc, char * argv[]){
 
         //cout << 2 << "\n";
 
-        struct sockaddr_in servaddr;
 
         ifstream ips(ip_file);
         string line;
         // int first, last;
 
-        new_fd=socket(AF_INET,SOCK_STREAM,0);
-        bzero(&servaddr,sizeof servaddr);
-    
-        servaddr.sin_family=AF_INET;
-        servaddr.sin_port=htons(12345);
-    
-        inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
+        // struct sockaddr_in servaddr;
 
-        connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+        // new_fd=socket(AF_INET,SOCK_STREAM,0);
+        // bzero(&servaddr,sizeof servaddr);
+    
+        // servaddr.sin_family=AF_INET;
+        // servaddr.sin_port=htons(12345);
+    
+        // inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
+
+        // connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+
+        getaddrinfo("127.0.0.1", "12345", &hints, &addrs);
+        int new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
             
         http_requests(new_fd, 0, filename, "127.0.0.1");
         length = head_parse(new_fd);
