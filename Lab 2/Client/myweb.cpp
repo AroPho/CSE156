@@ -15,6 +15,7 @@
 #include <semaphore.h>
 #include <sys/stat.h>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 int num_args = 4;
@@ -189,7 +190,7 @@ int main(int argc, char * argv[]){
     num_args = atoi(argv[2]);
     filename = argv[3];
     //printf("%s, %d, %s\n", ip_file, num_args, filename.c_str());
-    int f = open(ip_file, O_RDONLY);
+    // int f = open(ip_file, O_RDONLY);
     char c;
     string hostname;
     string port;
@@ -211,6 +212,8 @@ int main(int argc, char * argv[]){
         // hints.ai_family=AF_UNSPEC;
         // hints.ai_socktype = SOCK_STREAM;
         // int count = 0;
+        
+        
         buff = (int*) malloc(sizeof(int)*(num_args*800));
         host_buff = (string*) malloc(sizeof(string)*(num_args*800));
 
@@ -222,35 +225,25 @@ int main(int argc, char * argv[]){
         bzero(&servaddr,sizeof servaddr);
     
         servaddr.sin_family=AF_INET;
+
+        ifstream ips(filename);
+        string line;
+        int first, last;
         
 
-        while(read(f, &c, 1) > 0){
-            temp += c;
-            printf("%c", c);
-            if(temp.find("\n") != -1){
-                hostname = temp.substr(0, temp.find(" "));
-                port =  temp.substr(temp.find(" ") +1, temp.find("\n") - 1);
+        while(getline(cin, line)){
+            first = line.find(" ");
+            hostname = line.substr(0, first);
+            port = line.substr(first + 1);
 
-                cout << hostname << "\n";
-                cout << port << "\n";
-
-                servaddr.sin_port=htons(stoi(port));
- 
-                inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
-                
-                // getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
-                // new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
-                // cout << new_fd << "\n";
-                
-                //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-
-                temp = "";
-            }
+            cout << hostname << " " << port << "\n";
+            
+            
             
 
             // cout << 3 << "\n";
             if(!first_connect && new_fd > 0){
-                // connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+                connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 
                 http_requests(new_fd, 0, filename, "127.0.0.1");
                 length = head_parse(new_fd);
