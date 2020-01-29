@@ -223,7 +223,7 @@ int main(int argc, char * argv[]){
 
         ifstream ips(ip_file);
         string line;
-        int first, last;
+        // int first, last;
 
         new_fd=socket(AF_INET,SOCK_STREAM,0);
         bzero(&servaddr,sizeof servaddr);
