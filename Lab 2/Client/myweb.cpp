@@ -131,7 +131,7 @@ void *establish_connection(void *){
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
 
-        printf("here");
+        // printf("here");
 
         int local_length = -1;
         int local_written = 0;
@@ -140,7 +140,7 @@ void *establish_connection(void *){
         int chunk = size_of_chunks*offset;
         offset = (offset + 1) % num_args;
 
-        printf("nani");
+        // printf("nani");
         printf("%d\n", chunk);
 
         if((size_of_chunks + chunk) <= length){
@@ -172,6 +172,7 @@ void *establish_connection(void *){
             }
             writing(temp, chunk, &local_written);
             written += local_written;
+            printf("%d\n", written);
             if(local_written == local_length){
                 written_file = true;
             }
@@ -276,7 +277,7 @@ int main(int argc, char * argv[]){
                 if(new_fd > 0){
 
                     // printf("%d\n", new_fd);
-                    printf("1");
+                    // printf("1");
 
                     sem_wait(&empty);
                     pthread_mutex_lock(&mutex1);
