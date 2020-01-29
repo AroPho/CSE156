@@ -211,7 +211,7 @@ int main(int argc, char * argv[]){
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
         // int count = 0;
-        
+
         buff = (int*) malloc(sizeof(int)*(num_args*800));
         host_buff = (string*) malloc(sizeof(string)*(num_args*800));
 
@@ -239,7 +239,7 @@ int main(int argc, char * argv[]){
  
                 // inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
                 
-                getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
+                getaddrinfo("127.0.0.1", "12345", &hints, &addrs);
                 new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 cout << new_fd << "\n";
                 
