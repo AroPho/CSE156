@@ -261,6 +261,7 @@ int main(int argc, char * argv[]){
                 if(length == -1){
                     new_fd = 0;
                 }
+                exit(1);
                 // size_of_chunks = (length / num_args);
                 // first_connect = true;
             }
