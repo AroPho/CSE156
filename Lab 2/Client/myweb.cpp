@@ -161,6 +161,9 @@ void *establish_connection(void *){
             }
         }
         while(!written_file){
+            if(chunk < written){
+                break;
+            }
             writing(temp, chunk, &local_written);
             written += local_written;
             if(local_written == local_length){
@@ -233,7 +236,7 @@ int main(int argc, char * argv[]){
 
                 servaddr.sin_port=htons(8080);
  
-                inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
+                inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
                 
                 // getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
                 // new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);

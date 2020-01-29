@@ -105,7 +105,10 @@ void head_parse(string header, int socket){
 	int first = (header.find("HEAD ") + 5);
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
-	printf("%s\n", temp.c_str());	
+	if(temp.find("/") == 0){
+		temp = temp.substr(1);
+	}
+	// printf("%s\n", temp.c_str());	
 	int f = open(temp.c_str(), O_RDONLY);
 	if(errno == 13){
     	error_print(403, socket);
