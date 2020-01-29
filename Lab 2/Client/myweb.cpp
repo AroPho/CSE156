@@ -238,7 +238,7 @@ int main(int argc, char * argv[]){
         // connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
 
         getaddrinfo("127.0.0.1", "12345", &hints, &addrs);
-        int new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
+        new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
             
         http_requests(new_fd, 0, filename, "127.0.0.1");
         length = head_parse(new_fd);
