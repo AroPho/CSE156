@@ -70,11 +70,9 @@ int catch_length(string line){
 // Creates appropriate GET and HEAD HTTP Request
 
 void writing(char c, int begin, int* local_written){
-    if(written == begin){
-        int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-        *local_written += pwrite(file_num, &c, 1, begin);
-        close(file_num);
-    }
+    int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
+    *local_written += pwrite(file_num, &c, 1, begin);
+    close(file_num);
 
 }
 
@@ -170,9 +168,6 @@ void *establish_connection(void *){
             }
             if(end_header == 1){
                 printf("why");
-                if(chunk < written){
-                    break;
-                }
                 writing(c, chunk, &local_written);
                 written += local_written;
                 printf("%d\n", written);
