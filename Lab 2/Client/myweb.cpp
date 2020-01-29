@@ -158,16 +158,10 @@ void *establish_connection(void *){
         while(!done){
             recv(socket, &c, 1, 0);
             temp += c;
-            printf("%c", c);
+            // printf("%c", c);
             // Checks for end of header
-            if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                printf("here");
-                end_header = 1;
-                local_length = catch_length(temp);
-                temp = "";
-            }
             if(end_header == 1){
-                printf("why");
+                // printf("why");
                 writing(c, chunk + local_written, &local_written);
                 written += local_written;
                 printf("%d\n", written);
@@ -177,6 +171,12 @@ void *establish_connection(void *){
                 if(written == length){
                     exit(1);
                 }
+            }
+            if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+                printf("here");
+                end_header = 1;
+                local_length = catch_length(temp);
+                temp = "";
             }
         }
     }
