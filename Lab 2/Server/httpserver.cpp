@@ -102,7 +102,7 @@ void get_parse(string header, int socket){
 }
 
 void head_parse(string header, int socket){
-	int first = (header.find("HEAD " + 5));
+	int first = (header.find("HEAD ") + 5);
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
 	printf("%s\n", temp.c_str());	
