@@ -156,7 +156,7 @@ void *establish_connection(void *){
                 local_length = catch_length(temp);
                 temp = "";
             }
-            if(end_header == 1 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n"){
+            if(end_header == 1 && temp.length() > 3 && temp.substr(temp.length() - 2) == "\r\n"){
                 break;
             }
         }
@@ -178,9 +178,9 @@ void *establish_connection(void *){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
-    // if(argc < 2){
-    //     warn("Insufficient number of arguements givin");
-    // }
+    if(argc < 2){
+        warn("Insufficient number of arguements givin");
+    }
     
     //cout << "here\n";
     
@@ -227,7 +227,7 @@ int main(int argc, char * argv[]){
         while(read(f, &c, 1) > 0){
             temp += c;
             printf("%c", c);
-            if(temp.find("\n") != -1){
+            if(temp.length() > 3 && (temp.substr(temp.length() - 1) == "\n") || temp.substr(temp.length() - 2) == "\r\n"){
                 hostname = temp.substr(0, temp.find(" "));
                 port =  temp.substr(temp.find(" ") +1, temp.find("\n") - 1);
 
