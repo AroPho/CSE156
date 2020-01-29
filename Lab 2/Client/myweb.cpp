@@ -170,7 +170,9 @@ void *establish_connection(void *){
                 break;
             }
         }
+        printf("here2");
         while(!written_file){
+            printf("why");
             if(chunk < written){
                 break;
             }
@@ -276,7 +278,7 @@ int main(int argc, char * argv[]){
                     new_fd = 0;
                 }
                 size_of_chunks = (length / num_args);
-                cout << length << "\n";
+                // cout << length << "\n";
                 }
 
                 if(new_fd > 0){
