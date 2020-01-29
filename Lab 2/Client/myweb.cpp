@@ -204,24 +204,24 @@ int main(int argc, char * argv[]){
     
     try{
 
-        // struct addrinfo hints, *addrs;
-	    // struct sockaddr_storage their_addr;
-	    // socklen_t addr_size;
-        // memset(&hints, 0,sizeof hints);
-        // hints.ai_family=AF_UNSPEC;
-        // hints.ai_socktype = SOCK_STREAM;
-        // int count = 0;
+        struct addrinfo hints, *addrs;
+	    struct sockaddr_storage their_addr;
+	    socklen_t addr_size;
+        memset(&hints, 0,sizeof hints);
+        hints.ai_family=AF_UNSPEC;
+        hints.ai_socktype = SOCK_STREAM;
+        int count = 0;
         buff = (int*) malloc(sizeof(int)*(num_args*800));
         host_buff = (string*) malloc(sizeof(string)*(num_args*800));
 
         //cout << 2 << "\n";
 
-        struct sockaddr_in servaddr;
+        // struct sockaddr_in servaddr;
  
-        new_fd=socket(AF_INET,SOCK_STREAM,0);
-        bzero(&servaddr,sizeof servaddr);
+        // new_fd=socket(AF_INET,SOCK_STREAM,0);
+        // bzero(&servaddr,sizeof servaddr);
     
-        servaddr.sin_family=AF_INET;
+        // servaddr.sin_family=AF_INET;
         
 
         while(read(f, &c, 1) > 0){
@@ -234,15 +234,14 @@ int main(int argc, char * argv[]){
                 // cout << hostname << "\n";
                 // cout << port << "\n";
 
-                servaddr.sin_port=htons(stoi(port));
+                // servaddr.sin_port=htons(stoi(port));
  
-                inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
+                // inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
                 
-                // getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
-                // new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
+                getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
+                new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 // cout << new_fd << "\n";
                 
-                //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
 
                 temp = "";
             }
@@ -250,7 +249,8 @@ int main(int argc, char * argv[]){
 
             // cout << 3 << "\n";
             if(!first_connect && new_fd > 0){
-                connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+                //connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 http_requests(new_fd, 0, filename, "127.0.0.1");
                 length = head_parse(new_fd);
                 printf("%d\n", length);
