@@ -137,6 +137,7 @@ void *establish_connection(void *){
         int local_written = 0;
         int chunk = -1;
         bool written_file = false;
+        bool done = false;
 
         while(chunk < written){
             chunk = size_of_chunks*offset;
@@ -156,7 +157,8 @@ void *establish_connection(void *){
         send(socket, request.c_str(), request.length(), 0);
 
         // Starts recieving response from server
-        while((numbytes = recv(socket, &c, 1, 0)) != 0){
+        while(!done){
+            recv(socket, &c, 1, 0);
             temp += c;
             printf("%c", c);
             // Checks for end of header
@@ -166,7 +168,9 @@ void *establish_connection(void *){
                 local_length = catch_length(temp);
                 temp = "";
             }
-            if(end_header == 1 && temp.length() > 3 && temp.substr(temp.length() - 2) == "\r\n"){
+            if(end_header == 1 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n"){
+                end_header = 0;
+                done = true;
                 break;
             }
         }
