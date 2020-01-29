@@ -179,9 +179,9 @@ void *establish_connection(void *){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
-    // if(argc < 2){
-    //     warn("Insufficient number of arguements givin");
-    // }
+    if(argc < 2){
+        warn("Insufficient number of arguements givin");
+    }
     
     //cout << "here\n";
     
@@ -232,11 +232,13 @@ int main(int argc, char * argv[]){
         
 
         while(getline(cin, line)){
+            cout << line;
             first = line.find(" ");
+            // last = line.find("")
             hostname = line.substr(0, first);
             port = line.substr(first + 1);
 
-            cout << hostname << " " << port << "\n";
+            // cout << hostname << " " << port << "\n";
             
             
             
