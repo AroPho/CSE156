@@ -69,10 +69,10 @@ int catch_length(string line){
 }
 // Creates appropriate GET and HEAD HTTP Request
 
-void writing(string c, int begin, int* local_written){
+void writing(char c, int begin, int* local_written){
     if(written == begin){
         int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-        *local_written += pwrite(file_num, c.c_str(), c.length(), begin);
+        *local_written += pwrite(file_num, &c, 1, begin);
         close(file_num);
     }
 
@@ -114,7 +114,7 @@ int head_parse(int sock){
 void *establish_connection(void *){
     int socket;
     int end_header = 0;
-    int numbytes;
+    // int numbytes;
     char c;
     string hostname;
     string temp = "";
@@ -136,7 +136,7 @@ void *establish_connection(void *){
         int local_length = -1;
         int local_written = 0;
         int chunk = -1;
-        bool written_file = false;
+        // bool written_file = false;
         bool done = false;
 
         while(chunk < written){
@@ -168,26 +168,20 @@ void *establish_connection(void *){
                 local_length = catch_length(temp);
                 temp = "";
             }
-            if(end_header == 1 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n"){
-                end_header = 0;
-                done = true;
-                // break;
-            }
-        }
-        printf("here2");
-        while(!written_file){
-            printf("why");
-            if(chunk < written){
-                break;
-            }
-            writing(temp, chunk, &local_written);
-            written += local_written;
-            printf("%d\n", written);
-            if(local_written == local_length){
-                written_file = true;
-            }
-            if(written == length){
-                exit(1);
+            if(end_header == 1){
+                printf("why");
+                if(chunk < written){
+                    break;
+                }
+                writing(c, chunk, &local_written);
+                written += local_written;
+                printf("%d\n", written);
+                if(local_written == local_length){
+                    done = true;
+                }
+                if(written == length){
+                    exit(1);
+                }
             }
         }
     }
