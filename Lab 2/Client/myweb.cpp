@@ -242,7 +242,7 @@ int main(int argc, char * argv[]){
             hostname = line.substr(0, line.find(" "));
             port = line.substr((line.find(" ") + 1));
             
-            cout << port;
+            // cout << port;
             // printf("%s", hostname.c_str());
 
             getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
@@ -259,24 +259,24 @@ int main(int argc, char * argv[]){
             cout << length << "\n";
         }
 
-        // if(new_fd > 0){
+        if(new_fd > 0){
 
-        //     //printf("%d\n", new_fd);
+            printf("%d\n", new_fd);
 
-        //     pthread_t tidsi;
-        //     pthread_create(&tidsi, NULL, establish_connection, NULL);
+            pthread_t tidsi;
+            pthread_create(&tidsi, NULL, establish_connection, NULL);
 
-        //     sem_wait(&empty);
-        //     pthread_mutex_lock(&mutex1);
+            sem_wait(&empty);
+            pthread_mutex_lock(&mutex1);
 
-        //     // connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-        //     buff[in] = new_fd;
-        //     host_buff[in] = hostname;
-        //     in = (in + 1) % num_args;
+            connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+            buff[in] = new_fd;
+            host_buff[in] = hostname;
+            in = (in + 1) % num_args;
 
-        //     pthread_mutex_unlock(&mutex1);
-        //     sem_post(&full);
-        // }
+            pthread_mutex_unlock(&mutex1);
+            sem_post(&full);
+        }
         
 
         
