@@ -163,7 +163,7 @@ void *establish_connection(void *){
         while(!done){
             recv(socket, &c, 1, 0);
             temp += c;
-            printf("%c", c);
+            // printf("%c", c);
             // Checks for end of header
             if(end_header == 1){
                 // printf("why");
@@ -175,7 +175,7 @@ void *establish_connection(void *){
                 if(local_written == local_length){
                     done = true;
                     written += local_written;
-                    // printf("%d\n", written);
+                    printf("%d\n", written);
                 }
                 if(written == length){
                     exit(1);
