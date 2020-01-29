@@ -242,7 +242,7 @@ int main(int argc, char * argv[]){
         while(getline(ips, line)){
             // cout << line;
             hostname = line.substr(0, line.find(" "));
-            printf("%s", hostname);
+            printf("%s", hostname.c_str());
         }
 
         // if(new_fd > 0){
