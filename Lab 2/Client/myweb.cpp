@@ -223,11 +223,12 @@ int main(int argc, char * argv[]){
     
         servaddr.sin_family=AF_INET;
         
+        int found;
 
         while(read(f, &c, 1) > 0){
             temp += c;
             printf("%c", c);
-            if(temp.length() > 3 && ((temp.substr(temp.length() - 1) == "\n") || (temp.substr(temp.length() - 2) == "\r\n"))){
+            if((found = temp.find("\n"))  != -1){
                 hostname = temp.substr(0, temp.find(" "));
                 port =  temp.substr(temp.find(" ") +1, temp.find("\n") - 1);
 
