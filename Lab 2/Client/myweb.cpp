@@ -170,7 +170,7 @@ void *establish_connection(void *){
                 if(chunk == written || started){
                     writing(c, chunk + local_written, &local_written);
                     // printf("%d\n", local_written);
-                    printf("%c", c);
+                    // printf("%c", c);
                     started = true;
                 }
                 if(local_written == local_length){
