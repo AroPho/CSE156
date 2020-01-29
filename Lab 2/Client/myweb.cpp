@@ -242,22 +242,23 @@ int main(int argc, char * argv[]){
             servaddr.sin_port=htons(12345);
         
             inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
+
+            connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+                
+            http_requests(new_fd, 0, filename, "127.0.0.1");
+            length = head_parse(new_fd);
+            cout << length << "\n";
             
             
 
             // cout << 3 << "\n";
-            if(!first_connect && new_fd > 0){
-                connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
-                
-                http_requests(new_fd, 0, filename, "127.0.0.1");
-                length = head_parse(new_fd);
-                cout << length << "\n";
-                if(length == -1){
-                    new_fd = 0;
-                }
-                // size_of_chunks = (length / num_args);
-                // first_connect = true;
-            }
+            // if(!first_connect && new_fd > 0){
+            //     if(length == -1){
+            //         new_fd = 0;
+            //     }
+            //     // size_of_chunks = (length / num_args);
+            //     // first_connect = true;
+            // }
             // if(new_fd > 0){
 
 			// 	//printf("%d\n", new_fd);
