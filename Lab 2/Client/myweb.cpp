@@ -95,7 +95,7 @@ int head_parse(int sock){
     char c;
     int end_header = 0;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
-        printf("%c", c);
+        // printf("%c", c);
         if(end_header != 1){
             temp += c;
         }
@@ -231,8 +231,8 @@ int main(int argc, char * argv[]){
                 hostname = temp.substr(0, temp.find(" "));
                 port =  temp.substr(temp.find(" ") +1, temp.find("\n") - 1);
 
-                cout << hostname << "\n";
-                cout << port << "\n";
+                // cout << hostname << "\n";
+                // cout << port << "\n";
 
                 servaddr.sin_port=htons(stoi(port));
  
@@ -242,31 +242,25 @@ int main(int argc, char * argv[]){
                 // new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
                 // cout << new_fd << "\n";
                 
-                connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
 
-                http_requests(new_fd, 0, filename, "127.0.0.1");
-                length = head_parse(new_fd);
-                cout << length << "\n";
-
-
-
-                
                 temp = "";
             }
+            
 
             // cout << 3 << "\n";
-            // if(!first_connect && new_fd > 0){
-            //     // http_requests(new_fd, 0, filename, "127.0.0.1");
-            //     // length = head_parse(new_fd);
-            //     // cout << length << "\n";
-            //     // if(length == -1){
-            //     //     new_fd = 0;
-            //     // }
-            //     // size_of_chunks = (length / num_args);
-            //     // first_connect = true;
-            // }
-            // if(new_fd > 0){
+            if(!first_connect && new_fd > 0){
+                connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+                http_requests(new_fd, 0, filename, "127.0.0.1");
+                length = head_parse(new_fd);
+                printf("%d\n", length);
+                if(length == -1){
+                    new_fd = 0;
+                }
+                size_of_chunks = (length / num_args);
+                first_connect = true;
+            }
+            if(new_fd > 0){
 
 			// 	//printf("%d\n", new_fd);
 
