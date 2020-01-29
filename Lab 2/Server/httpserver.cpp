@@ -24,19 +24,18 @@ sem_t empty, full;
 int *buff;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
-int catch_range(string line){
+void catch_range(string line, int *start, int *end){
 	int temp;
 	string temp_string;
 	if((temp = line.find("Content-Range")) >= 0){
 		temp_string = line.substr(temp);
 		int first = (temp_string.find("Content-Range") + 15);// Used to get filesize
-		int last = (temp_string.find("\r\n")) - first;
+		int last = (temp_string.find("/")) - first;
+		int middle = (temp_string.find("-"));
 		string ftemp = temp_string.substr(first,last);
-		int size;
-		size = stoi(ftemp);
-		return size;
+		*start = stoi(temp_string.substr(first, temp_string.find("-")));
+		*end = stoi(temp_string.substr(middle - 1, last - middle - 1)); 
 	}
-	return -1;
 }
 
 // prints out http error response codes
@@ -82,6 +81,9 @@ void get_parse(string header, int socket){
 	int first = (header.find("GET ") + 4);// Used to get Filename
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
+	int beginning, size;
+	catch_range(header, &beginning, &size);
+	printf("%d %d\n", beginning, size);
 	if(temp.find("/") == 0){
 		temp = temp.substr(1);
 	}

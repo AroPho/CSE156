@@ -71,7 +71,7 @@ int catch_length(string line){
 
 void writing(char c, int begin, int* local_written){
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-    *local_written = pwrite(file_num, &c, 1, begin);
+    *local_written += pwrite(file_num, &c, 1, begin);
     close(file_num);
 
 }
@@ -163,10 +163,10 @@ void *establish_connection(void *){
             if(end_header == 1){
                 // printf("why");
                 writing(c, chunk + local_written, &local_written);
-                written += local_written;
                 printf("%d\n", written);
                 if(local_written == local_length){
                     done = true;
+                    written += local_written;
                 }
                 if(written == length){
                     exit(1);
