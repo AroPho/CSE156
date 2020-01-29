@@ -131,12 +131,17 @@ void *establish_connection(void *){
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
 
+        printf("here");
+
         int local_length = -1;
         int local_written = 0;
         bool written_file = false;
 
         int chunk = size_of_chunks*offset;
         offset = (offset + 1) % num_args;
+
+        printf("nani");
+        printf("%d\n", chunk);
 
         if((size_of_chunks + chunk) <= length){
             request += "GET " + filename + " HTTP/1.1\r\nHost: " + hostname + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
