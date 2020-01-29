@@ -158,7 +158,7 @@ void *establish_connection(void *){
         // Starts recieving response from server
         while((numbytes = recv(socket, &c, 1, 0)) != 0){
             temp += c;
-            // printf("%c", c);
+            printf("%c", c);
             // Checks for end of header
             if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
                 printf("here");
