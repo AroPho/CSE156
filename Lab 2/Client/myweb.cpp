@@ -111,7 +111,6 @@ int head_parse(int sock){
 
 void *establish_connection(void *){
     int socket;
-    int end_header = 0;
     // int numbytes;
     char c;
     string hostname;
@@ -134,7 +133,8 @@ void *establish_connection(void *){
         int local_length = -1;
         int local_written = 0;
         int chunk = -1;
-        // bool written_file = false;
+        int end_header = 0;
+        temp = "";
         bool done = false;
 
         while(chunk < written){
@@ -173,10 +173,9 @@ void *establish_connection(void *){
                 }
             }
             if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                printf("here");
+                // printf("here");
                 end_header = 1;
                 local_length = catch_length(temp);
-                temp = "";
             }
         }
     }
