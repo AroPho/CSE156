@@ -236,7 +236,7 @@ int main(int argc, char * argv[]){
 
                 servaddr.sin_port=htons(stoi(port));
  
-                inet_pton(AF_INET, "127.0.0.1", &(servaddr.sin_addr));
+                inet_pton(AF_INET, hostname.c_str(), &(servaddr.sin_addr));
                 
                 // getaddrinfo("127.0.0.1", "8080", &hints, &addrs);
                 // new_fd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
