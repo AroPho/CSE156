@@ -69,7 +69,8 @@ void printing(int type, int f, int socket, int beginning, int end){
     int size, numbytes;
     char c;
     while((numbytes = pread(f, &c, 1, temp_begin)) > 0 || temp_begin == end){
-    	temp += c;
+    	printf("%c", c);
+		temp += c;
 		temp_begin += numbytes;
     }
     size = temp.length();
