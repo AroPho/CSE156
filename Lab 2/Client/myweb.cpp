@@ -240,6 +240,9 @@ int main(int argc, char * argv[]){
         while(getline(ips, line)){
             // cout << line;
             hostname = line.substr(0, line.find(" "));
+            port = line.substr((line.find(" ") + 1));
+            
+            cout << port;
             // printf("%s", hostname.c_str());
 
             getaddrinfo(hostname.c_str(), "12345", &hints, &addrs);
