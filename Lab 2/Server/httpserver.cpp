@@ -63,7 +63,7 @@ void printing(int type, int f, int socket ){
     string temp, header;
     int size;
     char c;
-    while(read(f, &c, 1) != 0){
+    while(read(f, &c, 1) > 0){
     	temp += c;
     }
     size = temp.length();

@@ -221,7 +221,7 @@ int main(int argc, char * argv[]){
         servaddr.sin_family=AF_INET;
         
 
-        while(read(f, &c, 1) != 0){
+        while(read(f, &c, 1) > 0){
             temp += c;
             printf("%c", c);
             if(temp.find("\n") != -1){
@@ -248,7 +248,7 @@ int main(int argc, char * argv[]){
                 connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
                 //connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 cout << "fuck\n";
-                while(read(0, &c, 1) != 0){
+                while(read(0, &c, 1) > 0){
                     send(new_fd, &c, 1, 0);
                 }
                 // http_requests(new_fd, 0, filename, "127.0.0.1");
