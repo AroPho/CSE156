@@ -245,9 +245,12 @@ int main(int argc, char * argv[]){
             cout << port;
             // printf("%s", hostname.c_str());
 
-            getaddrinfo(hostname.c_str(), "12345", &hints, &addrs);
+            getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
             new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
 
+        }
+
+        if(!first_connect && new_fd > 0){
             connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
                 
             http_requests(new_fd, 0, filename, "127.0.0.1");
