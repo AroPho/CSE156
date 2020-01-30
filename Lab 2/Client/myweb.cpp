@@ -135,7 +135,7 @@ string get_head(int sock){
 void *establish_connection(void *){
     int socket;
     // int numbytes;
-    char c;
+    // char c;
     string hostname;
     string temp = "";
     string request = "";
@@ -153,10 +153,10 @@ void *establish_connection(void *){
 
         // printf("here");
 
-        int local_length = -1;
-        int local_written = 0;
-        int chunk = -1;
-        int end_header = 0;
+        // int local_length = -1;
+        // int local_written = 0;
+        unsigned long chunk = 0;
+        // int end_header = 0;
         temp = "";
         request = "";
         bool done = false;
