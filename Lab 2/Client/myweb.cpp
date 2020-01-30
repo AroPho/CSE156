@@ -151,52 +151,51 @@ void *establish_connection(void *){
 		out = (out + 1) % num_args;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
+        while(written != length){
+            // printf("here");
 
-        // printf("here");
+            // int local_length = -1;
+            // int local_written = 0;
+            int chunk = 0;
+            // int end_header = 0;
+            temp = "";
+            request = "";
+            bool done = false;
+            // bool started = false;
 
-        // int local_length = -1;
-        // int local_written = 0;
-        int chunk = 0;
-        // int end_header = 0;
-        temp = "";
-        request = "";
-        bool done = false;
-        // bool started = false;
+            pthread_mutex_lock(&mutex_write);
+                chunk = size_of_chunks*offset;
+                offset = (offset + 1) % num_args;
+                printf("%d", offset);
+            pthread_mutex_unlock(&mutex_write);
 
-        pthread_mutex_lock(&mutex_write);
-            chunk = size_of_chunks*offset;
-            offset = (offset + 1) % num_args;
-            printf("%d", offset);
-	    pthread_mutex_unlock(&mutex_write);
+            // printf("nani");
 
-        // printf("nani");
-
-        if((length - written) < size_of_chunks){
-            chunk = written;
-            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(length) + "/" + to_string(length) + "\r\n\r\n";
-        }else{
-            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
-        }
-
-        send(socket, request.c_str(), request.length(), 0);
-
-        // Starts recieving response from server
-        while(!done){
-            if(temp == ""){
-                temp = get_head(socket);
+            if((length - written) < size_of_chunks){
+                chunk = written;
+                request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(length) + "/" + to_string(length) + "\r\n\r\n";
+            }else{
+                request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
             }
-            if(chunk < written){
-                done = true;
-            }
-            if(chunk == written){
-                writing(temp, chunk, &written);
-                // printf("%d", written);
-                done = true;
-            }
-            if(written == length){
-                exit(1);
+
+            send(socket, request.c_str(), request.length(), 0);
+
+            // Starts recieving response from server
+            while(!done){
+                if(temp == ""){
+                    temp = get_head(socket);
+                }
+                if(chunk < written){
+                    done = true;
+                }
+                if(chunk == written){
+                    writing(temp, chunk, &written);
+                    // printf("%d", written);
+                    done = true;
+                }
             }
         }
+        exit(1);
     }
 }
 
