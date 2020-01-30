@@ -169,24 +169,17 @@ void *establish_connection(void *){
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
         while(written != length){
-            // printf("here");
-
-            // int local_length = -1;
-            // int local_written = 0;
             int chunk = 0;
-            // int end_header = 0;
             temp = "";
             request = "";
             bool done = false;
-            // bool started = false;
 
             pthread_mutex_lock(&mutex_write);
                 chunk = size_of_chunks*offset;
                 offset = (offset + 1) % num_args;
-                printf("%d", offset);
+                // printf("%d", offset);
             pthread_mutex_unlock(&mutex_write);
 
-            // printf("nani");
 
             if((length - written) < size_of_chunks){
                 chunk = written;
@@ -228,38 +221,24 @@ int main(int argc, char * argv[]){
         warn("Insufficient number of arguements givin");
     }
     
-    //cout << "here\n";
-    
 
     char * ip_file = argv[1];
     num_args = atoi(argv[2]);
     filename = argv[3];
-    // num_args = atoi(num_args_char);
-    //printf("%s, %d, %s\n", ip_file, num_args, filename.c_str());
-    // int f = open(ip_file, O_RDONLY);
-    // char c;
     string hostname;
     string port;
     string temp = "";
     int new_fd;
-    // int size_of_chunks = 4;
-    // int length= -1;
-    // int chunk;
-    //cout << 1 << "\n";
 
 
     
     try{
 
         struct addrinfo hints, *addrs;
-	    // struct sockaddr_storage their_addr;
-	    // socklen_t addr_size;
         memset(&hints, 0,sizeof hints);
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
 
-        // int count = 0;
-        
         
         buff = (int*) malloc(sizeof(int)*(num_args*800));
         // host_buff = (string*) malloc(sizeof(string)*(num_args*800));
@@ -277,19 +256,6 @@ int main(int argc, char * argv[]){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, establish_connection, NULL);
 		}
-        // int first, last;
-
-        // struct sockaddr_in servaddr;
-
-        // new_fd=socket(AF_INET,SOCK_STREAM,0);
-        // bzero(&servaddr,sizeof servaddr);
-    
-        // servaddr.sin_family=AF_INET;
-        // servaddr.sin_port=htons(12345);
-    
-        // inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
-
-        // connect(new_fd,(struct sockaddr *)&servaddr,sizeof(servaddr));
         while(written != length){
             while(getline(ips, line)){
                 // cout << line;
