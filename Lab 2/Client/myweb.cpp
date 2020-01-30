@@ -167,6 +167,7 @@ void *establish_connection(void *){
         while(chunk < written){
             chunk = size_of_chunks*offset;
             offset = (offset + 1) % num_args;
+            printf("%d", offset);
         }
 	    pthread_mutex_unlock(&mutex_write);
 
