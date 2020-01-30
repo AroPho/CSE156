@@ -172,11 +172,10 @@ void *establish_connection(void *){
         // printf("nani");
         printf("%d\n", chunk);
 
-        if((size_of_chunks + chunk) <= length){
-            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
+        if((size_of_chunks + chunk) == length - 1){
+            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks + 1) + "/" + to_string(length) + "\r\n\r\n";
         }else{
-            int right_size = (size_of_chunks + chunk) - length;
-            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + right_size) + "/" + to_string(length) + "\r\n\r\n";
+            request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(chunk) + "-" + to_string(chunk + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
         }
 
         send(socket, request.c_str(), request.length(), 0);
