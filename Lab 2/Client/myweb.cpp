@@ -70,9 +70,9 @@ int catch_length(string line){
 }
 // Creates appropriate GET and HEAD HTTP Request
 
-void writing(char c, int begin, int* local_written){
+void writing(string temp, int begin, int* local_written){
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-    *local_written += pwrite(file_num, &c, 1, begin);
+    *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
     close(file_num);
 
 }
@@ -108,6 +108,28 @@ int head_parse(int sock){
         }
     }
     return -1;
+}
+string get_head(int sock){
+    string temp = "";
+    int numbytes;
+    int end_header = 0;
+    char c;
+    int local_length = -1 ;
+    while((numbytes = recv(sock, &c, 1, 0)) != 0){
+        // printf("%c", c);
+        temp += c;
+        // Checks for end of header
+        if(temp.length() == local_length){
+            return temp;
+        }
+        if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+            end_header = 1;
+        }
+        if(end_header == 1 && local_length == -1){
+            local_length = catch_length(temp);
+            temp = "";
+        }
+    }
 }
 
 void *establish_connection(void *){
@@ -161,32 +183,16 @@ void *establish_connection(void *){
 
         // Starts recieving response from server
         while(!done){
-            recv(socket, &c, 1, 0);
-            temp += c;
-            // printf("%c", c);
-            // Checks for end of header
-            if(end_header == 1){
-                // printf("why");
-                if(chunk == written || started){
-                    writing(c, chunk + local_written, &local_written);
-                    // printf("%d\n", local_written);
-                    // printf("%c", c);
-                    started = true;
-                }
-                if(local_written == local_length){
-                    done = true;
-                    written += local_written;
-                    printf("%d\n", written);
-                }
-                if(written == length){
-                    exit(1);
-                }
+            if(temp == ""){
+                temp = get_head(socket);
             }
-            if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                printf("here");
-                printf("%d, %d", chunk, written);
-                end_header = 1;
-                local_length = catch_length(temp);
+            if(chunk == written){
+                writing(temp, chunk, &written);
+                printf("%d", written);
+                done = true;
+            }
+            if(written == length){
+                exit(1);
             }
         }
     }
