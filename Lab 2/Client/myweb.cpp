@@ -186,6 +186,9 @@ void *establish_connection(void *){
             if(temp == ""){
                 temp = get_head(socket);
             }
+            if(chunk < written){
+                done = true;
+            }
             if(chunk == written){
                 writing(temp, chunk, &written);
                 // printf("%d", written);
