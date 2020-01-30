@@ -55,7 +55,7 @@ void error_print(int err, int socket){
 
 int error_catch(string head){
     int temp;
-    if(temp = head.find("404") >= 0){
+    if((temp == head.find("404")) >= 0){
         return 1;
     }
     return 0;
