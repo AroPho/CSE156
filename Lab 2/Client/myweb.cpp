@@ -164,11 +164,9 @@ void *establish_connection(void *){
         // bool started = false;
 
         pthread_mutex_lock(&mutex_write);
-        while(chunk < written){
             chunk = size_of_chunks*offset;
             offset = (offset + 1) % num_args;
             printf("%d", offset);
-        }
 	    pthread_mutex_unlock(&mutex_write);
 
         // printf("nani");
