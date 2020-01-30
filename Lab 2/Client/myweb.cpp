@@ -53,6 +53,14 @@ void error_print(int err, int socket){
 	}
 }
 
+int error_catch(string head){
+    int temp;
+    if(temp = head.find("404") >= 0){
+        return 1;
+    }
+    return 0;
+}
+
 // Checks if string contains length of file
 int catch_length(string line){
 	int temp;
@@ -104,6 +112,9 @@ int head_parse(int sock){
             end_header = 1;
         }
         if(end_header == 1){
+            if(error_catch(temp) == 1){
+                return -1;
+            }
             return catch_length(temp);
         }
     }
@@ -126,9 +137,15 @@ string get_head(int sock){
             end_header = 1;
         }
         if(end_header == 1 && local_length == -1){
+            if(error_catch(temp) == 1){
+                return "";
+            }
             local_length = catch_length(temp);
             temp = "";
         }
+    }
+    if(end_header == 0){
+        return "";
     }
     return temp;
 }
@@ -185,6 +202,9 @@ void *establish_connection(void *){
                 if(temp == ""){
                     temp = get_head(socket);
                 }
+                if(temp == ""){
+                    done = true;
+                }
                 if(chunk < written){
                     done = true;
                 }
@@ -193,6 +213,9 @@ void *establish_connection(void *){
                     // printf("%d", written);
                     done = true;
                 }
+            }
+            if(temp == ""){
+                break;
             }
         }
         exit(1);
@@ -279,16 +302,22 @@ int main(int argc, char * argv[]){
                 getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
                 new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
 
-                if(!first_connect && new_fd > 0){
-                connect(new_fd,addrs->ai_addr,addrs->ai_addrlen); 
-                http_requests(new_fd, 0, filename, hostname);
-                // cout << "fuck";
-                length = head_parse(new_fd);
-                if(length == -1){
+                int does_it_work;
+                
+                if((does_it_work = connect(new_fd,addrs->ai_addr,addrs->ai_addrlen)) == -1){
                     new_fd = 0;
                 }
-                size_of_chunks = (length / num_args);
-                // cout << length << "\n";
+
+                if(!first_connect && new_fd > 0){ 
+                    http_requests(new_fd, 0, filename, hostname);
+                    // cout << "fuck";
+                    length = head_parse(new_fd);
+                    if(length == -1){
+                        new_fd = 0;
+                    }
+                    size_of_chunks = (length / num_args);
+                    // cout << length << "\n";
+                    first_connect = true;
                 }
 
                 if(new_fd > 0){
@@ -298,11 +327,6 @@ int main(int argc, char * argv[]){
 
                     sem_wait(&empty);
                     pthread_mutex_lock(&mutex1);
-                    if(!first_connect){
-                        first_connect = true;
-                    }else{
-                        connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-                    }
                     buff[in] = new_fd;
                     // host_buff[in] = hostname;
                     in = (in + 1) % num_args;
