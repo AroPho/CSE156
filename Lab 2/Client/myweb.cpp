@@ -114,19 +114,19 @@ string get_head(int sock){
     int numbytes;
     int end_header = 0;
     char c;
-    unsigned long local_length = 0;
+    int local_length = -1 ;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
         // printf("%c", c);
         temp += c;
         // Checks for end of header
-        if(temp.length() == local_length){
+        if(temp.length() == (unsigned long) local_length){
             return temp;
         }
         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
             end_header = 1;
         }
         if(end_header == 1 && local_length == -1){
-            local_length = (unsigned long) catch_length(temp);
+            local_length = catch_length(temp);
             temp = "";
         }
     }
