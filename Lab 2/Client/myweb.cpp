@@ -130,6 +130,7 @@ string get_head(int sock){
             temp = "";
         }
     }
+    return temp;
 }
 
 void *establish_connection(void *){
@@ -290,25 +291,25 @@ int main(int argc, char * argv[]){
                 // cout << length << "\n";
                 }
 
-                if(new_fd > 0){
+                // if(new_fd > 0){
 
-                    // printf("%d\n", new_fd);
-                    // printf("1");
+                //     // printf("%d\n", new_fd);
+                //     // printf("1");
 
-                    sem_wait(&empty);
-                    pthread_mutex_lock(&mutex1);
-                    if(!first_connect){
-                        first_connect = true;
-                    }else{
-                        connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
-                    }
-                    buff[in] = new_fd;
-                    // host_buff[in] = hostname;
-                    in = (in + 1) % num_args;
+                //     sem_wait(&empty);
+                //     pthread_mutex_lock(&mutex1);
+                //     if(!first_connect){
+                //         first_connect = true;
+                //     }else{
+                //         connect(new_fd,addrs->ai_addr,addrs->ai_addrlen);
+                //     }
+                //     buff[in] = new_fd;
+                //     // host_buff[in] = hostname;
+                //     in = (in + 1) % num_args;
 
-                    pthread_mutex_unlock(&mutex1);
-                    sem_post(&full);
-                }
+                //     pthread_mutex_unlock(&mutex1);
+                //     sem_post(&full);
+                // }
             }
 
         }
