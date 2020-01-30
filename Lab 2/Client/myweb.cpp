@@ -171,7 +171,7 @@ void *establish_connection(void *){
 		out = (out + 1) % num_args;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
-        while(written != length){
+        while(written < length){
             int chunk = 0;
             temp = "";
             request = "";
