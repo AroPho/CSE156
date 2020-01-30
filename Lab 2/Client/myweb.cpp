@@ -114,7 +114,7 @@ string get_head(int sock){
     int numbytes;
     int end_header = 0;
     char c;
-    int local_length = -1 ;
+    unsigned long local_length = 0;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
         // printf("%c", c);
         temp += c;
@@ -126,7 +126,7 @@ string get_head(int sock){
             end_header = 1;
         }
         if(end_header == 1 && local_length == -1){
-            local_length = catch_length(temp);
+            local_length = (unsigned long) catch_length(temp);
             temp = "";
         }
     }
@@ -155,12 +155,12 @@ void *establish_connection(void *){
 
         // int local_length = -1;
         // int local_written = 0;
-        unsigned long chunk = 0;
+        int chunk = 0;
         // int end_header = 0;
         temp = "";
         request = "";
         bool done = false;
-        bool started = false;
+        // bool started = false;
 
         pthread_mutex_lock(&mutex_write);
         while(chunk < written){
