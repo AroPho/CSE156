@@ -253,6 +253,11 @@ int main(int argc, char * argv[]){
         ifstream ips(ip_file);
         string line;
 
+        if(!ips.is_open()){
+            printf("File Does not exist");
+            exit(0);
+        }
+
         sem_init(&empty, 0, num_args);
 	    sem_init(&full, 0, 0);
 
