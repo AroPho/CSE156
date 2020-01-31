@@ -71,7 +71,7 @@ void printing(int type, int f, int socket, int beginning, int end){
     char c;
     while((numbytes = pread(f, &c, 1, temp_begin)) > 0 && temp_begin != end){
     	// printf("%c", c);
-		printf("%d\n", temp_begin);
+		// printf("%d\n", temp_begin);
 		temp += c;
 		temp_begin += numbytes;
     }
@@ -181,7 +181,7 @@ void *parse_recv(void *){
 		// Start of Consumer consume code
 		try{
 			while((numbytes = recv(socket, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
-				printf("%c", c);
+				// printf("%c", c);
 				// printf("here");
 				if(end_header != 1){
 					temp += c;

@@ -130,7 +130,7 @@ string get_head(int sock){
     char c;
     int local_length = -1 ;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
-        printf("%c", c);
+        // printf("%c", c);
         temp += c;
         // Checks for end of header
         if(temp.length() == (unsigned long) local_length){
@@ -180,7 +180,7 @@ void *establish_connection(void *){
             pthread_mutex_lock(&mutex_write);
                 chunk = size_of_chunks*offset;
                 offset = (offset + 1) % num_args;
-                printf("%d", offset);
+                // printf("%d", offset);
             pthread_mutex_unlock(&mutex_write);
 
 
@@ -251,6 +251,10 @@ int main(int argc, char * argv[]){
 
         ifstream ips(ip_file);
         string line;
+        if(!ips.is_open()){
+            warn("%b server file does not exist", ips.is_open());
+            exit(0);
+        }
 
         sem_init(&empty, 0, num_args);
 	    sem_init(&full, 0, 0);
