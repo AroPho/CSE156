@@ -252,7 +252,7 @@ int main(int argc, char * argv[]){
         ifstream ips(ip_file);
         string line;
         if(!ips.is_open()){
-            warn("%b server file does not exist", ips.is_open());
+            warn("%d server file does not exist\n", ips.is_open());
             exit(0);
         }
 
