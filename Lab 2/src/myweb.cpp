@@ -222,6 +222,7 @@ int main(int argc, char * argv[]){
     //Checks for appropriate number of args
     if(argc < 2){
         warn("Insufficient number of arguements givin");
+        exit(0);
     }
     
 
