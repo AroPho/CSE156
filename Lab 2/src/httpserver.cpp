@@ -181,7 +181,7 @@ void *parse_recv(void *){
 		// Start of Consumer consume code
 		try{
 			while((numbytes = recv(socket, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
-				// printf("%c", c);
+				printf("%c", c);
 				// printf("here");
 				if(end_header != 1){
 					temp += c;

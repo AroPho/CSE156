@@ -1,27 +1,28 @@
-CXX := clang++ # set the compiler here
-CXXFLAGS := -std=gnu++11 -Wall -Wextra -Wpedantic -Wshadow -g -Og # flags...
-LDFLAGS := -lpthread
+CXX = clang++
+CXXFLAGS=-std=gnu++11 -Wall -Wextra -Wpedantic -Wshadow -g -Og
+LDFLAGS = -lpthread
+COMMON_SOURCES = 
+TARGET_SOURCES = myweb.cpp
+TEST_SOURCES = httpserver.cpp
+COMMON_OBJECTS = $(COMMON_SOURCES:.cpp=.o)
+TARGET_OBJECTS = $(TARGET_SOURCES:.cpp=.o)
+TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
+EXECUTABLE = myweb
+TEST_EXECUTABLE = httpserver
 
-# List the programs in a variable so adding
-# new programs is easier
-PROGRAMS := myweb httpserver
+.PHONY: all target tests
 
-all: $(PROGRAMS)
+all: target tests
 
-OBJECTS=$(PROGRAMS:.cpp=.o)
+target: $(EXECUTABLE)
 
-DEPS=$(PROGRAMS:.cpp=.d)
+tests: $(TEST_EXECUTABLE)
 
-clean:
-	-rm $(DEPS) $(PROGRAMS)
+$(EXECUTABLE): $(TARGET_OBJECTS)
+    $(CXX) $(LDFLAGS) $^ -o $@
 
-spotless: clean
-	-rm $(PROGRAMS)
+$(TEST_EXECUTABLE): $(TEST_OBJECTS)
+    $(CXX) $(LDFLAGS) $^ -o $@
 
-# no need to  write specific rules for
-# your simple case where every program
-# has a corresponding source code file
-# of the same name and one file per program.
-
-clean:
-	rm -f *.o $(PROGRAMS)
+.cpp.o:
+    $(CXX) $(CXXFLAGS) $< -o $@

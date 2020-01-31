@@ -130,7 +130,7 @@ string get_head(int sock){
     char c;
     int local_length = -1 ;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
-        // printf("%c", c);
+        printf("%c", c);
         temp += c;
         // Checks for end of header
         if(temp.length() == (unsigned long) local_length){
