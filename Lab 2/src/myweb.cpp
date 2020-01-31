@@ -220,7 +220,7 @@ void *establish_connection(void *){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
-    if(argc < 2){
+    if(argc < 4){
         warn("Insufficient number of arguements givin");
         exit(0);
     }
