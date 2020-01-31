@@ -1,6 +1,6 @@
 all: myweb httpserver
 
-myweb: myserver2.cpp
+myweb: myweb.cpp
 	clang++ -o myweb myweb.cpp
-httpserver: myserver.cpp
+httpserver: httpserver.cpp
 	clang++ -o httpserver httpserver.cpp
