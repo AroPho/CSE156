@@ -88,13 +88,13 @@ void writing(string temp, int begin, int* local_written){
 
 }
 
-void http_requests(int sock, int type, string file, string hostname){
+void http_requests(int sock, int type, string file){
     string temp = "";
     if(type == 0){
-        temp += "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n" ;
+        temp += "HEAD " + file + " HTTP/1.1\r\n\r\n";
     }
     if(type == 1){
-        temp += "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
+        temp += "GET " + file + " HTTP/1.1\r\n\r\n";
     }
     send(sock, temp.c_str(), temp.length(), 0);
 
@@ -130,7 +130,7 @@ string get_head(int sock){
     char c;
     int local_length = -1 ;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
-        // printf("%c", c);
+        printf("%c", c);
         temp += c;
         // Checks for end of header
         if(temp.length() == (unsigned long) local_length){
@@ -180,7 +180,7 @@ void *establish_connection(void *){
             pthread_mutex_lock(&mutex_write);
                 chunk = size_of_chunks*offset;
                 offset = (offset + 1) % num_args;
-                // printf("%d", offset);
+                printf("%d", offset);
             pthread_mutex_unlock(&mutex_write);
 
 
@@ -278,7 +278,7 @@ int main(int argc, char * argv[]){
                 }
 
                 if(!first_connect && new_fd > 0){ 
-                    http_requests(new_fd, 0, filename, hostname);
+                    http_requests(new_fd, 0, filename);
                     // cout << "fuck";
                     length = head_parse(new_fd);
                     if(length == -1){
