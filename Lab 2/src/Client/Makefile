@@ -11,12 +11,10 @@
 # List the sources, separated by spaces, for your program. 'SOURCES=foo.cpp bar.cpp', for
 # example. Do not include anything except sources files that you will compile!
 SOURCES=myweb.cpp
-TEST_SOURCES = httpserver.cpp
 INCLUDES=$(wildcard *.h)
 
 # This is the name of the executable that this makefile will produce.
 TARGET=myweb
-TEST_TARGET=httpserver
 
 # Define the compiler flags for compiling your code. You may wish to change these for
 # debugging or optimization purposes. We suggest, that when you submit your code, you use
@@ -39,7 +37,6 @@ _submit_CXXFLAGS=-std=gnu++11 -Wall -Wextra -Wpedantic -Wshadow -g -O2
 # OBJECTS will contain 'foo.o bar.o'. These are the files that will be produced by the compiler,
 # one for each compilation unit.
 OBJECTS=$(SOURCES:.cpp=.o)
-TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
 
 # Generate a list of dependency files, similar to OBJECTS above. This time, however, the files will
 # be .d files, and will contain a list of _dependencies_ for each source file. These files are in make
@@ -50,19 +47,18 @@ TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
 # manually, like 'foo.cpp: foo.h bar.h' if you want, but the method in this makefile generates them
 # automatically.
 DEPS=$(SOURCES:.cpp=.d)
-TEST_DEPS=$(TEST_SOURCES:.cpp=.d)
 
 # We're using clang as our C++ compiler.
 CXX=clang++
 
 # provide a default target, with the standard name 'all'.
-all: $(TARGET) $(TEST_TARGET)
+all: $(TARGET)
 
 clean:
-	-rm $(DEPS) $(OBJECTS) $(TEST_DEPS) $(TEST_OBJECTS)
+	-rm $(DEPS) $(OBJECTS)
 
 spotless: clean
-	-rm $(TARGET) $(TEST_TARGET)
+	-rm $(TARGET)
 
 # This will run clang-format on all the source files and *all* .h files in the directory. 
 # It will use .clang-format for formatting rules. Please get the most recent
@@ -75,9 +71,6 @@ format:
 # how to link them into the final executable.
 $(TARGET): $(OBJECTS)
 	$(CXX) $(LDFLAGS) -o $@ $(OBJECTS)
-
-$(TEST_TARGET): $(TEST_OBJECTS)
-	$(CXX) $(LDFLAGS) -o $@ $(TEST_OBJECTS)
 
 # the object files depend on the source file that generates them. This recipe calls the compiler
 # to build the object file. The -c flag tells the compiler not to run the linker, we reserve that
