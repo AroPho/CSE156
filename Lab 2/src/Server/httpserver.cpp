@@ -24,6 +24,7 @@ sem_t empty, full;
 int *buff;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
+// Catches Range requests 
 void catch_range(string line, int *start, int *end){
 	int temp;
 	string temp_string;
@@ -76,10 +77,11 @@ void printing(int type, int f, int socket, int beginning, int end){
     }
     size = temp.length();
     string content = "Content-Length: " + to_string(size) + "\r\n\r\n";
-	if(type == 1){
+	
+	if(type == 1){ // For GET requests
     	header = "HTTP/1.1 200 OK\r\n" + content + temp;
 	}
-	if(type == 2){
+	if(type == 2){ // For HEAD requests
 		header = "HTTP/1.1 200 OK\r\n" + content;
 	}
     send(socket, header.c_str(), header.length(), 0);
@@ -87,12 +89,14 @@ void printing(int type, int f, int socket, int beginning, int end){
 
 //Used to execute Get request
 void get_parse(string header, int socket){
+	
 	int first = (header.find("GET ") + 4);// Used to get Filename
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
 	int beginning, end;
 	catch_range(header, &beginning, &end);
-	// printf("%d %d\n", beginning, size);
+	
+	//Parses filename for path
 	if(temp.find("/") == 0){
 		temp = temp.substr(1);
 	}
@@ -102,7 +106,7 @@ void get_parse(string header, int socket){
 	}
 	//printf("%s\n", temp.c_str());	
 	int f = open(temp.c_str(), O_RDONLY);
-	if(errno == 13){
+	if(errno == 13){ // Insufficient Permissions
     	error_print(403, socket);
     }
 	if(f == -1){
@@ -115,19 +119,23 @@ void get_parse(string header, int socket){
 	   
 }
 
+// Used complete HEAD request
 void head_parse(string header, int socket){
-	int first = (header.find("HEAD ") + 5);
+	int first = (header.find("HEAD ") + 5); // Used to get Filename
 	int last = (header.find("HTTP/1.1")) - first - 1;
 	string temp = header.substr(first, last);
+	
+	// Parses filename for paths
 	if(temp.find("/") == 0){
 		temp = temp.substr(1);
 	}
 	// printf("%s\n", temp.c_str());	
 	int f = open(temp.c_str(), O_RDONLY);
-	if(errno == 13){
+	
+	if(errno == 13){ // Server does not have proper permissions
     	error_print(403, socket);
     }
-	if(f == -1){
+	if(f == -1){ // File not Found
 		error_print(404, socket);
 	}else{
     	printing(2, f, socket, 0, -1); // Calls file to start sending client data
@@ -157,12 +165,7 @@ void *parse_recv(void *){
 	string body;
 	string temp;
 	string filename = "no";
-	// int fd;
-	// int length = -1;
-	// int written = 0;
 	int socket;
-	// int put_phase = 0;
-	//int patch_phase = 0;
 	
 	// This is the start of the thread code
 	while(1){
@@ -178,7 +181,7 @@ void *parse_recv(void *){
 		// Start of Consumer consume code
 		try{
 			while((numbytes = recv(socket, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
-				printf("%c", c);
+				// printf("%c", c);
 				// printf("here");
 				if(end_header != 1){
 					temp += c;
@@ -186,7 +189,7 @@ void *parse_recv(void *){
 				if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
 					end_header = 1;
 				}
-				if(end_header == 1 && method_type == -1){
+				if(end_header == 1 && method_type == -1){ // Parses header for request type
 					method_type = get_put_checker(temp);
 				}
 				if(method_type == 1 && end_header == 1){// GET Method function call
@@ -196,13 +199,13 @@ void *parse_recv(void *){
 					get_parse(temp, socket);
 					temp = "";
 				}
-				if(method_type == 2 && end_header == 1){
+				if(method_type == 2 && end_header == 1){ // HEAD Method function call
 					head_parse(temp, socket);
 					temp = "";
 					method_type = -1;
 					end_header = 0;
 				}
-				if(method_type == 0 && end_header == 1){
+				if(method_type == 0 && end_header == 1){ // Checks for bad requests
 					error_print(400, socket);
 					end_header = 0;
 					method_type = -1;
@@ -265,9 +268,6 @@ int main(int argc, char * argv[]){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
-		// for(int i = 0; i < num_args; i++){
-		// 	pthread_join(tids[i], NULL);
-		// }
 
 		//Searches for any connection attempts to server and creates a socket to connect to client
 		while(main_socket > 0){
