@@ -88,13 +88,13 @@ void writing(string temp, int begin, int* local_written){
 
 }
 
-void http_requests(int sock, int type, string file){
+void http_requests(int sock, int type, string file, string hostname){
     string temp = "";
     if(type == 0){
-        temp += "HEAD " + file + " HTTP/1.1\r\n\r\n";
+        temp += "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n" ;
     }
     if(type == 1){
-        temp += "GET " + file + " HTTP/1.1\r\n\r\n";
+        temp += "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     }
     send(sock, temp.c_str(), temp.length(), 0);
 
@@ -220,9 +220,8 @@ void *establish_connection(void *){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
-    if(argc < 4){
+    if(argc < 2){
         warn("Insufficient number of arguements givin");
-        exit(0);
     }
     
 
@@ -253,11 +252,6 @@ int main(int argc, char * argv[]){
         ifstream ips(ip_file);
         string line;
 
-        if(!ips.is_open()){
-            printf("File Does not exist");
-            exit(0);
-        }
-
         sem_init(&empty, 0, num_args);
 	    sem_init(&full, 0, 0);
 
@@ -284,7 +278,7 @@ int main(int argc, char * argv[]){
                 }
 
                 if(!first_connect && new_fd > 0){ 
-                    http_requests(new_fd, 0, filename);
+                    http_requests(new_fd, 0, filename, hostname);
                     // cout << "fuck";
                     length = head_parse(new_fd);
                     if(length == -1){
