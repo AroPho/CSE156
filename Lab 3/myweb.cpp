@@ -320,6 +320,8 @@ int main(int argc, char * argv[]){
                 if(!first_connect && new_fd > 0){ 
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     // cout << "fuck";
+                    char buffin[1024];
+                    recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) NULL, NULL);
                     length = head_parse(new_fd);
                     if(length == -1){
                         new_fd = 0;
