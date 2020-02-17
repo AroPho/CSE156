@@ -190,12 +190,12 @@ void *parse_recv(void *){
 		sem_post(&empty);
         string request_type = "";
 
-        printf("%s\n", temp.c_str());
+        // printf("%s\n", temp.c_str());
 		// Start of Consumer consume code
 		try{
             client_size = sizeof(client);
 			while((numbytes = recvfrom(sockfd, &c, 1, 0, (struct sockaddr *) &client, &client_size)) != 0){ //Goes through first line of header passed in to server
-				printf("%c", c);
+				// printf("%c", c);
 				// printf("here");
 				if(end_header != 1){
 					temp += c;
@@ -307,6 +307,7 @@ int main(int argc, char * argv[]){
             if (n < 0){
                 warn("ERROR in recvfrom");
             }
+            printf("%s", n);
 
             /* 
             * gethostbyaddr: determine who sent the datagram
