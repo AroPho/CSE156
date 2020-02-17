@@ -196,6 +196,7 @@ void *parse_recv(void *){
         cout << "here";
 		// Start of Consumer consume code
 		try{
+            cout << "fuck";
             // end_header = 1;
             // if(end_header == 1 && method_type == -1){ // Parses header for request type
             //     method_type = get_put_checker(temp);
@@ -331,7 +332,7 @@ int main(int argc, char * argv[]){
                 // cout << "1";
                 sem_wait(&empty);
                 pthread_mutex_lock(&mutex1);
-                buff[in] = cliaddr;
+                // buff[in] = cliaddr;
                 char_buffer[in] = buffer;
                 in = (in + 1) % num_args;
                 pthread_mutex_unlock(&mutex1);
