@@ -38,8 +38,8 @@ pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
 
-void sending_packet(int sock, string msg, sockaddr){
-    sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) NULL, 0);
+void sending_packet(int sock, string msg, sockaddr server){
+    sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &server, sizeof(server));
 }
 
 // prints out http error response codes
