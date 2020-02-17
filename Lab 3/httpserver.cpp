@@ -303,7 +303,7 @@ int main(int argc, char * argv[]){
             * recvfrom: receive a UDP datagram from a client
             */
             bzero(buffer, MAXLINE);
-            while(n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size) > 0){
+            while((n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size)) > 0){
                 temp += buffer;
                 printf("%s", buffer);
             }
