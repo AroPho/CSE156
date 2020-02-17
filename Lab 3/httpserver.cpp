@@ -27,6 +27,10 @@ pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 
 void sending_packet(int sock, string msg, sockaddr_in client){
+	
+	char * client_addr = inet_ntoa(client.sin_addr);
+	printf("client address %s", client_addr);
+	printf("%s", msg);
     sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &client, sizeof(client));
 }
 
@@ -164,10 +168,10 @@ int get_put_checker(string line){
 
 // This function parses through all the data sent to the server
 void *parse_recv(void *){
-	int numbytes;
+	// int numbytes;
 	// int end_header = 0;
 	int method_type = -1;
-	char c;
+	// char c;
 	string body;
 	string temp;
 	string filename = "no";
