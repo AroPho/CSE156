@@ -324,9 +324,9 @@ int main(int argc, char * argv[]){
                     tv.tv_usec = 0;
                     setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
-                    cout << "fuck";
+                    // cout << "fuck";
                     char buffin[1024];
-                    recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) (addrs->ai_addr), &(addrs->ai_addrlen));
+                    recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) NULL, NULL);
                     printf("%s", buffin);
                     length = head_parse(new_fd);
                     if(length == -1){

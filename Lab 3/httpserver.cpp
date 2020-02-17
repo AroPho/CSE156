@@ -28,11 +28,11 @@ pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 
 void sending_packet(int sock, string msg, sockaddr_in client){
-	
+	socklen_t clientlen = sizeof client;
 	char * client_addr = inet_ntoa(client.sin_addr);
 	printf("client address %s", client_addr);
 	printf("%s", msg.c_str());
-    sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &client, sizeof(client));
+    sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &client, clientlen);
 }
 
 // Catches Range requests 
@@ -285,17 +285,17 @@ int main(int argc, char * argv[]){
 			n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
 			//parse_recv(new_fd);
 			sendto(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, addr_size);
-			// if(n > 0){
-			// 	//printf("%d\n", new_fd);
-			// 	sem_wait(&empty);
-			// 	pthread_mutex_lock(&mutex1);
-			// 	client_connections[in] = cliaddr;
-			// 	buff[in] = input;
-			// 	in = (in + 1) % 4;
-			// 	pthread_mutex_unlock(&mutex1);
-			// 	sem_post(&full);	
-			// }
-			//printf("%s", input);
+			if(n > 0){
+				//printf("%d\n", new_fd);
+				sem_wait(&empty);
+				pthread_mutex_lock(&mutex1);
+				client_connections[in] = cliaddr;
+				buff[in] = input;
+				in = (in + 1) % 4;
+				pthread_mutex_unlock(&mutex1);
+				sem_post(&full);	
+			}
+			printf("%s", input);
 		}
 		close(main_socket);
 		free(buff);
