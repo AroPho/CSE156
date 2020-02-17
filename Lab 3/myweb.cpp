@@ -307,7 +307,7 @@ int main(int argc, char * argv[]){
                     
                     char buffin[1024];
                     recvfrom(new_fd, &buffin, 1024, 0, (struct sockaddr *) (addrs->ai_addr), &(addrs->ai_addrlen));
-                    string temp = buffin;
+                    temp = buffin;
                     length = catch_length(temp);
                     if(length == -1){
                         new_fd = 0;
