@@ -39,26 +39,26 @@ pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
 
-void sending_packet(int sock, string msg, sockaddr server){
+void sending_packet(int sock, string msg){
     sendto(sock, msg.c_str(), msg.length(), 0, (const struct sockaddr *) NULL, 0);
 }
 
 // prints out http error response codes
-void error_print(int err, int socket, sockaddr server){
+void error_print(int err, int socket){
 	if(err == 400){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
 		string error = "HTTP/1.1 400 Bad Request\r\n" + content;
-    	sending_packet(socket, error, server);
+    	sending_packet(socket, error);
 	}
 	if(err == 403){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
     	string error = "HTTP/1.1 403 Forbidden\r\n" + content;
-    	sending_packet(socket, error, server);
+    	sending_packet(socket, error);
 	}
 	if(err == 404){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
     	string error = "HTTP/1.1 404 Not Found\r\n" + content;
-    	sending_packet(socket, error, server);
+    	sending_packet(socket, error);
 	}
 }
 
@@ -106,7 +106,7 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
         temp += "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     }
     // printf("%s\n", temp.c_str());
-    sending_packet(sock, temp, server);
+    sending_packet(sock, temp);
 
 }
 
@@ -134,8 +134,8 @@ int head_parse(int sock){
     }
     return -1;
 }
-string get_head(int sock, sockaddr server){
-    socklen_t size_server = sizeof(server);
+string get_head(int sock){
+    // socklen_t size_server = sizeof(server);
     string temp = "";
     int numbytes;
     int end_header = 0;
@@ -209,12 +209,12 @@ void *establish_connection(void *){
                 request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
             }
 
-            sending_packet(socket, request, server);
+            sending_packet(socket, request);
 
             // Starts recieving response from server
             while(!done){
                 if(temp == ""){
-                    temp = get_head(socket, server);
+                    temp = get_head(socket);
                 }
                 if(temp == "" || temp.length() != (unsigned long) size_of_chunks){
                     temp = "";
