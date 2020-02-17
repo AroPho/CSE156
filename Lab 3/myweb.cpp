@@ -18,6 +18,7 @@
 #include <fstream>
 #include <poll.h>
 #include <signal.h>
+#include <iostream>
 using namespace std;
 
 int num_args = 4;

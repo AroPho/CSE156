@@ -17,8 +17,9 @@
 //#include <sys/time.h>
 #include <poll.h>
 #include <signal.h>
-using namespace std;
+#include <iostream>
 #define MAXLINE 1024
+using namespace std;
 
 int num_args = 4;
 int out = 0;
