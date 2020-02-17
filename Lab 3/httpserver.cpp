@@ -181,18 +181,18 @@ void *parse_recv(void *){
 	
     cout << "fuck";
 
+    //Consumer code
+    sem_wait(&full);
+    pthread_mutex_lock(&mutex1);
+    client = buff[out];
+    temp = char_buffer[out];
+    out = (out + 1) % num_args;
+    pthread_mutex_unlock(&mutex1);
+    sem_post(&empty);
+
 	// This is the start of the thread code
 	while(1){
-		//Consumer code
-		sem_wait(&full);
-		pthread_mutex_lock(&mutex1);
-		client = buff[out];
-        temp = char_buffer[out];
-		out = (out + 1) % num_args;
-		pthread_mutex_unlock(&mutex1);
-		sem_post(&empty);
         string request_type = "";
-        
         cout << "here";
 		// Start of Consumer consume code
 		try{
