@@ -338,6 +338,7 @@ int main(int argc, char * argv[]){
                 in = (in + 1) % 4;
                 pthread_mutex_unlock(&mutex1);
                 sem_post(&full);
+                cout << "2";
             }
             
             
