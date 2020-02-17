@@ -329,16 +329,7 @@ int main(int argc, char * argv[]){
             */
             bzero(buffer, MAXLINE);
             n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size);
-            if (n < 0){
-                warn("ERROR in recvfrom");
-            }
-            
-            cout << buffer;
-            /* 
-            * gethostbyaddr: determine who sent the datagram
-            */
-            hostp = gethostbyaddr((const char *)&cliaddr.sin_addr.s_addr, sizeof(cliaddr.sin_addr.s_addr), AF_INET);
-            if (hostp != NULL){
+            if (n > 0){
                 sem_wait(&empty);
                 pthread_mutex_lock(&mutex1);
                 buff[in] = cliaddr;
@@ -347,10 +338,20 @@ int main(int argc, char * argv[]){
                 pthread_mutex_unlock(&mutex1);
                 sem_post(&full);
             }
-            client_addr = inet_ntoa(cliaddr.sin_addr);
-            if (client_addr == NULL){
-                warn("ERROR on inet_ntoa\n");
-            }
+            
+            
+            // cout << buffer;
+            /* 
+            * gethostbyaddr: determine who sent the datagram
+            */
+            // hostp = gethostbyaddr((const char *)&cliaddr.sin_addr.s_addr, sizeof(cliaddr.sin_addr.s_addr), AF_INET);
+            // if (hostp != NULL){
+            //     warn("error")
+            // }
+            // client_addr = inet_ntoa(cliaddr.sin_addr);
+            // if (client_addr == NULL){
+            //     warn("ERROR on inet_ntoa\n");
+            // }
 
 
             // printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
