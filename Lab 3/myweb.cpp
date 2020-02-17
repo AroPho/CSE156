@@ -121,34 +121,12 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
 
 }
 
-string get_head(int sock){
-    // socklen_t size_server = sizeof(server);
-    string temp = "";
-    int numbytes;
-    int end_header = 0;
-    char c;
-    int local_length = -1 ;
-    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, 0)) != 0){
-        printf("%c", c);
-        temp += c;
-        // Checks for end of header
-        if(temp.length() == (unsigned long) local_length){
-            return temp;
-        }
-        if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-            end_header = 1;
-        }
-        if(end_header == 1 && local_length == -1){
-            if(error_catch(temp) == 1){
-                return "";
-            }
-            local_length = catch_length(temp);
-            temp = "";
-        }
-    }
-    if(end_header == 0){
-        return "";
-    }
+string get_head(string full_message){
+    string temp;
+    int first = full_message.find("\r\n\r\n") + 4;
+    int length = catch_length(full_message.substr(0, first));
+    printf("%d\n", length);
+    temp = full_message.substr(first, length);
     return temp;
 }
 
@@ -198,7 +176,9 @@ void *establish_connection(void *){
 
             sending_packet(socket, request);
             temp = recieve_packets(socket);
+            temp = get_head(temp);
             printf("%s", temp.c_str());
+
             
 
             // Starts recieving response from server
@@ -322,7 +302,7 @@ int main(int argc, char * argv[]){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
-                    cout << length << "\n";
+                    // cout << length << "\n";
                     first_connect = true;
                 }
 
