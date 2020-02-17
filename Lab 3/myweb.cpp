@@ -304,17 +304,17 @@ int main(int argc, char * argv[]){
                     new_fd = 0;
                 }
 
-                char c = 'a';
-                string temp = "";
-                while(1){
-                    temp += c;
-                    read(0, &c, 1);
-                    printf("%c", c);
-                    if(c == '9'){
-                        break;
-                    }
-                }
-                sendto(new_fd, temp.c_str(), temp.length(), 0, (struct sockaddr *)NULL, 0);
+                // char c = 'a';
+                // string temp = "";
+                // while(1){
+                //     temp += c;
+                //     read(0, &c, 1);
+                //     printf("%c", c);
+                //     if(c == '9'){
+                //         break;
+                //     }
+                // }
+                // sendto(new_fd, temp.c_str(), temp.length(), 0, (struct sockaddr *)NULL, 0);
 
                 if(!first_connect && new_fd > 0){ 
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
