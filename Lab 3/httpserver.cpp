@@ -333,7 +333,7 @@ int main(int argc, char * argv[]){
                 warn("ERROR in recvfrom");
             }
             
-            cout << buffer;
+            // cout << buffer;
             /* 
             * gethostbyaddr: determine who sent the datagram
             */
