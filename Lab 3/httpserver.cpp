@@ -344,6 +344,8 @@ int main(int argc, char * argv[]){
                 warn("ERROR on inet_ntoa\n");
             }
 
+            cout << buffer;
+
             sem_wait(&empty);
             pthread_mutex_lock(&mutex1);
             buff[in] = cliaddr;
