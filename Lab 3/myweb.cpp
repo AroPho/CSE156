@@ -312,10 +312,9 @@ int main(int argc, char * argv[]){
                     setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     
-                    char buffin[1024];
+                    // char buffin[1024];
                     // recvfrom(new_fd, buffin, 1024, 0, (struct sockaddr *)NULL, NULL);
-                    recieve_packets(new_fd);
-                    temp = buffin;
+                    temp = recieve_packets(new_fd);
                     length = catch_length(temp);
                     if(length == -1){
                         new_fd = 0;
