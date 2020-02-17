@@ -38,8 +38,8 @@ pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
 
-void sending_packet(int sock, string msg, sockaddr server){
-    sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &server, sizeof(server));
+void sending_packet(int sock, string msg, sockaddr){
+    sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) NULL, NULL);
 }
 
 // prints out http error response codes
@@ -104,6 +104,7 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
     if(type == 1){
         temp += "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     }
+    printf("%s\n", temp);
     sending_packet(sock, temp, server);
 
 }
