@@ -22,7 +22,7 @@ int in = 0;
 int current_index = 0;
 int main_socket;
 sem_t empty, full;
-char *buff[4];
+string buff[4];
 struct sockaddr_in client_connections[4];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
@@ -185,15 +185,12 @@ void *parse_recv(void *){
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
 		client = client_connections[out];
-		request = buff[out];
+		temp = buff[out];
 		out = (out + 1) % 4;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
         // string request_type = "";
-		temp = request;
-
-		cout << request;
-		cout << temp;
+		printf("%s", temp);
 		
 		// Start of Consumer consume code
 		try{
@@ -278,19 +275,22 @@ int main(int argc, char * argv[]){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
+		string temp = "";
 
 		//Searches for any connection attempts to server and creates a socket to connect to client
 		while(main_socket > 0){
 			bzero(input, 1024);
 			n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
 			//parse_recv(new_fd);
+			temp = input;
 			// sendto(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, addr_size);
+			printf("1 %s", temp);
 			if(n > 0){
 				//printf("%d\n", new_fd);
 				sem_wait(&empty);
 				pthread_mutex_lock(&mutex1);
 				client_connections[in] = cliaddr;
-				buff[in] = input;
+				buff[in] = temp;
 				in = (in + 1) % 4;
 				pthread_mutex_unlock(&mutex1);
 				sem_post(&full);	
@@ -298,7 +298,7 @@ int main(int argc, char * argv[]){
 			// printf("%s", input);
 		}
 		close(main_socket);
-		free(buff);
+		// free(buff);
 		return 0;
 	}catch(...){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
