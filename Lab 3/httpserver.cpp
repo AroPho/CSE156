@@ -338,21 +338,20 @@ int main(int argc, char * argv[]){
             * gethostbyaddr: determine who sent the datagram
             */
             hostp = gethostbyaddr((const char *)&cliaddr.sin_addr.s_addr, sizeof(cliaddr.sin_addr.s_addr), AF_INET);
-            if (hostp == NULL){
-                warn("ERROR on gethostbyaddr");
+            if (hostp != NULL){
+                sem_wait(&empty);
+                pthread_mutex_lock(&mutex1);
+                buff[in] = cliaddr;
+                char_buffer[in] = buffer;
+                in = (in + 1) % 4;
+                pthread_mutex_unlock(&mutex1);
+                sem_post(&full);
             }
             client_addr = inet_ntoa(cliaddr.sin_addr);
             if (client_addr == NULL){
                 warn("ERROR on inet_ntoa\n");
             }
 
-            sem_wait(&empty);
-            pthread_mutex_lock(&mutex1);
-            buff[in] = cliaddr;
-            char_buffer[in] = buffer;
-            in = (in + 1) % 4;
-            pthread_mutex_unlock(&mutex1);
-            sem_post(&full);
 
             // printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
             
