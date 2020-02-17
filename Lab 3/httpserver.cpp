@@ -357,7 +357,7 @@ int main(int argc, char * argv[]){
 
             // printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
             
-            // printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
+            printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
 
             // /* 
             // * sendto: echo the input back to the client 
