@@ -30,7 +30,7 @@ void sending_packet(int sock, string msg, sockaddr_in client){
 	
 	char * client_addr = inet_ntoa(client.sin_addr);
 	printf("client address %s", client_addr);
-	printf("%s", msg);
+	printf("%s", msg.c_str());
     sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &client, sizeof(client));
 }
 
