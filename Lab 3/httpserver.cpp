@@ -267,10 +267,10 @@ int main(int argc, char * argv[]){
  
     int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
 
-    struct timeval tv;
-    tv.tv_sec = 1;
-    tv.tv_usec = 0;
-    setsockopt(main_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+    // struct timeval tv;
+    // tv.tv_sec = 1;
+    // tv.tv_usec = 0;
+    // setsockopt(main_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
  
     bzero( &servaddr, sizeof(servaddr));
  
