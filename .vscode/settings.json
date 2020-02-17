@@ -3,6 +3,7 @@
         "filesystem": "cpp",
         "stdexcept": "cpp",
         "string": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "functional": "cpp"
     }
 }
