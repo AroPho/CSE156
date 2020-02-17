@@ -16,6 +16,9 @@
 #include <sys/stat.h>
 #include <iostream>
 #include <fstream>
+#include <poll.h>
+#include <signal.h>
+#include <iostream>
 using namespace std;
 
 int num_args = 4;
@@ -25,6 +28,7 @@ int offset = 0;
 int length = -1;
 sem_t empty, full;
 int * buff;
+sockaddr *addr_buff;
 // string * host_buff;
 int written = 0;
 int size_of_chunks;
@@ -34,22 +38,27 @@ string filename;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
+
+void sending_packet(int sock, string msg, sockaddr server){
+    sendto(sock, msg.c_str(), msg.length(), 0, (const struct sockaddr *) NULL, 0);
+}
+
 // prints out http error response codes
-void error_print(int err, int socket){
+void error_print(int err, int socket, sockaddr server){
 	if(err == 400){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
 		string error = "HTTP/1.1 400 Bad Request\r\n" + content;
-    	send(socket, error.c_str(), error.length(), 0);
+    	sending_packet(socket, error, server);
 	}
 	if(err == 403){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
     	string error = "HTTP/1.1 403 Forbidden\r\n" + content;
-    	send(socket, error.c_str(), error.length(), 0);
+    	sending_packet(socket, error, server);
 	}
 	if(err == 404){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
     	string error = "HTTP/1.1 404 Not Found\r\n" + content;
-    	send(socket, error.c_str(), error.length(), 0);
+    	sending_packet(socket, error, server);
 	}
 }
 
@@ -88,7 +97,7 @@ void writing(string temp, int begin, int* local_written){
 
 }
 
-void http_requests(int sock, int type, string file, string hostname){
+void http_requests(int sock, int type, string file, string hostname, sockaddr server){
     string temp = "";
     if(type == 0){
         temp += "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n" ;
@@ -96,7 +105,8 @@ void http_requests(int sock, int type, string file, string hostname){
     if(type == 1){
         temp += "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     }
-    send(sock, temp.c_str(), temp.length(), 0);
+    // printf("%s\n", temp.c_str());
+    sending_packet(sock, temp, server);
 
 }
 
@@ -105,8 +115,8 @@ int head_parse(int sock){
     string temp = "";
     char c;
     int end_header = 0;
-    while((numbytes = recv(sock, &c, 1, 0)) != 0){
-        // printf("%c", c);
+    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, NULL) != 0)){
+        printf("%c", c);
         if(end_header != 1){
             temp += c;
         }
@@ -123,13 +133,14 @@ int head_parse(int sock){
     }
     return -1;
 }
-string get_head(int sock){
+string get_head(int sock, sockaddr server){
+    socklen_t size_server = sizeof(server);
     string temp = "";
     int numbytes;
     int end_header = 0;
     char c;
     int local_length = -1 ;
-    while((numbytes = recv(sock, &c, 1, 0)) != 0){
+    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) &server, &size_server)) != 0){
         // printf("%c", c);
         temp += c;
         // Checks for end of header
@@ -160,18 +171,25 @@ void *establish_connection(void *){
     string hostname;
     string temp = "";
     string request = "";
+    sockaddr server;
 
 
     while(1){
 		// Consumer code
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
-		socket = buff[out];
+        socket = buff[out];
+        server = addr_buff[out];
         // hostname = host_buff[out];
-		out = (out + 1) % num_args;
-		pthread_mutex_unlock(&mutex1);
-		sem_post(&empty);
-        while(written < length){
+        out = (out + 1) % num_args;
+        pthread_mutex_unlock(&mutex1);
+        sem_post(&empty);
+
+        struct timeval tv;
+        tv.tv_sec = 1;
+        tv.tv_usec = 0;
+
+        while(written < length && setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv) >= 0){
             int start = 0;
             temp = "";
             request = "";
@@ -190,14 +208,15 @@ void *establish_connection(void *){
                 request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
             }
 
-            send(socket, request.c_str(), request.length(), 0);
+            sending_packet(socket, request, server);
 
             // Starts recieving response from server
             while(!done){
                 if(temp == ""){
-                    temp = get_head(socket);
+                    temp = get_head(socket, server);
                 }
-                if(temp == "" || temp.length() != size_of_chunks){
+                if(temp == "" || temp.length() != (unsigned long) size_of_chunks){
+                    temp = "";
                     done = true;
                 }
                 if(start < written){
@@ -213,7 +232,12 @@ void *establish_connection(void *){
                 break;
             }
         }
-        exit(1);
+        if(written != length){
+            warn("Connection to one of the servers has been lost"); 
+        }
+        if(written == length){
+            exit(1);
+        }
     }
 }
 
@@ -240,7 +264,7 @@ int main(int argc, char * argv[]){
         struct addrinfo hints, *addrs;
         memset(&hints, 0,sizeof hints);
         hints.ai_family=AF_UNSPEC;
-        hints.ai_socktype = SOCK_STREAM;
+        hints.ai_socktype = SOCK_DGRAM;
 
         
         buff = (int*) malloc(sizeof(int)*(num_args*800));
@@ -252,7 +276,7 @@ int main(int argc, char * argv[]){
         ifstream ips(ip_file);
         string line;
 
-        if(ips.is_open()){
+        if(!ips.is_open()){
             warn("Ip file does not exist");
             exit(0);
         }
@@ -260,10 +284,8 @@ int main(int argc, char * argv[]){
         sem_init(&empty, 0, num_args);
 	    sem_init(&full, 0, 0);
 
-        for(int i = 0; i < num_args; i++){
-			pthread_t tidsi;
-			pthread_create(&tidsi, NULL, establish_connection, NULL);
-		}
+        addr_buff = (struct sockaddr *) malloc(sizeof(struct sockaddr *)*(num_args*800));
+
         while(written != length){
             while(getline(ips, line)){
                 // cout << line;
@@ -282,32 +304,48 @@ int main(int argc, char * argv[]){
                     new_fd = 0;
                 }
 
+                // char c = 'a';
+                // string temp = "";
+                // while(1){
+                //     temp += c;
+                //     read(0, &c, 1);
+                //     printf("%c", c);
+                //     if(c == '9'){
+                //         break;
+                //     }
+                // }
+                // sendto(new_fd, temp.c_str(), temp.length(), 0, (struct sockaddr *)NULL, 0);
+
                 if(!first_connect && new_fd > 0){ 
-                    http_requests(new_fd, 0, filename, hostname);
+                    http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     // cout << "fuck";
                     length = head_parse(new_fd);
                     if(length == -1){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
-                    // cout << length << "\n";
+                    cout << length << "\n";
                     first_connect = true;
                 }
 
-                if(new_fd > 0){
+                // if(new_fd > 0){
 
-                    // printf("%d\n", new_fd);
-                    // printf("1");
+                //     // printf("%d\n", new_fd);
+                //     // printf("1");
 
-                    sem_wait(&empty);
-                    pthread_mutex_lock(&mutex1);
-                    buff[in] = new_fd;
-                    // host_buff[in] = hostname;
-                    in = (in + 1) % num_args;
+                //     pthread_t tidsi;
+			    //     pthread_create(&tidsi, NULL, establish_connection, NULL);
 
-                    pthread_mutex_unlock(&mutex1);
-                    sem_post(&full);
-                }
+                //     sem_wait(&empty);
+                //     pthread_mutex_lock(&mutex1);
+                //     buff[in] = new_fd;
+                //     addr_buff[in] = *(addrs->ai_addr);
+                //     // host_buff[in] = hostname;
+                //     in = (in + 1) % num_args;
+
+                //     pthread_mutex_unlock(&mutex1);
+                //     sem_post(&full);
+                // }
             }
 
         }
