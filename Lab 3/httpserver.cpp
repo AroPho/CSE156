@@ -342,7 +342,7 @@ int main(int argc, char * argv[]){
             }
             
             
-            // cout << buffer;
+            cout << buffer;
             /* 
             * gethostbyaddr: determine who sent the datagram
             */
