@@ -27,7 +27,7 @@ int current_index = 0;
 int sockfd;
 sem_t empty, full;
 struct sockaddr_in *buff;
-char* char_buffer[];
+char* char_buffer[4];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 void sending_packet(int sock, sockaddr_in client, string msg){
@@ -328,7 +328,7 @@ int main(int argc, char * argv[]){
 
             printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
             
-            printf("server received %d/%d bytes: %s\n", strlen(buffer), n, buffer);
+            printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
 
             /* 
             * sendto: echo the input back to the client 

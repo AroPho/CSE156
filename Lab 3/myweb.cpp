@@ -213,8 +213,8 @@ void *establish_connection(void *){
                 if(temp == ""){
                     temp = get_head(socket, server);
                 }
-                if(temp == "" || temp.length() != size_of_chunks){
-                    temp == "";
+                if(temp == "" || temp.length() != (unsigned long) size_of_chunks){
+                    temp = "";
                     done = true;
                 }
                 if(start < written){
@@ -306,8 +306,8 @@ int main(int argc, char * argv[]){
 
                 while(1){
                     read(0, &c, 1);
-                    sendto(new_fd, &c, 1, 0, (struct sockaddr *)NULL, NULL);
-                    recvfrom(new_fd, &c, 1, 0, (struct sockaddr *)NULL, NULL);
+                    sendto(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
+                    recvfrom(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
                     printf("%c", c);
                 }
 
