@@ -318,6 +318,10 @@ int main(int argc, char * argv[]){
                 // sendto(new_fd, temp.c_str(), temp.length(), 0, (struct sockaddr *)NULL, 0);
 
                 if(!first_connect && new_fd > 0){ 
+                    struct timeval tv;
+                    tv.tv_sec = 1;
+                    tv.tv_usec = 0;
+                    setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     cout << "fuck";
                     char buffin[1024];
