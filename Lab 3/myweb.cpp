@@ -198,6 +198,7 @@ void *establish_connection(void *){
             }
 
             sending_packet(socket, request);
+            
 
             // Starts recieving response from server
             while(!done){
@@ -324,24 +325,24 @@ int main(int argc, char * argv[]){
                     first_connect = true;
                 }
 
-                // if(new_fd > 0){
+                if(new_fd > 0){
 
-                //     // printf("%d\n", new_fd);
-                //     // printf("1");
+                    // printf("%d\n", new_fd);
+                    // printf("1");
 
-                //     pthread_t tidsi;
-			    //     pthread_create(&tidsi, NULL, establish_connection, NULL);
+                    pthread_t tidsi;
+			        pthread_create(&tidsi, NULL, establish_connection, NULL);
 
-                //     sem_wait(&empty);
-                //     pthread_mutex_lock(&mutex1);
-                //     buff[in] = new_fd;
-                //     addr_buff[in] = *(addrs->ai_addr);
-                //     // host_buff[in] = hostname;
-                //     in = (in + 1) % num_args;
+                    sem_wait(&empty);
+                    pthread_mutex_lock(&mutex1);
+                    buff[in] = new_fd;
+                    addr_buff[in] = *(addrs->ai_addr);
+                    // host_buff[in] = hostname;
+                    in = (in + 1) % num_args;
 
-                //     pthread_mutex_unlock(&mutex1);
-                //     sem_post(&full);
-                // }
+                    pthread_mutex_unlock(&mutex1);
+                    sem_post(&full);
+                }
             }
 
         }
