@@ -14,28 +14,20 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/stat.h>
-//#include <sys/time.h>
-#include <poll.h>
-#include <signal.h>
-#include <iostream>
-#define MAXLINE 1024
 using namespace std;
 
-int num_args = 4;
 int out = 0;
 int in = 0;
 int current_index = 0; 
-int sockfd;
 sem_t empty, full;
-struct sockaddr_in buff[4];
-char* char_buffer[4];
+char *buff[4];
+struct sockaddr_in client_connections[4];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+
 
 void sending_packet(int sock, sockaddr_in client, string msg){
     sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &client, sizeof(client));
 }
-
-
 
 // Catches Range requests 
 void catch_range(string line, int *start, int *end){
@@ -62,22 +54,22 @@ void error_print(int err, int socket, sockaddr_in client){
 	if(err == 400){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
 		string error = "HTTP/1.1 400 Bad Request\r\n" + content;
-    	sending_packet(socket, client, error);
+    	sending_packet(socket, error, client);
 	}
 	if(err == 403){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
     	string error = "HTTP/1.1 403 Forbidden\r\n" + content;
-    	sending_packet(socket, client, error);
+    	sending_packet(socket, error, client);
 	}
 	if(err == 404){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
     	string error = "HTTP/1.1 404 Not Found\r\n" + content;
-    	sending_packet(socket, client, error);
+    	sending_packet(socket, error, client);
 	}
 }
 
 //Used for get method and parse through a file and sends to client
-void printing(int type, int f, int socket, sockaddr_in client, int beginning, int end){
+void printing(int type, int f, int socket, int beginning, int end, sockaddr_in client){
     string temp, header;
 	int temp_begin = beginning;
     int size, numbytes;
@@ -97,7 +89,7 @@ void printing(int type, int f, int socket, sockaddr_in client, int beginning, in
 	if(type == 2){ // For HEAD requests
 		header = "HTTP/1.1 200 OK\r\n" + content;
 	}
-    sending_packet(socket, client, header);
+    sending_packet(socket, header, client);
 }
 
 //Used to execute Get request
@@ -125,9 +117,9 @@ void get_parse(string header, int socket, sockaddr_in client){
 	if(f == -1){
 		error_print(404, socket, client);
 	}if(beginning != -1){
-    	printing(1, f, socket, client, beginning, end); // Calls file to start sending client data
+    	printing(1, f, socket, beginning, end, client); // Calls file to start sending client data
    	}else{
-		printing(1, f, socket, client, 0, -1); // Calls file to start sending client data
+		printing(1, f, socket, 0, -1, client); // Calls file to start sending client data
 	}
 	   
 }
@@ -151,7 +143,7 @@ void head_parse(string header, int socket, sockaddr_in client){
 	if(f == -1){ // File not Found
 		error_print(404, socket, client);
 	}else{
-    	printing(2, f, socket, client, 0, -1); // Calls file to start sending client data
+    	printing(2, f, socket, 0, -1, client); // Calls file to start sending client data
    	}
 }
 
@@ -168,102 +160,62 @@ int get_put_checker(string line){
 	return 0;
 }
 
+
+// This function parses through all the data sent to the server
 void *parse_recv(void *){
 	int numbytes;
-	int end_header = 0;
+	// int end_header = 0;
 	int method_type = -1;
 	char c;
 	string body;
-	char* temp;
+	string temp;
 	string filename = "no";
+	char request[1024];
 	struct sockaddr_in client;
-    socklen_t client_size;
 	
-    // cout << "fuck";
-
 	// This is the start of the thread code
 	while(1){
 		//Consumer code
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
-		client = buff[out];
-        temp = char_buffer[out];
+		request = buff[out];
 		out = (out + 1) % num_args;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
-        string request_type = "";
-        
-        cout << "here";
+        // string request_type = "";
+		string temp = request;
+
 		// Start of Consumer consume code
 		try{
-            cout << "fuck";
-            // end_header = 1;
-            // if(end_header == 1 && method_type == -1){ // Parses header for request type
-            //     method_type = get_put_checker(temp);
-            // }
-            // if(method_type == 1 && end_header == 1){// GET Method function call
-            //     method_type = -1;
-            //     end_header = 0;
-            //     //printf("%s\n", temp.c_str());
-            //     get_parse(temp, sockfd, client);
-            //     temp = "";
-            // }
-            // if(method_type == 2 && end_header == 1){ // HEAD Method function call
-            //     head_parse(temp, sockfd, client);
-            //     temp = "";
-            //     method_type = -1;
-            //     end_header = 0;
-            // }
-            // if(method_type == 0 && end_header == 1){ // Checks for bad requests
-            //     error_print(400, sockfd, client);
-            //     end_header = 0;
-            //     method_type = -1;
-            //     temp = "";
-            // }
-            // client_size = sizeof(client);
-			// while((numbytes = recv(sockfd, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
-			// 	// printf("%c", c);
-			// 	// printf("here");
-			// 	if(end_header != 1){
-			// 		temp += c;
-			// 	}
-			// 	if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-			// 		end_header = 1;
-            //         printf("%s", temp.c_str());
-			// 	}
-			// 	if(end_header == 1 && method_type == -1){ // Parses header for request type
-			// 		method_type = get_put_checker(temp);
-			// 	}
-			// 	if(method_type == 1 && end_header == 1){// GET Method function call
-			// 		method_type = -1;
-			// 		end_header = 0;
-			// 		//printf("%s\n", temp.c_str());
-			// 		get_parse(temp, sockfd, client);
-			// 		temp = "";
-			// 	}
-			// 	if(method_type == 2 && end_header == 1){ // HEAD Method function call
-			// 		head_parse(temp, sockfd, client);
-			// 		temp = "";
-			// 		method_type = -1;
-			// 		end_header = 0;
-			// 	}
-			// 	if(method_type == 0 && end_header == 1){ // Checks for bad requests
-			// 		error_print(400, sockfd, client);
-			// 		end_header = 0;
-			// 		method_type = -1;
-			// 		temp = "";
-			// 	}	
-			// }	
+			method_type = get_put_checker(temp);		
+			if(method_type == 1){// GET Method function call
+				method_type = -1;
+				//printf("%s\n", temp.c_str());
+				get_parse(temp, sockfd, client);
+				temp = "";
+			}
+			if(method_type == 2 && end_header == 1){ // HEAD Method function call
+				head_parse(temp, sockfd, client);
+				method_type = -1;
+				temp = "";
+			}
+			if(method_type == 0 && end_header == 1){ // Checks for bad requests
+				error_print(400, sockfd, client);
+				// end_header = 0;
+				method_type = -1;
+				temp = "";
+			}	
+			
+				
+			}	
 		}catch(...){
 			string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
 		    string header = "HTTP/1.1 500 Created\r\n" + content;
-			sending_packet(sockfd, client, header);
+			send(socket, header.c_str(), header.length(), 0);
 		}
 	}
 }
 
-
-// Driver code 
 int main(int argc, char * argv[]){
 	// struct addrinfo hints, *addrs;
 	// struct sockaddr_storage their_addr;
@@ -284,12 +236,10 @@ int main(int argc, char * argv[]){
 	sem_init(&empty, 0, num_args);
 	sem_init(&full, 0, 0);
 
+	char input[1024];
+
 
 	// size_t n = num_args;
-	
-	
-	
-	//Following codes defines server and sockets for client to connect to
 	struct sockaddr_in servaddr, cliaddr;
  
     int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
@@ -306,70 +256,37 @@ int main(int argc, char * argv[]){
     servaddr.sin_port = htons(atoi(port));
  
     bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
-    sockfd = main_socket;
-	
-    char buffer[MAXLINE];
-    int n;
-    // int len = sizeof(cliaddr);
-    hostent * hostp;
-    // char* client_addr;
+	listen (main_socket, 16);
 	
 
 	try{
+		addr_size = sizeof cliaddr;
+		int n;
 		
-		for(int i = 0; i < num_args; i++){
+		for(int i = 0; i < 4 i++){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
-        bzero(buffer, MAXLINE);
+
 		//Searches for any connection attempts to server and creates a socket to connect to client
-		while(1){
-            /*
-            * recvfrom: receive a UDP datagram from a client
-            */
-            n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size);
-            if (n > 0){
-                // cout << "1";
-                sem_wait(&empty);
-                pthread_mutex_lock(&mutex1);
-                // buff[in] = cliaddr;
-                char_buffer[in] = buffer;
-                in = (in + 1) % num_args;
-                pthread_mutex_unlock(&mutex1);
-                sem_post(&full);
-                // cout << "2";
-            }
-            
-            
-            // cout << buffer;
-            /* 
-            * gethostbyaddr: determine who sent the datagram
-            */
-            // hostp = gethostbyaddr((const char *)&cliaddr.sin_addr.s_addr, sizeof(cliaddr.sin_addr.s_addr), AF_INET);
-            // if (hostp != NULL){
-            //     warn("error")
-            // }
-            // client_addr = inet_ntoa(cliaddr.sin_addr);
-            // if (client_addr == NULL){
-            //     warn("ERROR on inet_ntoa\n");
-            // }
-
-
-            // printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
-            
-            // printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
-
-            // /* 
-            // * sendto: echo the input back to the client 
-            // */
-            // n = sendto(main_socket, buffer, strlen(buffer), 0, 
-            //     (struct sockaddr *) &cliaddr, len);
-            // if (n < 0) 
-            // warn("ERROR in sendto");	
-			
+		while(main_socket > 0){
+			bzero(input, 1024);
+			n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
+			//parse_recv(new_fd);
+			if(n > 0){
+				//printf("%d\n", new_fd);
+				sem_wait(&empty);
+				pthread_mutex_lock(&mutex1);
+				client_connections[in] = cliaddr;
+				buff[in] = input;
+				in = (in + 1) % num_args;
+				pthread_mutex_unlock(&mutex1);
+				sem_post(&full);	
+			}
+			printf("%s", input);
 		}
-		close(main_socket);
-		//free(buff);
+		close(new_fd);
+		free(buff);
 		return 0;
 	}catch(...){
 		string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
@@ -377,13 +294,5 @@ int main(int argc, char * argv[]){
 		char *char_header = new char[header.length()];
 		strcpy(char_header, header.c_str());
 		send(main_socket, char_header, sizeof(char_header), 0);
-    }
-
-
-
-
-        
+	}
 }
-
-
-
