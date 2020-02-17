@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/stat.h>
+#include <iostream>
 using namespace std;
 
 int out = 0;
@@ -190,7 +191,9 @@ void *parse_recv(void *){
 		sem_post(&empty);
         // string request_type = "";
 		temp = request;
-		printf("%s", temp.c_str());
+
+		cout << request;
+		cout << temp;
 		
 		// Start of Consumer consume code
 		try{
@@ -291,7 +294,7 @@ int main(int argc, char * argv[]){
 				pthread_mutex_unlock(&mutex1);
 				sem_post(&full);	
 			}
-			// printf("%s", input);
+			//printf("%s", input);
 		}
 		close(main_socket);
 		free(buff);
