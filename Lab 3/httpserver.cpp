@@ -200,31 +200,31 @@ void *parse_recv(void *){
 				if(end_header != 1){
 					temp += c;
 				}
-				// if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-				// 	end_header = 1;
-				// }
-				// if(end_header == 1 && method_type == -1){ // Parses header for request type
-				// 	method_type = get_put_checker(temp);
-				// }
-				// if(method_type == 1 && end_header == 1){// GET Method function call
-				// 	method_type = -1;
-				// 	end_header = 0;
-				// 	//printf("%s\n", temp.c_str());
-				// 	get_parse(temp, sockfd, client);
-				// 	temp = "";
-				// }
-				// if(method_type == 2 && end_header == 1){ // HEAD Method function call
-				// 	head_parse(temp, sockfd, client);
-				// 	temp = "";
-				// 	method_type = -1;
-				// 	end_header = 0;
-				// }
-				// if(method_type == 0 && end_header == 1){ // Checks for bad requests
-				// 	error_print(400, sockfd, client);
-				// 	end_header = 0;
-				// 	method_type = -1;
-				// 	temp = "";
-				// }
+				if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+					end_header = 1;
+				}
+				if(end_header == 1 && method_type == -1){ // Parses header for request type
+					method_type = get_put_checker(temp);
+				}
+				if(method_type == 1 && end_header == 1){// GET Method function call
+					method_type = -1;
+					end_header = 0;
+					//printf("%s\n", temp.c_str());
+					get_parse(temp, sockfd, client);
+					temp = "";
+				}
+				if(method_type == 2 && end_header == 1){ // HEAD Method function call
+					head_parse(temp, sockfd, client);
+					temp = "";
+					method_type = -1;
+					end_header = 0;
+				}
+				if(method_type == 0 && end_header == 1){ // Checks for bad requests
+					error_print(400, sockfd, client);
+					end_header = 0;
+					method_type = -1;
+					temp = "";
+				}
 
 				
 			}	
@@ -285,7 +285,7 @@ int main(int argc, char * argv[]){
 	printf("server is running on %s and port %s\n", server_addr, port);
     char buffer[MAXLINE];
     int n;
-    int len = sizeof(cliaddr);
+    // int len = sizeof(cliaddr);
     hostent * hostp;
     char* client_addr;
 	

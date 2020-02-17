@@ -108,12 +108,12 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
 
 }
 
-int head_parse(int sock, sockaddr server){
+int head_parse(int sock){
     int numbytes= 0;
     string temp = "";
     char c;
     int end_header = 0;
-    while((numbytes = recv(sock, &c, 1, 0)) != 0){
+    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, NULL) != 0)){
         // printf("%c", c);
         if(end_header != 1){
             temp += c;
