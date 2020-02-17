@@ -327,7 +327,7 @@ int main(int argc, char * argv[]){
                     // cout << "fuck";
                     char buffin[1024];
                     recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) NULL, NULL);
-                    // printf("%s", buffin);
+                    printf("%s", buffin);
                     length = head_parse(new_fd);
                     if(length == -1){
                         new_fd = 0;
