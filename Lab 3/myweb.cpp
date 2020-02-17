@@ -305,12 +305,12 @@ int main(int argc, char * argv[]){
 
                 char c;
 
-                while(1){
-                    read(0, &c, 1);
-                    sendto(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
-                    recvfrom(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
-                    printf("%c", c);
-                }
+                // while(1){
+                //     read(0, &c, 1);
+                //     sendto(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
+                //     recvfrom(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
+                //     printf("%c", c);
+                // }
 
                 if(!first_connect && new_fd > 0){ 
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));

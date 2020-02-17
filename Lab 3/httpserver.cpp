@@ -27,7 +27,7 @@ int current_index = 0;
 int sockfd;
 sem_t empty, full;
 struct sockaddr_in *buff;
-char* char_buffer[4];
+char* char_buffer[];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 void sending_packet(int sock, sockaddr_in client, string msg){
