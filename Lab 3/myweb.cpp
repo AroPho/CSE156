@@ -52,6 +52,7 @@ string recieve_packets(int sock){
         temp += buffin;
         bzero(buffin, 1024);
     }
+    return temp;
 }
 
 // prints out http error response codes
