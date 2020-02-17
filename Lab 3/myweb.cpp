@@ -306,7 +306,8 @@ int main(int argc, char * argv[]){
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     
                     char buffin[1024];
-                    recvfrom(new_fd, &buffin, 1024, 0, (struct sockaddr *) (addrs->ai_addr), &(addrs->ai_addrlen));
+                    recvfrom(new_fd, buffin, 1024, 0, (struct sockaddr *)NULL, NULL);
+                    // recieve_packets(new_fd);
                     temp = buffin;
                     length = catch_length(temp);
                     if(length == -1){
