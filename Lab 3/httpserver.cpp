@@ -284,16 +284,17 @@ int main(int argc, char * argv[]){
 			bzero(input, 1024);
 			n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
 			//parse_recv(new_fd);
-			if(n > 0){
-				//printf("%d\n", new_fd);
-				sem_wait(&empty);
-				pthread_mutex_lock(&mutex1);
-				client_connections[in] = cliaddr;
-				buff[in] = input;
-				in = (in + 1) % 4;
-				pthread_mutex_unlock(&mutex1);
-				sem_post(&full);	
-			}
+			sendto(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, addr_size);
+			// if(n > 0){
+			// 	//printf("%d\n", new_fd);
+			// 	sem_wait(&empty);
+			// 	pthread_mutex_lock(&mutex1);
+			// 	client_connections[in] = cliaddr;
+			// 	buff[in] = input;
+			// 	in = (in + 1) % 4;
+			// 	pthread_mutex_unlock(&mutex1);
+			// 	sem_post(&full);	
+			// }
 			//printf("%s", input);
 		}
 		close(main_socket);
