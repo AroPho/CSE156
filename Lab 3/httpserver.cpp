@@ -194,8 +194,8 @@ void *parse_recv(void *){
 		// Start of Consumer consume code
 		try{
 			method_type = get_put_checker(temp);
-			printf("here\n");
-			printf("method: %d\n", method_type);	
+			// printf("here\n");
+			// printf("method: %d\n", method_type);	
 			if(method_type == 1){// GET Method function call
 				method_type = -1;
 				//printf("%s\n", temp.c_str());
@@ -203,7 +203,7 @@ void *parse_recv(void *){
 				temp = "";
 			}
 			if(method_type == 2){ // HEAD Method function call
-				printf("2\n");
+				// printf("2\n");
 				head_parse(temp, main_socket, client);
 				method_type = -1;
 				temp = "";
@@ -290,7 +290,7 @@ int main(int argc, char * argv[]){
 				pthread_mutex_unlock(&mutex1);
 				sem_post(&full);	
 			}
-			printf("%s", input);
+			// printf("%s", input);
 		}
 		close(main_socket);
 		free(buff);
