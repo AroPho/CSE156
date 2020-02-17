@@ -190,7 +190,7 @@ void *parse_recv(void *){
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
         // string request_type = "";
-		printf("%s", temp);
+		printf("%s", temp.c_str());
 		
 		// Start of Consumer consume code
 		try{
@@ -284,7 +284,7 @@ int main(int argc, char * argv[]){
 			//parse_recv(new_fd);
 			temp = input;
 			// sendto(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, addr_size);
-			printf("1 %s", temp);
+			printf("1 %s", temp.c_str());
 			if(n > 0){
 				//printf("%d\n", new_fd);
 				sem_wait(&empty);
