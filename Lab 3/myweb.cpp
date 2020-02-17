@@ -45,7 +45,13 @@ void sending_packet(int sock, string msg){
 }
 
 string recieve_packets(int sock){
-    return "";
+    int numbytes;
+    string temp = "";
+    char buffin[1024];
+    while((numbytes = recvfrom(sock, &buffin, 1024, 0, (struct sockaddr *)NULL, NULL)) > 0){
+        temp += buffin;
+        bzero(buffin, 1024);
+    }
 }
 
 // prints out http error response codes
@@ -306,8 +312,8 @@ int main(int argc, char * argv[]){
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     
                     char buffin[1024];
-                    recvfrom(new_fd, buffin, 1024, 0, (struct sockaddr *)NULL, NULL);
-                    // recieve_packets(new_fd);
+                    // recvfrom(new_fd, buffin, 1024, 0, (struct sockaddr *)NULL, NULL);
+                    recieve_packets(new_fd);
                     temp = buffin;
                     length = catch_length(temp);
                     if(length == -1){
