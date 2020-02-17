@@ -172,7 +172,7 @@ void *parse_recv(void *){
 	// int numbytes;
 	int end_header = 0;
 	int method_type = -1;
-	char c;
+	// char c;
 	string body;
 	string temp;
 	string filename = "no";
@@ -310,7 +310,7 @@ int main(int argc, char * argv[]){
 	
     char buffer[MAXLINE];
     int n;
-    int len = sizeof(cliaddr);
+    // int len = sizeof(cliaddr);
     hostent * hostp;
     char* client_addr;
 	
