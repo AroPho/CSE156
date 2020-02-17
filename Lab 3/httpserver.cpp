@@ -190,7 +190,6 @@ void *parse_recv(void *){
 		sem_post(&empty);
         string request_type = "";
 
-        // printf("%s\n", temp.c_str());
 		// Start of Consumer consume code
 		try{
             client_size = sizeof(client);
@@ -275,17 +274,16 @@ int main(int argc, char * argv[]){
  
     bzero( &servaddr, sizeof(servaddr));
  
-    servaddr.sin_family = AF_INET; // IPv4 
-    servaddr.sin_addr.s_addr = INADDR_ANY;
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
     servaddr.sin_port = htons(atoi(port));
  
     bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
     sockfd = main_socket;
-    char *server_addr = inet_ntoa(servaddr.sin_addr);
-	printf("server is running on %s and port %s\n", server_addr, port);
+	
     char buffer[MAXLINE];
     int n;
-    // int len = sizeof(cliaddr);
+    int len = sizeof(cliaddr);
     hostent * hostp;
     char* client_addr;
 	
@@ -307,7 +305,6 @@ int main(int argc, char * argv[]){
             if (n < 0){
                 warn("ERROR in recvfrom");
             }
-            printf("%s", buffer);
 
             /* 
             * gethostbyaddr: determine who sent the datagram
@@ -321,25 +318,25 @@ int main(int argc, char * argv[]){
                 warn("ERROR on inet_ntoa\n");
             }
 
-            sem_wait(&empty);
-            pthread_mutex_lock(&mutex1);
-            buff[in] = cliaddr;
-            char_buffer[in] = buffer;
-            in = (in + 1) % 4;
-            pthread_mutex_unlock(&mutex1);
-            sem_post(&full);
+            // sem_wait(&empty);
+            // pthread_mutex_lock(&mutex1);
+            // buff[in] = cliaddr;
+            // char_buffer[in] = buffer;
+            // in = (in + 1) % 4;
+            // pthread_mutex_unlock(&mutex1);
+            // sem_post(&full);
 
-            // printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
+            printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
             
-            // printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
+            printf("server received %/%d bytes: %s\n", strlen(buffer), n, buffer);
 
-            // /* 
-            // * sendto: echo the input back to the client 
-            // */
-            // n = sendto(main_socket, buffer, strlen(buffer), 0, 
-            //     (struct sockaddr *) &cliaddr, len);
-            // if (n < 0) 
-            // warn("ERROR in sendto");	
+            /* 
+            * sendto: echo the input back to the client 
+            */
+            n = sendto(main_socket, buffer, strlen(buffer), 0, 
+                (struct sockaddr *) &cliaddr, len);
+            if (n < 0) 
+            warn("ERROR in sendto");	
 			
 		}
 		close(main_socket);
