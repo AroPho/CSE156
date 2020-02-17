@@ -342,25 +342,25 @@ int main(int argc, char * argv[]){
                 warn("ERROR on inet_ntoa\n");
             }
 
-            sem_wait(&empty);
-            pthread_mutex_lock(&mutex1);
-            buff[in] = cliaddr;
-            char_buffer[in] = buffer;
-            in = (in + 1) % 4;
-            pthread_mutex_unlock(&mutex1);
-            sem_post(&full);
+            // sem_wait(&empty);
+            // pthread_mutex_lock(&mutex1);
+            // buff[in] = cliaddr;
+            // char_buffer[in] = buffer;
+            // in = (in + 1) % 4;
+            // pthread_mutex_unlock(&mutex1);
+            // sem_post(&full);
 
-            // printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
+            printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
             
-            // printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
+            printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
 
-            // /* 
-            // * sendto: echo the input back to the client 
-            // */
-            // n = sendto(main_socket, buffer, strlen(buffer), 0, 
-            //     (struct sockaddr *) &cliaddr, len);
-            // if (n < 0) 
-            // warn("ERROR in sendto");	
+            /* 
+            * sendto: echo the input back to the client 
+            */
+            n = sendto(main_socket, buffer, strlen(buffer), 0, 
+                (struct sockaddr *) &cliaddr, len);
+            if (n < 0) 
+            warn("ERROR in sendto");	
 			
 		}
 		close(main_socket);
