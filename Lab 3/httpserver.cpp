@@ -197,29 +197,29 @@ void *parse_recv(void *){
         cout << "here";
 		// Start of Consumer consume code
 		try{
-            end_header = 1;
-            if(end_header == 1 && method_type == -1){ // Parses header for request type
-                method_type = get_put_checker(temp);
-            }
-            if(method_type == 1 && end_header == 1){// GET Method function call
-                method_type = -1;
-                end_header = 0;
-                //printf("%s\n", temp.c_str());
-                get_parse(temp, sockfd, client);
-                temp = "";
-            }
-            if(method_type == 2 && end_header == 1){ // HEAD Method function call
-                head_parse(temp, sockfd, client);
-                temp = "";
-                method_type = -1;
-                end_header = 0;
-            }
-            if(method_type == 0 && end_header == 1){ // Checks for bad requests
-                error_print(400, sockfd, client);
-                end_header = 0;
-                method_type = -1;
-                temp = "";
-            }
+            // end_header = 1;
+            // if(end_header == 1 && method_type == -1){ // Parses header for request type
+            //     method_type = get_put_checker(temp);
+            // }
+            // if(method_type == 1 && end_header == 1){// GET Method function call
+            //     method_type = -1;
+            //     end_header = 0;
+            //     //printf("%s\n", temp.c_str());
+            //     get_parse(temp, sockfd, client);
+            //     temp = "";
+            // }
+            // if(method_type == 2 && end_header == 1){ // HEAD Method function call
+            //     head_parse(temp, sockfd, client);
+            //     temp = "";
+            //     method_type = -1;
+            //     end_header = 0;
+            // }
+            // if(method_type == 0 && end_header == 1){ // Checks for bad requests
+            //     error_print(400, sockfd, client);
+            //     end_header = 0;
+            //     method_type = -1;
+            //     temp = "";
+            // }
             // client_size = sizeof(client);
 			// while((numbytes = recv(sockfd, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
 			// 	// printf("%c", c);
