@@ -111,13 +111,14 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
 
 }
 
-int head_parse(int sock){
+int head_parse(int sock, sockaddr server){
+    socklen_t server_size = sizeof server;
     int numbytes= 0;
     string temp = "";
     char c;
     int end_header = 0;
     printf("here");
-    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, NULL) != 0)){
+    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) &server, &server_size) != 0)){
         printf("%c", c);
         if(end_header != 1){
             temp += c;
@@ -326,9 +327,9 @@ int main(int argc, char * argv[]){
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     //cout << "fuck";
                     char buffin[1024];
-                    recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) (addrs->ai_addr), &(addrs->ai_addrlen));
+                    // recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) (addrs->ai_addr), &(addrs->ai_addrlen));
                     printf("%s", buffin);
-                    length = head_parse(new_fd);
+                    length = head_parse(new_fd, *(addrs->ai_addr));
                     if(length == -1){
                         new_fd = 0;
                     }
