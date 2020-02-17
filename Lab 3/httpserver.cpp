@@ -280,7 +280,8 @@ int main(int argc, char * argv[]){
  
     bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
     sockfd = main_socket;
-	
+    char *server_addr = inet_ntoa(servaddr.sin_addr);
+	printf("server is running on %s and port %s\n", server_addr, port);
     char buffer[MAXLINE];
     int n;
     int len = sizeof(cliaddr);
