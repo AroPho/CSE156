@@ -40,7 +40,7 @@ pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
 
 void sending_packet(int sock, string msg, sockaddr server){
-    sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) NULL, 0);
+    sendto(sock, msg.c_str(), msg.length(), 0, (const struct sockaddr *) NULL, 0);
 }
 
 // prints out http error response codes
@@ -304,14 +304,17 @@ int main(int argc, char * argv[]){
                     new_fd = 0;
                 }
 
-                char c;
-
-                // while(1){
-                //     read(0, &c, 1);
-                //     sendto(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
-                //     recvfrom(new_fd, &c, 1, 0, (struct sockaddr *)NULL, 0);
-                //     printf("%c", c);
-                // }
+                char c = 'a';
+                string temp = "";
+                while(1){
+                    temp += c;
+                    read(0, &c, 1);
+                    printf("%c", c);
+                    if(c == '9'){
+                        break;
+                    }
+                }
+                sendto(new_fd, temp.c_str(), temp.length(), 0, (struct sockaddr *)NULL, 0);
 
                 if(!first_connect && new_fd > 0){ 
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
