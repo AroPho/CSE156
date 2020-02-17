@@ -18,14 +18,15 @@ using namespace std;
 
 int out = 0;
 int in = 0;
-int current_index = 0; 
+int current_index = 0;
+int main_socket;
 sem_t empty, full;
 char *buff[4];
 struct sockaddr_in client_connections[4];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 
-void sending_packet(int sock, sockaddr_in client, string msg){
+void sending_packet(int sock, string msg, sockaddr_in client){
     sendto(sock, msg.c_str(), sizeof(msg), 0, (const struct sockaddr *) &client, sizeof(client));
 }
 
@@ -170,7 +171,7 @@ void *parse_recv(void *){
 	string body;
 	string temp;
 	string filename = "no";
-	char request[1024];
+	///char *request;
 	struct sockaddr_in client;
 	
 	// This is the start of the thread code
@@ -178,12 +179,14 @@ void *parse_recv(void *){
 		//Consumer code
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
-		request = buff[out];
-		out = (out + 1) % num_args;
+		client = client_connections[out];
+		temp = buff[out];
+		out = (out + 1) % 4;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
         // string request_type = "";
-		string temp = request;
+		printf("Datagram recieved %s\n", temp.c_str());
+		
 
 		// Start of Consumer consume code
 		try{
@@ -191,27 +194,25 @@ void *parse_recv(void *){
 			if(method_type == 1){// GET Method function call
 				method_type = -1;
 				//printf("%s\n", temp.c_str());
-				get_parse(temp, sockfd, client);
+				get_parse(temp, main_socket, client);
 				temp = "";
 			}
-			if(method_type == 2 && end_header == 1){ // HEAD Method function call
-				head_parse(temp, sockfd, client);
+			if(method_type == 2){ // HEAD Method function call
+				head_parse(temp, main_socket, client);
 				method_type = -1;
 				temp = "";
 			}
-			if(method_type == 0 && end_header == 1){ // Checks for bad requests
-				error_print(400, sockfd, client);
+			if(method_type == 0){ // Checks for bad requests
+				error_print(400, main_socket, client);
 				// end_header = 0;
 				method_type = -1;
 				temp = "";
 			}	
-			
 				
-			}	
 		}catch(...){
 			string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
 		    string header = "HTTP/1.1 500 Created\r\n" + content;
-			send(socket, header.c_str(), header.length(), 0);
+			sending_packet(main_socket, header, client);
 		}
 	}
 }
@@ -233,7 +234,7 @@ int main(int argc, char * argv[]){
 
 	//printf("%s %s\n",hostname, port);
 
-	sem_init(&empty, 0, num_args);
+	sem_init(&empty, 0, 4);
 	sem_init(&full, 0, 0);
 
 	char input[1024];
@@ -242,7 +243,7 @@ int main(int argc, char * argv[]){
 	// size_t n = num_args;
 	struct sockaddr_in servaddr, cliaddr;
  
-    int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    main_socket = socket(AF_INET, SOCK_DGRAM, 0);
 
     // struct timeval tv;
     // tv.tv_sec = 1;
@@ -263,7 +264,7 @@ int main(int argc, char * argv[]){
 		addr_size = sizeof cliaddr;
 		int n;
 		
-		for(int i = 0; i < 4 i++){
+		for(int i = 0; i < 4; i++){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
@@ -279,13 +280,13 @@ int main(int argc, char * argv[]){
 				pthread_mutex_lock(&mutex1);
 				client_connections[in] = cliaddr;
 				buff[in] = input;
-				in = (in + 1) % num_args;
+				in = (in + 1) % 4;
 				pthread_mutex_unlock(&mutex1);
 				sem_post(&full);	
 			}
 			printf("%s", input);
 		}
-		close(new_fd);
+		close(main_socket);
 		free(buff);
 		return 0;
 	}catch(...){
