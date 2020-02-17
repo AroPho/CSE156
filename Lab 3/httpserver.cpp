@@ -190,6 +190,7 @@ void *parse_recv(void *){
 		sem_post(&empty);
         // string request_type = "";
 		temp = request;
+		printf("%s", temp);
 		
 		// Start of Consumer consume code
 		try{
