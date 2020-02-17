@@ -186,12 +186,11 @@ void *parse_recv(void *){
 		sem_post(&empty);
         // string request_type = "";
 		temp = request;
-		printf("Datagram recieved %s\n", temp.c_str());
 		
-
 		// Start of Consumer consume code
 		try{
-			method_type = get_put_checker(temp);		
+			method_type = get_put_checker(temp);
+			printf("here");	
 			if(method_type == 1){// GET Method function call
 				method_type = -1;
 				//printf("%s\n", temp.c_str());

@@ -115,6 +115,7 @@ int head_parse(int sock){
     string temp = "";
     char c;
     int end_header = 0;
+    printf("here");
     while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, NULL) != 0)){
         printf("%c", c);
         if(end_header != 1){
@@ -140,7 +141,7 @@ string get_head(int sock, sockaddr server){
     int end_header = 0;
     char c;
     int local_length = -1 ;
-    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) &server, &size_server)) != 0){
+    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, 0)) != 0){
         // printf("%c", c);
         temp += c;
         // Checks for end of header
