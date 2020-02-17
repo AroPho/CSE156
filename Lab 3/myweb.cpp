@@ -314,7 +314,7 @@ int main(int argc, char * argv[]){
                 if(!first_connect && new_fd > 0){ 
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     // cout << "fuck";
-                    length = head_parse(new_fd, *(addrs->ai_addr));
+                    length = head_parse(new_fd);
                     if(length == -1){
                         new_fd = 0;
                     }
