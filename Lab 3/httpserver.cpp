@@ -171,7 +171,7 @@ void *parse_recv(void *){
 	string body;
 	string temp;
 	string filename = "no";
-	///char *request;
+	char *request;
 	struct sockaddr_in client;
 	
 	// This is the start of the thread code
@@ -180,11 +180,12 @@ void *parse_recv(void *){
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
 		client = client_connections[out];
-		temp = buff[out];
+		request = buff[out];
 		out = (out + 1) % 4;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
         // string request_type = "";
+		temp = request;
 		printf("Datagram recieved %s\n", temp.c_str());
 		
 
