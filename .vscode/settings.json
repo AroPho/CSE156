@@ -4,6 +4,7 @@
         "stdexcept": "cpp",
         "string": "cpp",
         "iosfwd": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "random": "cpp"
     }
 }

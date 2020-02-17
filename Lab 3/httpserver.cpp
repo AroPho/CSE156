@@ -296,17 +296,14 @@ int main(int argc, char * argv[]){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
-        string temp;
+
 		//Searches for any connection attempts to server and creates a socket to connect to client
 		while(main_socket > 0){
                 /*
             * recvfrom: receive a UDP datagram from a client
             */
             bzero(buffer, MAXLINE);
-            while((n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size)) > 0){
-                temp += buffer;
-                printf("%s", buffer);
-            }
+            n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size);
             if (n < 0){
                 warn("ERROR in recvfrom");
             }
