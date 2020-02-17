@@ -302,36 +302,45 @@ int main(int argc, char * argv[]){
                     new_fd = 0;
                 }
 
-                if(!first_connect && new_fd > 0){ 
-                    http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
-                    // cout << "fuck";
-                    length = head_parse(new_fd, *(addrs->ai_addr));
-                    if(length == -1){
-                        new_fd = 0;
-                    }
-                    size_of_chunks = (length / num_args);
-                    // cout << length << "\n";
-                    first_connect = true;
+                char c;
+
+                while(1){
+                    read(0, &c, 1);
+                    sendto(new_fd, &c, 1, 0, (struct sockaddr *)NULL, NULL);
+                    recvfrom(new_fd, &c, 1, 0, (struct sockaddr *)NULL, NULL);
+                    printf("%c", c);
                 }
 
-                if(new_fd > 0){
+                // if(!first_connect && new_fd > 0){ 
+                //     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
+                //     // cout << "fuck";
+                //     length = head_parse(new_fd, *(addrs->ai_addr));
+                //     if(length == -1){
+                //         new_fd = 0;
+                //     }
+                //     size_of_chunks = (length / num_args);
+                //     // cout << length << "\n";
+                //     first_connect = true;
+                // }
 
-                    // printf("%d\n", new_fd);
-                    // printf("1");
+                // if(new_fd > 0){
 
-                    pthread_t tidsi;
-			        pthread_create(&tidsi, NULL, establish_connection, NULL);
+                //     // printf("%d\n", new_fd);
+                //     // printf("1");
 
-                    sem_wait(&empty);
-                    pthread_mutex_lock(&mutex1);
-                    buff[in] = new_fd;
-                    addr_buff[in] = *(addrs->ai_addr);
-                    // host_buff[in] = hostname;
-                    in = (in + 1) % num_args;
+                //     pthread_t tidsi;
+			    //     pthread_create(&tidsi, NULL, establish_connection, NULL);
 
-                    pthread_mutex_unlock(&mutex1);
-                    sem_post(&full);
-                }
+                //     sem_wait(&empty);
+                //     pthread_mutex_lock(&mutex1);
+                //     buff[in] = new_fd;
+                //     addr_buff[in] = *(addrs->ai_addr);
+                //     // host_buff[in] = hostname;
+                //     in = (in + 1) % num_args;
+
+                //     pthread_mutex_unlock(&mutex1);
+                //     sem_post(&full);
+                // }
             }
 
         }

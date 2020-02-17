@@ -318,13 +318,13 @@ int main(int argc, char * argv[]){
                 warn("ERROR on inet_ntoa\n");
             }
 
-            sem_wait(&empty);
-            pthread_mutex_lock(&mutex1);
-            buff[in] = cliaddr;
-            char_buffer[in] = buffer;
-            in = (in + 1) % 4;
-            pthread_mutex_unlock(&mutex1);
-            sem_post(&full);
+            // sem_wait(&empty);
+            // pthread_mutex_lock(&mutex1);
+            // buff[in] = cliaddr;
+            // char_buffer[in] = buffer;
+            // in = (in + 1) % 4;
+            // pthread_mutex_unlock(&mutex1);
+            // sem_post(&full);
 
             printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
             
