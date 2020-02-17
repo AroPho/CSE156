@@ -197,29 +197,31 @@ void *establish_connection(void *){
             }
 
             sending_packet(socket, request);
+            temp = recieve_packets(socket);
+            printf("%s", temp.c_str());
             
 
             // Starts recieving response from server
-            while(!done){
-                if(temp == ""){
-                    temp = get_head(socket);
-                }
-                if(temp == "" || temp.length() != (unsigned long) size_of_chunks){
-                    temp = "";
-                    done = true;
-                }
-                if(start < written){
-                    done = true;
-                }
-                if(start >= written && start < (written + size_of_chunks)){
-                    writing(temp, start, &written);
-                    // printf("%d", written);
-                    done = true;
-                }
-            }
-            if(temp == ""){
-                break;
-            }
+            // while(!done){
+            //     if(temp == ""){
+            //         temp = get_head(socket);
+            //     }
+            //     if(temp == "" || temp.length() != (unsigned long) size_of_chunks){
+            //         temp = "";
+            //         done = true;
+            //     }
+            //     if(start < written){
+            //         done = true;
+            //     }
+            //     if(start >= written && start < (written + size_of_chunks)){
+            //         writing(temp, start, &written);
+            //         // printf("%d", written);
+            //         done = true;
+            //     }
+            // }
+            // if(temp == ""){
+            //     break;
+            // }
         }
         if(written != length){
             warn("Connection to one of the servers has been lost"); 
