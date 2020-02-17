@@ -172,7 +172,7 @@ void *parse_recv(void *){
 	// int numbytes;
 	int end_header = 0;
 	int method_type = -1;
-	// char c;
+	char c;
 	string body;
 	string temp;
 	string filename = "no";
@@ -191,8 +191,6 @@ void *parse_recv(void *){
 		sem_post(&empty);
         string request_type = "";
 
-        printf("fuck");
-        printf("%s", temp.c_str());
 		// Start of Consumer consume code
 		try{
             end_header = 1;
@@ -252,7 +250,7 @@ void *parse_recv(void *){
 			// 	}
 
 				
-			//}	
+			// }	
 		}catch(...){
 			string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
 		    string header = "HTTP/1.1 500 Created\r\n" + content;
@@ -343,8 +341,6 @@ int main(int argc, char * argv[]){
             if (client_addr == NULL){
                 warn("ERROR on inet_ntoa\n");
             }
-
-            cout << buffer;
 
             sem_wait(&empty);
             pthread_mutex_lock(&mutex1);
