@@ -30,7 +30,7 @@ pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 void sending_packet(int sock, string msg, sockaddr_in client){
 	socklen_t clientlen = sizeof client;
 	char * client_addr = inet_ntoa(client.sin_addr);
-	printf("client address %s", client_addr);
+	// printf("client address %s", client_addr);
 	printf("%s", msg.c_str());
     sendto(sock, msg.c_str(), msg.length(), 0, (struct sockaddr *) &client, clientlen);
 }
@@ -190,7 +190,7 @@ void *parse_recv(void *){
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
         // string request_type = "";
-		printf("%s", temp.c_str());
+		// printf("%s", temp.c_str());
 		
 		// Start of Consumer consume code
 		try{
