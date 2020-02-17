@@ -325,6 +325,9 @@ int main(int argc, char * argv[]){
                     setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
                     //cout << "fuck";
+                    char buffin[1024];
+                    recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) NULL, NULL);
+                    printf("%s", buffin);
                     length = head_parse(new_fd);
                     if(length == -1){
                         new_fd = 0;
