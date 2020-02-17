@@ -105,7 +105,7 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
     if(type == 1){
         temp += "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
     }
-    printf("%s\n", temp.c_str());
+    // printf("%s\n", temp.c_str());
     sending_packet(sock, temp, server);
 
 }

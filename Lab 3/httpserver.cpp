@@ -177,8 +177,10 @@ void *parse_recv(void *){
 	string temp;
 	string filename = "no";
 	struct sockaddr_in client;
-    // socklen_t client_size;
+    //socklen_t client_size;
 	
+    cout << "fuck";
+
 	// This is the start of the thread code
 	while(1){
 		//Consumer code
@@ -190,7 +192,8 @@ void *parse_recv(void *){
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
         string request_type = "";
-
+        
+        cout << "here";
 		// Start of Consumer consume code
 		try{
             end_header = 1;
@@ -329,7 +332,8 @@ int main(int argc, char * argv[]){
             if (n < 0){
                 warn("ERROR in recvfrom");
             }
-
+            
+            cout << buffer;
             /* 
             * gethostbyaddr: determine who sent the datagram
             */
