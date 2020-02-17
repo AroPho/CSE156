@@ -330,6 +330,7 @@ int main(int argc, char * argv[]){
             bzero(buffer, MAXLINE);
             n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size);
             if (n > 0){
+                cout << "1";
                 sem_wait(&empty);
                 pthread_mutex_lock(&mutex1);
                 buff[in] = cliaddr;
