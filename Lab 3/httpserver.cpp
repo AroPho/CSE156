@@ -284,7 +284,7 @@ int main(int argc, char * argv[]){
 			bzero(input, 1024);
 			n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
 			//parse_recv(new_fd);
-			sendto(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, addr_size);
+			// sendto(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, addr_size);
 			if(n > 0){
 				//printf("%d\n", new_fd);
 				sem_wait(&empty);
@@ -295,7 +295,7 @@ int main(int argc, char * argv[]){
 				pthread_mutex_unlock(&mutex1);
 				sem_post(&full);	
 			}
-			printf("%s", input);
+			// printf("%s", input);
 		}
 		close(main_socket);
 		free(buff);
