@@ -44,6 +44,10 @@ void sending_packet(int sock, string msg){
     printf("nani");
 }
 
+string recieve_packets(int sock){
+    return "";
+}
+
 // prints out http error response codes
 void error_print(int err, int socket){
 	if(err == 400){
@@ -111,31 +115,6 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
 
 }
 
-int head_parse(int sock, sockaddr server){
-    socklen_t server_size = sizeof server;
-    int numbytes= 0;
-    string temp = "";
-    char c;
-    int end_header = 0;
-    printf("here");
-    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) &server, &server_size) != 0)){
-        printf("%c", c);
-        if(end_header != 1){
-            temp += c;
-        }
-        // Checks for end of header
-        if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-            end_header = 1;
-        }
-        if(end_header == 1){
-            if(error_catch(temp) == 1){
-                return -1;
-            }
-            return catch_length(temp);
-        }
-    }
-    return -1;
-}
 string get_head(int sock){
     // socklen_t size_server = sizeof(server);
     string temp = "";
@@ -325,11 +304,11 @@ int main(int argc, char * argv[]){
                     tv.tv_usec = 0;
                     setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
                     http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
-                    //cout << "fuck";
-                    // char buffin[1024];
-                    // recvfrom(new_fd, buffin, 1024, 0,(struct sockaddr *) (addrs->ai_addr), &(addrs->ai_addrlen));
-                    // printf("%s", buffin);
-                    length = head_parse(new_fd, *(addrs->ai_addr));
+                    
+                    char buffin[1024];
+                    recvfrom(new_fd, &buffin, 1024, 0, (struct sockaddr *) (addrs->ai_addr), &(addrs->ai_addrlen));
+                    string temp = buffin;
+                    length = catch_length(temp);
                     if(length == -1){
                         new_fd = 0;
                     }
