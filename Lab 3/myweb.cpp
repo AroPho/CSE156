@@ -124,9 +124,9 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
 string get_head(string full_message){
     string temp;
     int first = full_message.find("\r\n\r\n") + 4;
-    int length = catch_length(full_message.substr(0, first));
-    printf("%d\n", length);
-    temp = full_message.substr(first, length);
+    int local_length = catch_length(full_message.substr(0, first));
+    printf("%d\n", local_length);
+    temp = full_message.substr(first, local_length);
     return temp;
 }
 
