@@ -169,15 +169,15 @@ int get_put_checker(string line){
 }
 
 void *parse_recv(void *){
-	int numbytes;
+	// int numbytes;
 	int end_header = 0;
 	int method_type = -1;
-	char c;
+	// char c;
 	string body;
 	string temp;
 	string filename = "no";
 	struct sockaddr_in client;
-    socklen_t client_size;
+    // socklen_t client_size;
 	
 	// This is the start of the thread code
 	while(1){
@@ -191,6 +191,7 @@ void *parse_recv(void *){
 		sem_post(&empty);
         string request_type = "";
 
+        cout << temp;
 		// Start of Consumer consume code
 		try{
             end_header = 1;
@@ -342,25 +343,25 @@ int main(int argc, char * argv[]){
                 warn("ERROR on inet_ntoa\n");
             }
 
-            // sem_wait(&empty);
-            // pthread_mutex_lock(&mutex1);
-            // buff[in] = cliaddr;
-            // char_buffer[in] = buffer;
-            // in = (in + 1) % 4;
-            // pthread_mutex_unlock(&mutex1);
-            // sem_post(&full);
+            sem_wait(&empty);
+            pthread_mutex_lock(&mutex1);
+            buff[in] = cliaddr;
+            char_buffer[in] = buffer;
+            in = (in + 1) % 4;
+            pthread_mutex_unlock(&mutex1);
+            sem_post(&full);
 
-            printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
+            // printf("server received datagram from %s (%s)\n", hostp->h_name, client_addr);
             
-            printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
+            // printf("server received %zu/%d bytes: %s\n", strlen(buffer), n, buffer);
 
-            /* 
-            * sendto: echo the input back to the client 
-            */
-            n = sendto(main_socket, buffer, strlen(buffer), 0, 
-                (struct sockaddr *) &cliaddr, len);
-            if (n < 0) 
-            warn("ERROR in sendto");	
+            // /* 
+            // * sendto: echo the input back to the client 
+            // */
+            // n = sendto(main_socket, buffer, strlen(buffer), 0, 
+            //     (struct sockaddr *) &cliaddr, len);
+            // if (n < 0) 
+            // warn("ERROR in sendto");	
 			
 		}
 		close(main_socket);
