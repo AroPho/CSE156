@@ -116,7 +116,7 @@ int head_parse(int sock){
     char c;
     int end_header = 0;
     while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, NULL) != 0)){
-        // printf("%c", c);
+        printf("%c", c);
         if(end_header != 1){
             temp += c;
         }
@@ -324,7 +324,7 @@ int main(int argc, char * argv[]){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
-                    // cout << length << "\n";
+                    cout << length << "\n";
                     first_connect = true;
                 }
 
