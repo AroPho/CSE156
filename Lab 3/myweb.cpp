@@ -138,7 +138,7 @@ string get_head(int sock, sockaddr server){
     int end_header = 0;
     char c;
     int local_length = -1 ;
-    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, &size_server)) != 0){
+    while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) &server, &size_server)) != 0){
         // printf("%c", c);
         temp += c;
         // Checks for end of header
@@ -274,7 +274,7 @@ int main(int argc, char * argv[]){
         ifstream ips(ip_file);
         string line;
 
-        if(ips.is_open()){
+        if(!ips.is_open()){
             warn("Ip file does not exist");
             exit(0);
         }
