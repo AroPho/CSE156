@@ -179,11 +179,12 @@ void *parse_recv(void *){
 	struct sockaddr_in client;
     //socklen_t client_size;
 	
-    cout << "fuck";
+    // cout << "fuck";
 
 	// This is the start of the thread code
 	while(1){
 		//Consumer code
+        cout << "fuck";
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
 		client = buff[out];
@@ -317,7 +318,7 @@ int main(int argc, char * argv[]){
 
 	try{
 		
-		for(int i = 0; i < num_args; i++){
+		for(int i = 0; i < 1; i++){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
