@@ -191,7 +191,8 @@ void *parse_recv(void *){
 		sem_post(&empty);
         string request_type = "";
 
-        cout << temp;
+        printf("fuck");
+        printf("%s", temp.c_str());
 		// Start of Consumer consume code
 		try{
             end_header = 1;
