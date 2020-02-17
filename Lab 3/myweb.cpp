@@ -41,7 +41,6 @@ pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
 void sending_packet(int sock, string msg){
     sendto(sock, msg.c_str(), msg.length(), 0, (const struct sockaddr *) NULL, 0);
-    printf("nani");
 }
 
 string recieve_packets(int sock){
@@ -130,7 +129,7 @@ string get_head(int sock){
     char c;
     int local_length = -1 ;
     while((numbytes = recvfrom(sock, &c, 1, 0, (struct sockaddr *) NULL, 0)) != 0){
-        // printf("%c", c);
+        printf("%c", c);
         temp += c;
         // Checks for end of header
         if(temp.length() == (unsigned long) local_length){
