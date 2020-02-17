@@ -27,7 +27,7 @@ int in = 0;
 int current_index = 0; 
 int sockfd;
 sem_t empty, full;
-struct sockaddr_in *buff;
+struct sockaddr_in buff[4];
 char* char_buffer[4];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
@@ -174,7 +174,7 @@ void *parse_recv(void *){
 	int method_type = -1;
 	char c;
 	string body;
-	string temp = "";
+	char* temp;
 	string filename = "no";
 	struct sockaddr_in client;
     socklen_t client_size;
@@ -188,7 +188,7 @@ void *parse_recv(void *){
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
 		client = buff[out];
-        temp += char_buffer[out];
+        temp = char_buffer[out];
 		out = (out + 1) % num_args;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
@@ -286,7 +286,7 @@ int main(int argc, char * argv[]){
 
 
 	// size_t n = num_args;
-	buff = (struct sockaddr_in *) malloc(sizeof(struct sockaddr_in *)*(num_args*800));
+	
 	
 	
 	//Following codes defines server and sockets for client to connect to
