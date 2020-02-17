@@ -307,7 +307,7 @@ int main(int argc, char * argv[]){
             if (n < 0){
                 warn("ERROR in recvfrom");
             }
-            printf("%s", n);
+            printf("%s", buffer);
 
             /* 
             * gethostbyaddr: determine who sent the datagram
