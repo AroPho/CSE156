@@ -184,7 +184,6 @@ void *parse_recv(void *){
 	// This is the start of the thread code
 	while(1){
 		//Consumer code
-        cout << "fuck";
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
 		client = buff[out];
@@ -321,13 +320,12 @@ int main(int argc, char * argv[]){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
-
+        bzero(buffer, MAXLINE);
 		//Searches for any connection attempts to server and creates a socket to connect to client
-		while(main_socket > 0){
-                /*
+		while(1){
+            /*
             * recvfrom: receive a UDP datagram from a client
             */
-            bzero(buffer, MAXLINE);
             n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size);
             if (n > 0){
                 // cout << "1";
@@ -342,7 +340,7 @@ int main(int argc, char * argv[]){
             }
             
             
-            cout << buffer;
+            // cout << buffer;
             /* 
             * gethostbyaddr: determine who sent the datagram
             */
