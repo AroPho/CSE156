@@ -41,6 +41,7 @@ pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
 
 void sending_packet(int sock, string msg){
     sendto(sock, msg.c_str(), msg.length(), 0, (const struct sockaddr *) NULL, 0);
+    printf("nani");
 }
 
 // prints out http error response codes
