@@ -188,7 +188,7 @@ void *parse_recv(void *){
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
 		client = buff[out];
-        temp = char_buffer[out];
+        temp += char_buffer[out];
 		out = (out + 1) % num_args;
 		pthread_mutex_unlock(&mutex1);
 		sem_post(&empty);
@@ -197,63 +197,63 @@ void *parse_recv(void *){
         cout << "here";
 		// Start of Consumer consume code
 		try{
-            // end_header = 1;
-            // if(end_header == 1 && method_type == -1){ // Parses header for request type
-            //     method_type = get_put_checker(temp);
-            // }
-            // if(method_type == 1 && end_header == 1){// GET Method function call
-            //     method_type = -1;
-            //     end_header = 0;
-            //     //printf("%s\n", temp.c_str());
-            //     get_parse(temp, sockfd, client);
-            //     temp = "";
-            // }
-            // if(method_type == 2 && end_header == 1){ // HEAD Method function call
-            //     head_parse(temp, sockfd, client);
-            //     temp = "";
-            //     method_type = -1;
-            //     end_header = 0;
-            // }
-            // if(method_type == 0 && end_header == 1){ // Checks for bad requests
-            //     error_print(400, sockfd, client);
-            //     end_header = 0;
-            //     method_type = -1;
-            //     temp = "";
-            // }
-            client_size = sizeof(client);
-			while((numbytes = recv(sockfd, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
-				// printf("%c", c);
-				// printf("here");
-				if(end_header != 1){
-					temp += c;
-				}
-				if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-					end_header = 1;
-                    printf("%s", temp.c_str());
-				}
-				if(end_header == 1 && method_type == -1){ // Parses header for request type
-					method_type = get_put_checker(temp);
-				}
-				if(method_type == 1 && end_header == 1){// GET Method function call
-					method_type = -1;
-					end_header = 0;
-					//printf("%s\n", temp.c_str());
-					get_parse(temp, sockfd, client);
-					temp = "";
-				}
-				if(method_type == 2 && end_header == 1){ // HEAD Method function call
-					head_parse(temp, sockfd, client);
-					temp = "";
-					method_type = -1;
-					end_header = 0;
-				}
-				if(method_type == 0 && end_header == 1){ // Checks for bad requests
-					error_print(400, sockfd, client);
-					end_header = 0;
-					method_type = -1;
-					temp = "";
-				}	
-			}	
+            end_header = 1;
+            if(end_header == 1 && method_type == -1){ // Parses header for request type
+                method_type = get_put_checker(temp);
+            }
+            if(method_type == 1 && end_header == 1){// GET Method function call
+                method_type = -1;
+                end_header = 0;
+                //printf("%s\n", temp.c_str());
+                get_parse(temp, sockfd, client);
+                temp = "";
+            }
+            if(method_type == 2 && end_header == 1){ // HEAD Method function call
+                head_parse(temp, sockfd, client);
+                temp = "";
+                method_type = -1;
+                end_header = 0;
+            }
+            if(method_type == 0 && end_header == 1){ // Checks for bad requests
+                error_print(400, sockfd, client);
+                end_header = 0;
+                method_type = -1;
+                temp = "";
+            }
+            // client_size = sizeof(client);
+			// while((numbytes = recv(sockfd, &c, 1, 0)) != 0){ //Goes through first line of header passed in to server
+			// 	// printf("%c", c);
+			// 	// printf("here");
+			// 	if(end_header != 1){
+			// 		temp += c;
+			// 	}
+			// 	if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+			// 		end_header = 1;
+            //         printf("%s", temp.c_str());
+			// 	}
+			// 	if(end_header == 1 && method_type == -1){ // Parses header for request type
+			// 		method_type = get_put_checker(temp);
+			// 	}
+			// 	if(method_type == 1 && end_header == 1){// GET Method function call
+			// 		method_type = -1;
+			// 		end_header = 0;
+			// 		//printf("%s\n", temp.c_str());
+			// 		get_parse(temp, sockfd, client);
+			// 		temp = "";
+			// 	}
+			// 	if(method_type == 2 && end_header == 1){ // HEAD Method function call
+			// 		head_parse(temp, sockfd, client);
+			// 		temp = "";
+			// 		method_type = -1;
+			// 		end_header = 0;
+			// 	}
+			// 	if(method_type == 0 && end_header == 1){ // Checks for bad requests
+			// 		error_print(400, sockfd, client);
+			// 		end_header = 0;
+			// 		method_type = -1;
+			// 		temp = "";
+			// 	}	
+			// }	
 		}catch(...){
 			string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
 		    string header = "HTTP/1.1 500 Created\r\n" + content;
@@ -312,12 +312,12 @@ int main(int argc, char * argv[]){
     int n;
     // int len = sizeof(cliaddr);
     hostent * hostp;
-    char* client_addr;
+    // char* client_addr;
 	
 
 	try{
 		
-		for(int i = 0; i < 1; i++){
+		for(int i = 0; i < num_args; i++){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
 		}
@@ -330,15 +330,15 @@ int main(int argc, char * argv[]){
             bzero(buffer, MAXLINE);
             n = recvfrom(main_socket, buffer, MAXLINE, 0, (struct sockaddr *) &cliaddr, &addr_size);
             if (n > 0){
-                cout << "1";
+                // cout << "1";
                 sem_wait(&empty);
                 pthread_mutex_lock(&mutex1);
                 buff[in] = cliaddr;
                 char_buffer[in] = buffer;
-                in = (in + 1) % 4;
+                in = (in + 1) % num_args;
                 pthread_mutex_unlock(&mutex1);
                 sem_post(&full);
-                cout << "2";
+                // cout << "2";
             }
             
             
