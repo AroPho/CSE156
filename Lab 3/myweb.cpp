@@ -206,7 +206,7 @@ void *establish_connection(void *){
                 if(beginning < written){
                     break;
                 }
-                if(beginning >= written){
+                if(beginning = written){
                     pthread_mutex_lock(&mutex_write);
                     writing(temp, start, &written);
                     pthread_mutex_unlock(&mutex_write);
