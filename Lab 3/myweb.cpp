@@ -157,6 +157,7 @@ void *establish_connection(void *){
     string temp = "";
     string request = "";
     sockaddr server;
+    bool done = false;
 
 
     while(1){
@@ -187,7 +188,7 @@ void *establish_connection(void *){
                 offset = (offset + 1) % num_args;
                 pthread_mutex_unlock(&mutex_offest);
                 // printf("%d", offset);
-
+                done = false;
                 if((length - written) < size_of_chunks){
                     size_of_chunks = length - written;
                     request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(length) + "/" + to_string(length) + "\r\n\r\n";
@@ -197,18 +198,21 @@ void *establish_connection(void *){
 
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
-                // if(temp == ""){
-                //     break;
-                // }
+                
                 temp = get_head(temp, &beginning, &end);
-                // printf("%s\n\n", temp.c_str());
-                if(beginning == written){
-                    printf("%d\n", written);
-                    // printf("%s\n\n", temp.c_str());
-                    pthread_mutex_lock(&mutex_write);
-                    writing(temp, beginning, &written);
-                    pthread_mutex_unlock(&mutex_write);
-                    temp = "";
+                while(!done){
+                    if(temp.length() != size_of_chunks){
+                        break;
+                    }
+                    if(beginning == written){
+                        printf("%d\n", written);
+                        // printf("%s\n\n", temp.c_str());
+                        pthread_mutex_lock(&mutex_write);
+                        writing(temp, beginning, &written);
+                        pthread_mutex_unlock(&mutex_write);
+                        temp = "";
+                        done = true;
+                    }
                 }
             }
             if(written != length){
