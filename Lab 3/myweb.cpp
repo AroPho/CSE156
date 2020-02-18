@@ -206,7 +206,7 @@ void *establish_connection(void *){
                     printf("%d\n", written);
                     // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
-                    writing(temp, start, &written);
+                    writing(temp, beginning, &written);
                     pthread_mutex_unlock(&mutex_write);
                     temp = "";
                 }
