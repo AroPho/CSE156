@@ -201,20 +201,20 @@ void *establish_connection(void *){
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
                 temp = get_head(temp, &beginning, &end);
-                if(temp.length() != (unsigned long)size_of_chunks){
-                    request = "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start + temp.length()) + "-" + to_string(ending) + "/" + to_string(length) + "\r\n\r\n";
-                    sending_packet(socket, request);
-                    string shit = recieve_packets(socket);
-                    temp += get_head(shit, &start, &end);
-                }
-                if(beginning == written && temp.length() == (unsigned long) size_of_chunks){
-                    //printf("written %d\n", written);
-                    // printf("%s\n\n", temp.c_str());
-                    pthread_mutex_lock(&mutex_write);
-                    writing(temp, beginning, &written);
-                    pthread_mutex_unlock(&mutex_write);
-                    temp = "";
-                    done = true;
+                
+                while(!done){
+                    if(beginning < written){
+                        break;
+                    }
+                    if(beginning == written && temp.length() == (unsigned long) size_of_chunks){
+                        //printf("written %d\n", written);
+                        // printf("%s\n\n", temp.c_str());
+                        pthread_mutex_lock(&mutex_write);
+                        writing(temp, beginning, &written);
+                        pthread_mutex_unlock(&mutex_write);
+                        temp = "";
+                        done = true;
+                    }
                 }
                 
             }
@@ -329,10 +329,10 @@ int main(int argc, char * argv[]){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
-                    if(size_of_chunks > 200){
-                        num_args = (length/200);
-                        size_of_chunks = 200;
-                    }
+                    // if(size_of_chunks > 200){
+                    //     num_args = (length/200);
+                    //     size_of_chunks = 200;
+                    // }
                     // cout << length << "\n";
                     first_connect = true;
                 }

@@ -98,6 +98,7 @@ void printing(int type, int f, int socket, int beginning, int end, sockaddr_in c
 	if(type == 2){ // For HEAD requests
 		header = "HTTP/1.1 200 OK\r\n" + content;
 	}
+	printf("%lu ", temp.length());
     sending_packet(socket, header, client);
 }
 
