@@ -173,7 +173,7 @@ void *establish_connection(void *){
 
 
         int beginning, end;
-        
+
         try{
             while(written < length){
                 int start = 0;
@@ -299,6 +299,8 @@ int main(int argc, char * argv[]){
                     new_fd = 0;
                 }
 
+                setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+
                 // char c = 'a';
                 // string temp = "";
                 // while(1){
@@ -312,10 +314,6 @@ int main(int argc, char * argv[]){
                 // sendto(new_fd, temp.c_str(), temp.length(), 0, (struct sockaddr *)NULL, 0);
 
                 if(!first_connect && new_fd > 0){ 
-                    struct timeval tv;
-                    tv.tv_sec = 1;
-                    tv.tv_usec = 0;
-                    setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
                     http_requests(new_fd, 0, filename, hostname);
                     
                     // char buffin[1024];
@@ -337,8 +335,6 @@ int main(int argc, char * argv[]){
 
                     pthread_t tidsi;
 			        pthread_create(&tidsi, NULL, establish_connection, NULL);
-
-                    setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 
                     sem_wait(&empty);
                     pthread_mutex_lock(&mutex1);
