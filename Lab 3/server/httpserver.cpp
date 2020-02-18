@@ -31,10 +31,10 @@ void sending_packet(int sock, string msg, sockaddr_in client){
 	socklen_t clientlen = sizeof client;
 	// char * client_addr = inet_ntoa(client.sin_addr);
 	// printf("client address %s", client_addr);
-	// printf("%s", msg.c_str());
+	printf("%s", msg.c_str());
 	
     int n = sendto(sock, msg.c_str(), msg.length(), 0, (struct sockaddr *) &client, clientlen);
-	printf("%d\n", n);
+	// printf("%d\n", n);
 }
 
 // Catches Range requests 
