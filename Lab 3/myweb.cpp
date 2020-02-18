@@ -203,10 +203,12 @@ void *establish_connection(void *){
                 }
                 temp = get_head(temp, &beginning, &end);
                 // printf("%s", temp.c_str());
-
-                if(beginning <= written){
+                if(beginning < written){
+                    break;
+                }
+                if(beginning >= written){
                     pthread_mutex_lock(&mutex_write);
-                        writing(temp, start, &written);
+                    writing(temp, start, &written);
                     pthread_mutex_unlock(&mutex_write);
                     temp = "";
                 }
