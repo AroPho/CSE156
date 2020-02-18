@@ -145,15 +145,21 @@ void head_parse(string header, int socket, sockaddr_in client){
 		temp = temp.substr(1);
 	}
 	// printf("%s\n", temp.c_str());	
-	int f = open(temp.c_str(), O_RDONLY);
+	FILE* f = fopen(temp.c_str(), "r");
 	
 	if(errno == 13){ // Server does not have proper permissions
     	error_print(403, socket, client);
     }
-	if(f == -1){ // File not Found
+	if(f == NULL){ // File not Found
 		error_print(404, socket, client);
 	}else{
-    	printing(2, f, socket, 0, -1, client); // Calls file to start sending client data
+    	fseek(f, 0L, SEEK_END); 
+  
+		// calculating the size of the file 
+		long int res = ftell(f); 
+		string content = "Content-Length: " + to_string(res) + "\r\n\r\n";
+		string head = "HTTP/1.1 200 OK\r\n" + content;
+		sending_packet(socket, head, client);
    	}
 }
 
