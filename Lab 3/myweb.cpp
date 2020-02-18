@@ -196,11 +196,11 @@ void *establish_connection(void *){
 
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
-                printf("%d\n", temp.length());
+                printf("length %d\n", temp.length());
                 temp = get_head(temp, &beginning, &end);
                 
                 if(beginning == written){
-                    printf("%d\n", written);
+                    printf("written %d\n", written);
                     // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
                     writing(temp, beginning, &written);
@@ -321,6 +321,10 @@ int main(int argc, char * argv[]){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
+                    if(size_of_chunks > 400){
+                        num_args = length/400;
+                        size_of_chunks = length / num_args;
+                    }
                     // cout << length << "\n";
                     first_connect = true;
                 }
