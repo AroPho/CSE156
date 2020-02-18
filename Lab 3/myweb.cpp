@@ -119,9 +119,6 @@ int catch_length(string line){
 // Creates appropriate GET and HEAD HTTP Request
 
 void writing(string temp, int begin, int* local_written){
-    if(written == 0){
-        remove(filename.c_str());
-    }
     printf("%s", temp.c_str());
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
@@ -253,7 +250,7 @@ int main(int argc, char * argv[]){
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_DGRAM;
 
-        
+        remove(filename.c_str());
         buff = (int*) malloc(sizeof(int)*(num_args*800));
         // host_buff = (string*) malloc(sizeof(string)*(num_args*800));
 
