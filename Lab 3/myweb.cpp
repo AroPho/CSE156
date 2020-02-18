@@ -123,6 +123,7 @@ void writing(string temp, int begin, int* local_written){
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
     close(file_num);
+    printf("%d\n", local_written);
 
 }
 
@@ -198,16 +199,16 @@ void *establish_connection(void *){
                 temp = recieve_packets(socket);
                 temp = get_head(temp, &beginning, &end);
                 // printf("%s\n", temp.c_str());
-                printf("%d %d\n", beginning, written);
-                if(temp.length() < (unsigned long) size_of_chunks){
-                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(temp.length()) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
-                    sending_packet(socket, request);
-                    temp += recieve_packets(socket);
-                }
+                //printf("%d %d\n", beginning, written);
+                // if(temp.length() < (unsigned long) size_of_chunks){
+                //     request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(temp.length()) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
+                //     sending_packet(socket, request);
+                //     temp += recieve_packets(socket);
+                // }
                 
                 if(beginning == written){
                     //printf("written %d\n", written);
-                    printf("%s\n\n", temp.c_str());
+                    // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
                     writing(temp, beginning, &written);
                     pthread_mutex_unlock(&mutex_write);
