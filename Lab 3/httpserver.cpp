@@ -90,7 +90,8 @@ void printing(int type, int f, int socket, int beginning, int end, sockaddr_in c
     string content = "Content-Length: " + to_string(size) + "\r\n\r\n";
 	
 	if(type == 1){ // For GET requests
-    	header = "HTTP/1.1 200 OK\r\n" + content + temp;
+		string range = "Content-Range: " + to_string(beginning) + "-" + to_string(end) + "/" + to_string(size) + "\r\n";
+    	header = "HTTP/1.1 200 OK\r\n" + range + content + temp;
 	}
 	if(type == 2){ // For HEAD requests
 		header = "HTTP/1.1 200 OK\r\n" + content;

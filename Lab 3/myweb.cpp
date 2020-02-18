@@ -37,6 +37,7 @@ string filename;
 //int patch_offset= 0;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_write = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_offest = PTHREAD_MUTEX_INITIALIZER;
 
 
 void sending_packet(int sock, string msg){
@@ -81,6 +82,25 @@ int error_catch(string head){
     return 0;
 }
 
+void catch_range(string line, int *start, int *end){
+	int temp;
+	string temp_string;
+	if((temp = line.find("Content-Range")) >= 0){
+		temp_string = line.substr(temp);
+		int first = (temp_string.find("Content-Range:") + 15);// Used to get filesize
+		string temp2 = temp_string.substr(first);
+		int middle = (temp2.find("-") + first);
+		int last = ((temp_string.find("/")) - middle) -1 ;
+		string ftemp = temp_string.substr(first,last);
+		// printf("%d, %d\n", middle - first, last);
+		*start = stoi(temp_string.substr(first, middle - first));
+		*end = stoi(temp_string.substr(middle + 1, last)); 
+	}else{
+		*start = -1;
+		*end = -1;
+	}
+}
+
 // Checks if string contains length of file
 int catch_length(string line){
 	int temp;
@@ -121,10 +141,11 @@ void http_requests(int sock, int type, string file, string hostname, sockaddr se
 
 }
 
-string get_head(string full_message){
+string get_head(string full_message, int * beginning, int* end){
     string temp;
     int first = full_message.find("\r\n\r\n") + 4;
     int local_length = catch_length(full_message.substr(0, first));
+    catch_range(full_message.substr(0, first), beginning, end);
     printf("%d\n", local_length);
     temp = full_message.substr(first, local_length);
     return temp;
@@ -154,60 +175,52 @@ void *establish_connection(void *){
         struct timeval tv;
         tv.tv_sec = 1;
         tv.tv_usec = 0;
-
-        while(written < length && setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv) >= 0){
-            int start = 0;
-            temp = "";
-            request = "";
-            bool done = false;
-
-            pthread_mutex_lock(&mutex_write);
+        int beginning, end;
+        try{
+            while(written < length && setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv) >= 0){
+                int start = 0;
+                temp = "";
+                request = "";
+                bool done = false;
+                
+                pthread_mutex_lock(&mutex_offest);
                 start = size_of_chunks*offset;
                 offset = (offset + 1) % num_args;
+                pthread_mutex_unlock(&mutex_offest);
                 // printf("%d", offset);
-            pthread_mutex_unlock(&mutex_write);
 
-            if((length - written) < size_of_chunks){
-                size_of_chunks = length - written;
-                request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(length) + "/" + to_string(length) + "\r\n\r\n";
-            }else{
-                request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
+                if((length - written) < size_of_chunks){
+                    size_of_chunks = length - written;
+                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(length) + "/" + to_string(length) + "\r\n\r\n";
+                }else{
+                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
+                }
+
+                sending_packet(socket, request);
+                temp = recieve_packets(socket);
+                if(temp == ""){
+                    break;
+                }
+                temp = get_head(temp, &beginning, &end);
+                // printf("%s", temp.c_str());
+
+                if(beginning <= written){
+                    pthread_mutex_lock(&mutex_write);
+                        writing(temp, start, &written);
+                    pthread_mutex_unlock(&mutex_write);
+
+                }
             }
-
-            sending_packet(socket, request);
-            temp = recieve_packets(socket);
-            temp = get_head(temp);
-            printf("%s", temp.c_str());
-
-            
-
-            // Starts recieving response from server
-            // while(!done){
-            //     if(temp == ""){
-            //         temp = get_head(socket);
-            //     }
-            //     if(temp == "" || temp.length() != (unsigned long) size_of_chunks){
-            //         temp = "";
-            //         done = true;
-            //     }
-            //     if(start < written){
-            //         done = true;
-            //     }
-            //     if(start >= written && start < (written + size_of_chunks)){
-            //         writing(temp, start, &written);
-            //         // printf("%d", written);
-            //         done = true;
-            //     }
-            // }
-            // if(temp == ""){
-            //     break;
-            // }
-        }
-        if(written != length){
-            warn("Connection to one of the servers has been lost"); 
-        }
-        if(written == length){
-            exit(1);
+            if(written != length){
+                warn("Connection to one of the servers has been lost"); 
+            }
+            if(written == length){
+                exit(1);
+            }
+        }catch(...){
+            string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
+		    string header = "HTTP/1.1 500 Created\r\n" + content;
+			sending_packet(socket, header);
         }
     }
 }
