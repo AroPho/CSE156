@@ -123,7 +123,7 @@ void writing(string temp, int begin, int* local_written){
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
     close(file_num);
-    printf("%d\n", *local_written);
+    printf("%lu %d\n", temp.length(), *local_written);
 
 }
 
