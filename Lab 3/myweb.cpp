@@ -203,7 +203,7 @@ void *establish_connection(void *){
                     break;
                 }
                 temp = get_head(temp, &beginning, &end);
-                // printf("%s", temp.c_str());
+                printf("%s\n\n", temp.c_str());
                 if(beginning < written){
                     break;
                 }
