@@ -124,7 +124,8 @@ void writing(string temp, int begin, int* local_written){
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
     close(file_num);
-    printf("%lu %d\n", temp.length(), *local_written);
+    // printf("%lu %d\n", temp.length(), *local_written);
+    printf("%d\n", begin);
 
 }
 
@@ -347,7 +348,7 @@ int main(int argc, char * argv[]){
                         size_of_chunks = 900;
                     }
                     offset_array = new int[num_args + 1];
-                    for(int i = 0; i < sizeof(offset_array);i++){
+                    for(int i = 0; i < (int) sizeof(offset_array);i++){
                         offset_array[i] = 0;
                     }
                     cout << length << "\n";
