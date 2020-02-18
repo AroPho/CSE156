@@ -208,7 +208,7 @@ void *establish_connection(void *){
                     pthread_mutex_lock(&mutex_write);
                         writing(temp, start, &written);
                     pthread_mutex_unlock(&mutex_write);
-                    temp == "";
+                    temp = "";
                 }
             }
             if(written != length){
