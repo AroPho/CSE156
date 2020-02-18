@@ -201,6 +201,7 @@ void *establish_connection(void *){
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
                 temp = get_head(temp, &beginning, &end);
+
                 
                 while(!done){
                     if(beginning < written){
@@ -329,11 +330,11 @@ int main(int argc, char * argv[]){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
-                    // if(size_of_chunks > 200){
-                    //     num_args = (length/200);
-                    //     size_of_chunks = 200;
-                    // }
-                    // cout << length << "\n";
+                    if(size_of_chunks > 200){
+                        num_args = (length/200);
+                        size_of_chunks = 200;
+                    }
+                    cout << length << "\n";
                     first_connect = true;
                 }
 
