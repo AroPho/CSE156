@@ -28,7 +28,7 @@ int offset = 0;
 int length = -1;
 sem_t empty, full;
 int * buff;
-sockaddr *addr_buff;
+//sockaddr *addr_buff;
 // string * host_buff;
 int written = 0;
 int size_of_chunks;
@@ -156,7 +156,7 @@ void *establish_connection(void *){
     string hostname;
     string temp = "";
     string request = "";
-    sockaddr server;
+    // sockaddr server;
     bool done = false;
 
 
@@ -165,7 +165,7 @@ void *establish_connection(void *){
 		sem_wait(&full);
 		pthread_mutex_lock(&mutex1);
         socket = buff[out];
-        server = addr_buff[out];
+        // server = addr_buff[out];
         // hostname = host_buff[out];
         out = (out + 1) % num_args;
         pthread_mutex_unlock(&mutex1);
@@ -201,7 +201,7 @@ void *establish_connection(void *){
                 
                 temp = get_head(temp, &beginning, &end);
                 while(!done){
-                    if(temp.length() != (unsigned long) size_of_chunks){
+                    if(temp.length() != (unsigned long) size_of_chunks || beginning < written){
                         break;
                     }
                     if(beginning == written){
@@ -249,7 +249,7 @@ int main(int argc, char * argv[]){
     
     try{
 
-        struct addrinfo hints, *addrs;
+        struct sockaddr_in servaddr;
         memset(&hints, 0,sizeof hints);
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_DGRAM;
@@ -272,7 +272,7 @@ int main(int argc, char * argv[]){
         sem_init(&empty, 0, num_args);
 	    sem_init(&full, 0, 0);
 
-        addr_buff = (struct sockaddr *) malloc(sizeof(struct sockaddr *)*(num_args*800));
+        // addr_buff = (struct sockaddr *) malloc(sizeof(struct sockaddr *)*(num_args*800));
 
         while(written != length){
             while(getline(ips, line)){
@@ -283,12 +283,17 @@ int main(int argc, char * argv[]){
                 // cout << port;
                 // printf("%s", hostname.c_str());
 
-                getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
-                new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
+                bzero(&servaddr, sizeof(servaddr)); 
+                servaddr.sin_addr.s_addr = inet_addr(hostname.c_str()); 
+                servaddr.sin_port = htons(stoi(port)); 
+                servaddr.sin_family = AF_INET; 
+                
+                // create datagram socket 
+                new_fd = socket(AF_INET, SOCK_DGRAM, 0);
 
                 int does_it_work;
                 
-                if((does_it_work = connect(new_fd,addrs->ai_addr,addrs->ai_addrlen)) == -1){
+                if((does_it_work = connect(new_fd,(struct sockaddr *)&servaddr, sizeof(servaddr))) == -1){
                     new_fd = 0;
                 }
 
@@ -334,7 +339,7 @@ int main(int argc, char * argv[]){
                     sem_wait(&empty);
                     pthread_mutex_lock(&mutex1);
                     buff[in] = new_fd;
-                    addr_buff[in] = *(addrs->ai_addr);
+                    // addr_buff[in] = (struct sockaddr) servaddr;
                     // host_buff[in] = hostname;
                     in = (in + 1) % num_args;
 
