@@ -197,10 +197,10 @@ void *establish_connection(void *){
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
                 temp = get_head(temp, &beginning, &end);
-                printf("%s\n", temp.c_str());
+                // printf("%s\n", temp.c_str());
                 printf("%d %d\n", beginning, written);
                 
-                if(beginning == written){
+                if(beginning == written && temp.length() == (unsigned long) size_of_chunks){
                     //printf("written %d\n", written);
                     //printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
