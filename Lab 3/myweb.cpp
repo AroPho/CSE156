@@ -200,7 +200,7 @@ void *establish_connection(void *){
                 temp = get_head(temp, &beginning, &end);
                 
                 if(beginning == written){
-                    // printf("%d\n", written);
+                    printf("%d\n", written);
                     // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
                     writing(temp, beginning, &written);
