@@ -196,7 +196,7 @@ void *establish_connection(void *){
 
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
-                
+                printf("%d\n", temp.length())
                 temp = get_head(temp, &beginning, &end);
                 
                 if(beginning <= written){
