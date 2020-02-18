@@ -202,6 +202,13 @@ void *establish_connection(void *){
                 temp = recieve_packets(socket);
                 temp = get_head(temp, &beginning, &end);
 
+                if((unsigned long) size_of_chunks != temp.length()){
+                    pthread_mutex_lock(&mutex_offest);
+                    offset = (start/size_of_chunks);
+                    pthread_mutex_unlock(&mutex_offest);
+                    done = true;
+                }
+
                 
                 while(!done){
                     if(beginning < written){
