@@ -176,8 +176,9 @@ void *establish_connection(void *){
         tv.tv_sec = 1;
         tv.tv_usec = 0;
         int beginning, end;
+        setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
         try{
-            while(written < length && setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv) >= 0){
+            while(written < length){
                 int start = 0;
                 temp = "";
                 request = "";
