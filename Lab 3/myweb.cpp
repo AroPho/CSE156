@@ -201,7 +201,7 @@ void *establish_connection(void *){
                 
                 temp = get_head(temp, &beginning, &end);
                 while(!done){
-                    if(temp.length() != size_of_chunks){
+                    if(temp.length() != (unsigned long) size_of_chunks){
                         break;
                     }
                     if(beginning == written){
