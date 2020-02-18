@@ -146,7 +146,7 @@ string get_head(string full_message, int * beginning, int* end){
     int first = full_message.find("\r\n\r\n") + 4;
     int local_length = catch_length(full_message.substr(0, first));
     catch_range(full_message.substr(0, first), beginning, end);
-    printf("%d\n", local_length);
+    // printf("%d\n", local_length);
     temp = full_message.substr(first, local_length);
     return temp;
 }
@@ -202,7 +202,7 @@ void *establish_connection(void *){
                     break;
                 }
                 temp = get_head(temp, &beginning, &end);
-                // printf("%s", temp.c_str());
+                printf("%s", temp.c_str());
 
                 if(beginning <= written){
                     pthread_mutex_lock(&mutex_write);
