@@ -191,7 +191,10 @@ void *establish_connection(void *){
                 if((length - written) < size_of_chunks){
                     size_of_chunks = length - written;
                     request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(length) + "/" + to_string(length) + "\r\n\r\n";
-                }else{
+                }else if((written%size_of_chunks) != 0){
+                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string((written%size_of_chunks)) + "/" + to_string(length) + "\r\n\r\n";
+                }
+                else{
                     request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
                 }
 
@@ -200,7 +203,7 @@ void *establish_connection(void *){
                 temp = get_head(temp, &beginning, &end);
                 
                 
-                if(beginning == written && temp.length() == (unsigned long) size_of_chunks){
+                if(beginning == written){
                     //printf("written %d\n", written);
                     // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
