@@ -329,10 +329,10 @@ int main(int argc, char * argv[]){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
-                    if(size_of_chunks > 100){
-                        num_args = (length/100);
-                        size_of_chunks = 100;
-                    }
+                    // if(size_of_chunks > 100){
+                    //     num_args = (length/100);
+                    //     size_of_chunks = 100;
+                    // }
                     // cout << length << "\n";
                     first_connect = true;
                 }
