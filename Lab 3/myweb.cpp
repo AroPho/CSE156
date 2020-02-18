@@ -173,7 +173,7 @@ void *establish_connection(void *){
         sem_post(&empty);
 
 
-        int beginning, end;
+        int beginning, end, ending;
 
         try{
             while(written < length){
@@ -186,23 +186,26 @@ void *establish_connection(void *){
                 start = size_of_chunks*offset;
                 offset = (offset + 1) % num_args;
                 pthread_mutex_unlock(&mutex_offest);
+                ending = start + size_of_chunks;
                 // printf("%d", offset);
                 done = false;
                 if((length - written) < size_of_chunks){
-                    size_of_chunks = length - written;
-                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(length) + "/" + to_string(length) + "\r\n\r\n";
-                }else if((written%size_of_chunks) != 0){
-                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(written + (written%size_of_chunks)) + "/" + to_string(length) + "\r\n\r\n";
-                }
-                else{
-                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start) + "-" + to_string(start + size_of_chunks) + "/" + to_string(length) + "\r\n\r\n";
+                    size_of_chunks = length - written;                
+                    ending = length;
+                    start = written;
+                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(written) + "-" + to_string(ending) + "/" + to_string(length) + "\r\n\r\n";
+                }else{
+                    request += "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start) + "-" + to_string(ending) + "/" + to_string(length) + "\r\n\r\n";
                 }
 
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
                 temp = get_head(temp, &beginning, &end);
-                
-                
+                if(temp.length() != (unsigned long)size_of_chunks){
+                    request = "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start + temp.length()) + "-" + to_string(ending) + "/" + to_string(length) + "\r\n\r\n";
+                    string shit = recieve_packets(socket);
+                    temp += get_head(shit, &start, &end);
+                }
                 if(beginning == written){
                     //printf("written %d\n", written);
                     // printf("%s\n\n", temp.c_str());
