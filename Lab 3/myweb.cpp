@@ -125,7 +125,7 @@ void writing(string temp, int begin, int* local_written){
     *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
     close(file_num);
     // printf("%lu %d\n", temp.length(), *local_written);
-    printf("%d\n", begin);
+    // printf("%d\n", begin);
 
 }
 
@@ -351,7 +351,7 @@ int main(int argc, char * argv[]){
                     for(int i = 0; i < (int) sizeof(offset_array);i++){
                         offset_array[i] = 0;
                     }
-                    cout << length << "\n";
+                    // cout << length << "\n";
                     first_connect = true;
                 }
 
@@ -383,5 +383,8 @@ int main(int argc, char * argv[]){
         // exit(1);
     }catch(...){
         warn("Warning internal server error closing connections");
+        string content = "Content-Length: " + to_string(0) + "\r\n\r\n";
+        string header = "HTTP/1.1 500 Created\r\n" + content;
+        sending_packet(new_fd, header);
     }
 }

@@ -26,7 +26,7 @@ string buff[4];
 struct sockaddr_in client_connections[4];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
-
+// Functions that sends all data Packets
 void sending_packet(int sock, string msg, sockaddr_in client){
 	socklen_t clientlen = sizeof client;
 	// char * client_addr = inet_ntoa(client.sin_addr);
@@ -34,7 +34,7 @@ void sending_packet(int sock, string msg, sockaddr_in client){
 	// printf("%s", msg.c_str());
 	
     int n = sendto(sock, msg.c_str(), msg.length(), 0, (struct sockaddr *) &client, clientlen);
-	printf("%d\n", n);
+	// printf("%d\n", n);
 }
 
 // Catches Range requests 
@@ -98,7 +98,7 @@ void printing(int type, int f, int socket, int beginning, int end, sockaddr_in c
 	if(type == 2){ // For HEAD requests
 		header = "HTTP/1.1 200 OK\r\n" + content;
 	}
-	printf("%lu ", temp.length());
+	// printf("%lu ", temp.length());
     sending_packet(socket, header, client);
 }
 
@@ -266,7 +266,8 @@ int main(int argc, char * argv[]){
     // tv.tv_sec = 1;
     // tv.tv_usec = 0;
     // setsockopt(main_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
- 
+	
+	//Create Listen Socket
     bzero( &servaddr, sizeof(servaddr));
  
     servaddr.sin_family = AF_INET;
@@ -281,6 +282,7 @@ int main(int argc, char * argv[]){
 		addr_size = sizeof cliaddr;
 		int n;
 		
+		//Create 4 threads for MAX of 4 concurrent connections
 		for(int i = 0; i < 4; i++){
 			pthread_t tidsi;
 			pthread_create(&tidsi, NULL, parse_recv, NULL);
