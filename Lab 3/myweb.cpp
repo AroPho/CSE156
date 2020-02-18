@@ -202,7 +202,7 @@ void *establish_connection(void *){
                 
                 if(beginning == written && temp.length() == (unsigned long) size_of_chunks){
                     //printf("written %d\n", written);
-                    //printf("%s\n\n", temp.c_str());
+                    printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
                     writing(temp, beginning, &written);
                     pthread_mutex_unlock(&mutex_write);
