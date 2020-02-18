@@ -30,6 +30,7 @@ sem_t empty, full;
 int * buff;
 //sockaddr *addr_buff;
 // string * host_buff;
+int *offset_array;
 int written = 0;
 int size_of_chunks;
 bool first_connect = false;
@@ -208,20 +209,26 @@ void *establish_connection(void *){
                     pthread_mutex_unlock(&mutex_offest);
                     done = true;
                 }
-
                 
-                while(!done){
-                    if(beginning < written){
-                        break;
-                    }
-                    if(beginning == written && temp.length() == (unsigned long) size_of_chunks){
-                        //printf("written %d\n", written);
-                        // printf("%s\n\n", temp.c_str());
-                        writing(temp, beginning, &written);
-                        temp = "";
-                        done = true;
-                    }
+
+                if(offset_array[start/size_of_chunks] != 1){
+                    writing(temp, beginning, &written);
+                    offset_array[start/size_of_chunks] = 1;
                 }
+                
+                
+                // while(!done){
+                //     if(beginning < written){
+                //         break;
+                //     }
+                //     if(beginning == written && temp.length() == (unsigned long) size_of_chunks){
+                //         //printf("written %d\n", written);
+                //         // printf("%s\n\n", temp.c_str());
+                //         writing(temp, beginning, &written);
+                //         temp = "";
+                //         done = true;
+                //     }
+                // }
                 
             }
             if(written != length){
@@ -338,6 +345,10 @@ int main(int argc, char * argv[]){
                     if(size_of_chunks > 900){
                         num_args = (length/900);
                         size_of_chunks = 900;
+                    }
+                    offset_array = new int[num_args + 1];
+                    for(int i = 0; i < sizeof(offset_array);i++){
+                        offset_array[i] = 0;
                     }
                     cout << length << "\n";
                     first_connect = true;
