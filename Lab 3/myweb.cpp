@@ -196,10 +196,10 @@ void *establish_connection(void *){
 
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
-                
+                printf("%d\n", temp.length());
                 temp = get_head(temp, &beginning, &end);
                 
-                if(beginning <= written){
+                if(beginning == written){
                     printf("%d\n", written);
                     // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
