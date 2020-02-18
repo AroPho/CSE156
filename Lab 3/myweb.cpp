@@ -171,11 +171,9 @@ void *establish_connection(void *){
         pthread_mutex_unlock(&mutex1);
         sem_post(&empty);
 
-        struct timeval tv;
-        tv.tv_sec = 1;
-        tv.tv_usec = 0;
+
         int beginning, end;
-        setsockopt(socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+        
         try{
             while(written < length){
                 int start = 0;
@@ -269,6 +267,10 @@ int main(int argc, char * argv[]){
             exit(0);
         }
 
+        struct timeval tv;
+        tv.tv_sec = 1;
+        tv.tv_usec = 0;
+
         sem_init(&empty, 0, num_args);
 	    sem_init(&full, 0, 0);
 
@@ -335,6 +337,8 @@ int main(int argc, char * argv[]){
 
                     pthread_t tidsi;
 			        pthread_create(&tidsi, NULL, establish_connection, NULL);
+
+                    setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 
                     sem_wait(&empty);
                     pthread_mutex_lock(&mutex1);
