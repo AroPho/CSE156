@@ -217,7 +217,7 @@ void *establish_connection(void *){
             if(written != length){
                 warn("Connection to one of the servers has been lost"); 
             }
-            if(written == length){
+            if(written >= length){
                 exit(1);
             }
         }catch(...){
