@@ -250,9 +250,9 @@ int main(int argc, char * argv[]){
     try{
 
         struct sockaddr_in servaddr;
-        memset(&hints, 0,sizeof hints);
-        hints.ai_family=AF_UNSPEC;
-        hints.ai_socktype = SOCK_DGRAM;
+        // memset(&hints, 0,sizeof hints);
+        // hints.ai_family=AF_UNSPEC;
+        // hints.ai_socktype = SOCK_DGRAM;
 
         remove(filename.c_str());
         buff = (int*) malloc(sizeof(int)*(num_args*800));
