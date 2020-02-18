@@ -199,7 +199,7 @@ void *establish_connection(void *){
 
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
-                if(temp == ""){
+                if(temp == "" || temp.length() != size_of_chunks){
                     break;
                 }
                 temp = get_head(temp, &beginning, &end);
