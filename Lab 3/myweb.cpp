@@ -198,20 +198,17 @@ void *establish_connection(void *){
                 temp = recieve_packets(socket);
                 
                 temp = get_head(temp, &beginning, &end);
-                while(!done){
-                    if(temp.length() != (unsigned long) size_of_chunks || beginning < written){
-                        break;
-                    }
-                    if(beginning == written){
-                        printf("%d\n", written);
-                        // printf("%s\n\n", temp.c_str());
-                        pthread_mutex_lock(&mutex_write);
-                        writing(temp, beginning, &written);
-                        pthread_mutex_unlock(&mutex_write);
-                        temp = "";
-                        done = true;
-                    }
+                
+                if(beginning == written){
+                    printf("%d\n", written);
+                    // printf("%s\n\n", temp.c_str());
+                    pthread_mutex_lock(&mutex_write);
+                    writing(temp, beginning, &written);
+                    pthread_mutex_unlock(&mutex_write);
+                    temp = "";
+                    done = true;
                 }
+                
             }
             if(written != length){
                 warn("Connection to one of the servers has been lost"); 
