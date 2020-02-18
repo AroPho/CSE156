@@ -119,7 +119,7 @@ int catch_length(string line){
 // Creates appropriate GET and HEAD HTTP Request
 
 void writing(string temp, int begin, int* local_written){
-    printf("%s", temp.c_str());
+    // printf("%s", temp.c_str());
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
     close(file_num);
@@ -200,7 +200,7 @@ void *establish_connection(void *){
                 temp = get_head(temp, &beginning, &end);
                 
                 if(beginning == written){
-                    printf("%d\n", written);
+                    // printf("%d\n", written);
                     // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
                     writing(temp, beginning, &written);
