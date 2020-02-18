@@ -203,6 +203,7 @@ void *establish_connection(void *){
                 temp = get_head(temp, &beginning, &end);
                 if(temp.length() != (unsigned long)size_of_chunks){
                     request = "GET " + filename + " HTTP/1.1\r\nHost: " + "127.0.0.1" + "\r\n" + "Content-Range: " + to_string(start + temp.length()) + "-" + to_string(ending) + "/" + to_string(length) + "\r\n\r\n";
+                    sending_packet(socket, request);
                     string shit = recieve_packets(socket);
                     temp += get_head(shit, &start, &end);
                 }
