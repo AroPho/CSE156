@@ -205,9 +205,6 @@ void *establish_connection(void *){
                 // }
                 temp = get_head(temp, &beginning, &end);
                 // printf("%s\n\n", temp.c_str());
-                if(start < written){
-                    break;
-                }
                 if(beginning == written){
                     printf("%d\n", written);
                     // printf("%s\n\n", temp.c_str());
