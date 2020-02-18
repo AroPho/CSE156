@@ -128,7 +128,7 @@ void writing(string temp, int begin, int* local_written){
 
 }
 
-void http_requests(int sock, int type, string file, string hostname, sockaddr server){
+void http_requests(int sock, int type, string file, string hostname){
     string temp = "";
     if(type == 0){
         temp += "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n" ;
@@ -181,7 +181,7 @@ void *establish_connection(void *){
                 int start = 0;
                 temp = "";
                 request = "";
-                bool done = false;
+                // bool done = false;
                 
                 pthread_mutex_lock(&mutex_offest);
                 start = size_of_chunks*offset;
@@ -202,13 +202,13 @@ void *establish_connection(void *){
                     break;
                 }
                 temp = get_head(temp, &beginning, &end);
-                printf("%s", temp.c_str());
+                // printf("%s", temp.c_str());
 
                 if(beginning <= written){
                     pthread_mutex_lock(&mutex_write);
                         writing(temp, start, &written);
                     pthread_mutex_unlock(&mutex_write);
-
+                    temp == "";
                 }
             }
             if(written != length){
@@ -305,7 +305,7 @@ int main(int argc, char * argv[]){
                     tv.tv_sec = 1;
                     tv.tv_usec = 0;
                     setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
-                    http_requests(new_fd, 0, filename, hostname, *(addrs->ai_addr));
+                    http_requests(new_fd, 0, filename, hostname);
                     
                     // char buffin[1024];
                     // recvfrom(new_fd, buffin, 1024, 0, (struct sockaddr *)NULL, NULL);
