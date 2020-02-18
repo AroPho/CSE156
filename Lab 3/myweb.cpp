@@ -330,9 +330,9 @@ int main(int argc, char * argv[]){
                         new_fd = 0;
                     }
                     size_of_chunks = (length / num_args);
-                    if(size_of_chunks > 200){
-                        num_args = (length/200);
-                        size_of_chunks = 200;
+                    if(size_of_chunks > 500){
+                        num_args = (length/500);
+                        size_of_chunks = 500;
                     }
                     cout << length << "\n";
                     first_connect = true;
