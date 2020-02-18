@@ -199,7 +199,7 @@ void *establish_connection(void *){
                 temp = get_head(temp, &beginning, &end);
                 printf("length %lu\n", temp.length());
                 
-                if(start == written){
+                if(start == written && temp.length() == (unsigned long) size_of_chunks){
                     printf("written %d\n", written);
                     // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
