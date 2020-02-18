@@ -200,12 +200,12 @@ void *establish_connection(void *){
 
                 sending_packet(socket, request);
                 temp = recieve_packets(socket);
-                if(temp == ""){
-                    break;
-                }
+                // if(temp == ""){
+                //     break;
+                // }
                 temp = get_head(temp, &beginning, &end);
                 // printf("%s\n\n", temp.c_str());
-                if(beginning < written){
+                if(start < written){
                     break;
                 }
                 if(beginning == written){
