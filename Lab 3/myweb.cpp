@@ -122,6 +122,7 @@ void writing(string temp, int begin, int* local_written){
     if(written == 0){
         remove(filename.c_str());
     }
+    printf("%s", temp.c_str());
     int file_num = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
     *local_written += pwrite(file_num, temp.c_str(), temp.length(), begin);
     close(file_num);
@@ -209,7 +210,7 @@ void *establish_connection(void *){
                 }
                 if(beginning == written){
                     printf("%d\n", written);
-                    printf("%s\n\n", temp.c_str());
+                    // printf("%s\n\n", temp.c_str());
                     pthread_mutex_lock(&mutex_write);
                     writing(temp, start, &written);
                     pthread_mutex_unlock(&mutex_write);
