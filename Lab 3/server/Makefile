@@ -10,11 +10,11 @@
 
 # List the sources, separated by spaces, for your program. 'SOURCES=foo.cpp bar.cpp', for
 # example. Do not include anything except sources files that you will compile!
-SOURCES=myweb.cpp
+SOURCES=httpserver.cpp
 INCLUDES=$(wildcard *.h)
 
 # This is the name of the executable that this makefile will produce.
-TARGET=myweb
+TARGET=httpserver
 
 # Define the compiler flags for compiling your code. You may wish to change these for
 # debugging or optimization purposes. We suggest, that when you submit your code, you use
@@ -37,7 +37,6 @@ _submit_CXXFLAGS=-std=gnu++11 -Wall -Wextra -Wpedantic -Wshadow -g -O2
 # OBJECTS will contain 'foo.o bar.o'. These are the files that will be produced by the compiler,
 # one for each compilation unit.
 OBJECTS=$(SOURCES:.cpp=.o)
-TEST_OBJECTS = $(TEST_SOURCES:.cpp=.o)
 
 # Generate a list of dependency files, similar to OBJECTS above. This time, however, the files will
 # be .d files, and will contain a list of _dependencies_ for each source file. These files are in make
