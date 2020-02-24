@@ -1,0 +1,31 @@
+Aaron Nguyen
+anguy200
+ID: 1585632
+
+Issues with Program: 
+- In testing it was seen that binary files that are converted to txt files create special characters that break my program. I can not identify what characters break the program because not even my terminal or text editors can display the characters in the file.
+- It should also be noted that for bigger files it takes longer for my program to complete if there are limited servers available because I cap my max data transfer per packet to be 1000 bytes each. Anything larger results in increased drops or incomplete packet transmissions, and slower download speeds. 
+
+
+Table of Contents:
+
+Bin:
+// Test used in my testing
+- testfile1.txt
+- testfile2.txt
+- testfile3.txt
+- testfile4.txt
+- testfile5.txt
+- testfile6.txt
+
+Doc:
+- Design Doc
+- README
+
+Src:
+-  httpserver.cpp //Http Server
+- Makefile // Creates Excutables
+- myweb.cpp // Client Code
+
+README:
+
