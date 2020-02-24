@@ -10,12 +10,12 @@
 
 # List the sources, separated by spaces, for your program. 'SOURCES=foo.cpp bar.cpp', for
 # example. Do not include anything except sources files that you will compile!
-SOURCES=myweb.cpp
+SOURCES=shell.cpp
 TEST_SOURCES = httpserver.cpp
 INCLUDES=$(wildcard *.h)
 
 # This is the name of the executable that this makefile will produce.
-TARGET=myweb
+TARGET=shell
 TEST_TARGET=httpserver
 
 # Define the compiler flags for compiling your code. You may wish to change these for
