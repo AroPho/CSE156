@@ -29,14 +29,14 @@ int main(int argc, char * argv[]){
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
 
-        char *hostname = argv[1];
-        char *port = argv[2];
+        string hostname = argv[1];
+        string port = argv[2];
         //printf("%s %s\n", hostname, port);
         
         // cout << port;
         // printf("%s", hostname.c_str());
         int new_fd;
-        getaddrinfo(hostname, port, &hints, &addrs);
+        getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
         new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
         connect(new_fd, addrs->ai_addr,addrs->ai_addrlen);
         int numbytes;
