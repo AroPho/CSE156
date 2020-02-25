@@ -61,7 +61,6 @@ int main(int argc, char * argv[]) {
 		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
 		//parse_recv(new_fd);
 		if(new_fd > 0){
-			printf("%c", c);
 			printf("Got new connection %d\n", new_fd);
 			if (guard(fork(), (char *) fork_error.c_str()) == 0) {
 				pid_t my_pid = getpid();
