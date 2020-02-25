@@ -31,7 +31,7 @@ int main(int argc, char * argv[]){
 
         string hostname = argv[1];
         string port = argv[2];
-        //printf("%s %s\n", hostname, port);
+        printf("%s %s\n", hostname.c_str(), port.c_str());
         
         // cout << port;
         // printf("%s", hostname.c_str());
