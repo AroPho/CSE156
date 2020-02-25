@@ -48,10 +48,11 @@ int main(int argc, char * argv[]){
         // exit(1);
     try{
         char c;
-        while((numbytes = recv(new_fd, &c, 1, 0)) != 0){
-            cout << c;
+        while(1){
             read(0, &c, 1);
             send(new_fd, &c, 1, 0);
+            recv(new_fd, &c, 1, 0);
+            printf("%c\n", c);
         }
 
     }catch(...){
