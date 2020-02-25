@@ -51,8 +51,6 @@ int main(int argc, char * argv[]){
         while(1){
             read(0, &c, 1);
             send(new_fd, &c, 1, 0);
-            recv(new_fd, &c, 1, 0);
-            printf("%c\n", c);
         }
 
     }catch(...){
