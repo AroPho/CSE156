@@ -29,13 +29,14 @@ int main(int argc, char * argv[]){
         hints.ai_family=AF_UNSPEC;
         hints.ai_socktype = SOCK_STREAM;
 
-        string hostname = argv[1];
-        string port = argv[2];
+        char *hostname = argv[1];
+        char *port = argv[2];
+        printf("%s %s\n", hostname, port);
         
         // cout << port;
         // printf("%s", hostname.c_str());
 
-        getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
+        getaddrinfo(hostname, port, &hints, &addrs);
         int new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
         int numbytes;
 
@@ -48,7 +49,7 @@ int main(int argc, char * argv[]){
     try{
         char in_buff[1024];
         char out_buff[1024];
-        while((numbytes = recv(new_fd, in_buff, 1024, 0)) > 0){
+        while((numbytes = recv(new_fd, in_buff, 1024, 0)) != 0){
             cout << "\n" << in_buff;
             read(0, out_buff, 1024);
             send(new_fd, out_buff, sizeof(out_buff), 0);
