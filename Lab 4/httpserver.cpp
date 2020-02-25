@@ -62,8 +62,8 @@ int main(int argc, char * argv[]) {
 			if (guard(fork(), (char *) fork_error.c_str()) == 0) {
 				char buf[100];
 				for (;;) {
-					numbytes = recv(new_fd, buf, sizeof(buf), 0);
-					printf("%s", buf);
+					numbytes = recv(new_fd, &c, sizeof(buf), 0);
+					printf("%c", c);
 					if (numbytes == 0) {
 					exit(0);
 					} else {
