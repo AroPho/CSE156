@@ -35,9 +35,9 @@ int main(int argc, char * argv[]){
         
         // cout << port;
         // printf("%s", hostname.c_str());
-
+        int new_fd;
         getaddrinfo(hostname, port, &hints, &addrs);
-        int new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
+        new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
         connect(new_fd, addrs->ai_addr,addrs->ai_addrlen);
         int numbytes;
 
