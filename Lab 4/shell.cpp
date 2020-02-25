@@ -38,8 +38,8 @@ int main(int argc, char * argv[]){
         int new_fd;
         getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
         new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
-        printf("%d\n",new_fd);
-        connect(new_fd, addrs->ai_addr,addrs->ai_addrlen);
+        int confirm = connect(new_fd, addrs->ai_addr,addrs->ai_addrlen);
+        printf("%d\n", confirm);
         int numbytes;
 
         
