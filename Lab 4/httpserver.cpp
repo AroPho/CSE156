@@ -62,9 +62,9 @@ int main(int argc, char * argv[]) {
 			if (guard(fork(), (char *) fork_error.c_str()) == 0) {
 				char buf[100];
 				for (;;) {
-					ssize_t num_bytes_received = guard(recv(new_fd, buf, sizeof(buf), 0), (char *) recv_error.c_str());
+					numbytes = recv(new_fd, buf, sizeof(buf), 0);
 					printf("%s", buf);
-					if (num_bytes_received == 0) {
+					if (numbytes == 0) {
 					exit(0);
 					} else {
 				// Child takes over connection; close it in parent
