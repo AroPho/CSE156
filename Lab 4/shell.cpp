@@ -31,13 +31,15 @@ int main(int argc, char * argv[]){
 
         char *hostname = argv[1];
         char *port = argv[2];
-        printf("%s %s\n", hostname, port);
+        // printf("%s %s\n", hostname, port);
         
         // cout << port;
         // printf("%s", hostname.c_str());
 
+        int new_fd;
+
         getaddrinfo(hostname, port, &hints, &addrs);
-        int new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
+        new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
         int numbytes;
 
         
@@ -48,9 +50,11 @@ int main(int argc, char * argv[]){
         // exit(1);
     try{
         char c;
-        while(1){
-            read(0, &c, 1);
-            send(new_fd, &c, 1, 0);
+        if(new_fd > 0){
+            while(1){
+                read(0, &c, 1);
+                send(new_fd, &c, 1, 0);
+            }
         }
 
     }catch(...){
