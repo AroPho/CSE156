@@ -47,12 +47,11 @@ int main(int argc, char * argv[]){
     
         // exit(1);
     try{
-        char in_buff[1024];
-        char out_buff[1024];
-        while((numbytes = recv(new_fd, in_buff, 1024, 0)) != 0){
-            cout << "\n" << in_buff;
-            read(0, out_buff, 1024);
-            send(new_fd, out_buff, sizeof(out_buff), 0);
+        char c;
+        while((numbytes = recv(new_fd, &c, 1, 0)) != 0){
+            cout << c;
+            read(0, &c, 1);
+            send(new_fd, &c, 1, 0);
         }
 
     }catch(...){
