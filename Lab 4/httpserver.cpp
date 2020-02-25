@@ -54,9 +54,6 @@ int main(int argc, char * argv[]) {
 	char c;
 	string fork_error = "Could not fork";
 	string recv_error = "Could not recv on TCP connection";
-	string shutdown_error = "Could not shutdown TCP connection";
-	string tcp_close_error = "Could not close TCP connection";
-	string tcp_cant_send = "Could not send to TCP connection";
 	while(main_socket > 0){
 		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
 		//parse_recv(new_fd);
