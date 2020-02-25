@@ -89,10 +89,10 @@ int main(int argc, char * argv[]) {
 	// 	guard(send(conn_fd, buf, num_bytes_received, 0), (char *) tcp_cant_send.c_str());
 	// 	printf("%d: echoed bytes; receiving more\n", my_pid);
 	// 	}
-	} else {
-		// Child takes over connection; close it in parent
-		close(conn_fd);
-	}
+	// } else {
+	// 	// Child takes over connection; close it in parent
+	// 	close(conn_fd);
+	// }
 	}
 	return 0;
 }
