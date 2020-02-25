@@ -31,13 +31,14 @@ int main(int argc, char * argv[]){
 
         string hostname = argv[1];
         string port = argv[2];
-        printf("%s %s\n", hostname.c_str(), port.c_str());
+        // printf("%s %s\n", hostname.c_str(), port.c_str());
         
         // cout << port;
         // printf("%s", hostname.c_str());
         int new_fd;
         getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
         new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
+        printf("%d\n",new_fd);
         connect(new_fd, addrs->ai_addr,addrs->ai_addrlen);
         int numbytes;
 
