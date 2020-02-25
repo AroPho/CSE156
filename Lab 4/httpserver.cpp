@@ -57,9 +57,9 @@ int main(int argc, char * argv[]) {
 		//parse_recv(new_fd);
 		if(new_fd > 0){
 			while((numbytes = recv(new_fd, &c, 1, 0)) != 0){
-			cout << "\n" << c;
-			read(0, &c, 1024);
-			send(new_fd, &c, 1, 0);
+				printf("%c", c);
+			// read(0, &c, 1024);
+			// send(new_fd, &c, 1, 0);
 			}
 		}
 	}
