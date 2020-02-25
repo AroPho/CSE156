@@ -51,16 +51,15 @@ int main(int argc, char * argv[]) {
     bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
 	listen (main_socket, 16);
 	int new_fd, numbytes;
-	char in_buff[1024];
-	char out_buff[1024];
+	char c;
 	while(main_socket > 0){
 		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
 		//parse_recv(new_fd);
 		if(new_fd > 0){
-			while((numbytes = recv(new_fd, in_buff, 1024, 0)) != 0){
-			cout << "\n" << in_buff;
-			read(0, out_buff, 1024);
-			send(new_fd, out_buff, sizeof(out_buff), 0);
+			while((numbytes = recv(new_fd, &c, 1, 0)) != 0){
+			cout << "\n" << c;
+			read(0, &c, 1024);
+			send(new_fd, &c, 1, 0);
 			}
 		}
 	}
