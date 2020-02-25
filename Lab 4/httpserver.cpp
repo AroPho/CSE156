@@ -54,16 +54,15 @@ int main(int argc, char * argv[]) {
 	char in_buff[1024];
 	char out_buff[1024];
 	while(main_socket > 0){
-			new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
-			//parse_recv(new_fd);
-			if(new_fd > 0){
-				while((numbytes = recv(new_fd, in_buff, 1024, 0)) != 0){
-				cout << "\n" << in_buff;
-				read(0, out_buff, 1024);
-				send(new_fd, out_buff, sizeof(out_buff), 0);
-    }
-
+		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
+		//parse_recv(new_fd);
+		if(new_fd > 0){
+			while((numbytes = recv(new_fd, in_buff, 1024, 0)) != 0){
+			cout << "\n" << in_buff;
+			read(0, out_buff, 1024);
+			send(new_fd, out_buff, sizeof(out_buff), 0);
 			}
+		}
 	}
 	// string fork_error = "Could not fork";
 	// string recv_error = "Could not recv on TCP connection";
@@ -93,6 +92,6 @@ int main(int argc, char * argv[]) {
 	// 	// Child takes over connection; close it in parent
 	// 	close(conn_fd);
 	// }
-	}
-	return 0;
+	// }
+	// return 0;
 }
