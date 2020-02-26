@@ -5,6 +5,7 @@
         "string": "cpp",
         "iosfwd": "cpp",
         "functional": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "chrono": "cpp"
     }
 }
