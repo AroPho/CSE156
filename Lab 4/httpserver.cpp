@@ -66,11 +66,8 @@ int main(int argc, char * argv[]) {
 					printf("%c", c);
 				}
 				// Child takes over connection; close it in parent
-					close(new_fd);
-					}
 			// read(0, &c, 1024);
 			// send(new_fd, &c, 1, 0);	
-				}
 			}
 		}
 	}
