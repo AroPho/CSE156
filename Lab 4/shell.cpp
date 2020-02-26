@@ -21,6 +21,19 @@
 #include <iostream>
 using namespace std;
 
+void recieving(int socket){
+    int numbytes;
+    char c;
+    string temp = "";
+    while((numbytes = recv(socket, &c, 1, 0)) != 0){
+        temp += c;
+        if(temp.length() > 3 && temp.substr(temp.length() - 2) == "\r\n"){ //Checks for end of header
+            break;
+        }
+    }
+    printf("%s", temp.substr(0, temp.length() -2 ));
+}
+
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
@@ -55,8 +68,6 @@ int main(int argc, char * argv[]){
             getline(cin, input);
             input += "\n";
             send(new_fd, input.c_str(), input.length(), 0);
-            recv(new_fd, &c, 1, 0);
-            printf("%c", c);
         }
 
     }catch(...){
