@@ -31,7 +31,7 @@ void recieving(int socket){
             break;
         }
     }
-    printf("%s", temp.substr(0, temp.length() -2 ));
+    printf("%s", temp.substr(0, temp.length() -2 ).c_str());
 }
 
 
