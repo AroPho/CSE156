@@ -41,6 +41,7 @@ int main(int argc, char * argv[]){
         int confirm = connect(new_fd, addrs->ai_addr,addrs->ai_addrlen);
         printf("%d\n", confirm);
         int numbytes;
+        string input;
 
         
         // host_buff = (string*) malloc(sizeof(string)*(num_args*800));
@@ -49,10 +50,11 @@ int main(int argc, char * argv[]){
     
         // exit(1);
     try{
-        char c;
+        // char c;
         while(1){
-            read(0, &c, 1);
-            send(new_fd, &c, 1, 0);
+            getline(cin, input);
+            input += "\0";
+            send(new_fd, input.c_str(), input.length(), 0);
         }
 
     }catch(...){

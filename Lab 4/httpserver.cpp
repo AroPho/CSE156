@@ -146,7 +146,7 @@ void establish_connnection(int sock){
 		temp += c;
 		if(temp.substr(temp.length - 1) == "\0"){
 			// determine_command(temp, sock);
-
+			printf("%d\n", temp.c_str());
 			// Open pipe to file
 			pipe = popen(temp.substr(0, temp.length() - 1).c_str(), "r");
 			if (!pipe) {
