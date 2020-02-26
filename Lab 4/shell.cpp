@@ -53,7 +53,7 @@ int main(int argc, char * argv[]){
         // char c;
         while(1){
             getline(cin, input);
-            input += "\0";
+            input += "\n";
             send(new_fd, input.c_str(), input.length(), 0);
         }
 
