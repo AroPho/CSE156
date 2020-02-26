@@ -68,6 +68,7 @@ int main(int argc, char * argv[]){
             getline(cin, input);
             input += "\n";
             send(new_fd, input.c_str(), input.length(), 0);
+            recieving(new_fd);
         }
 
     }catch(...){
