@@ -142,7 +142,7 @@ void establish_connnection(int sock){
 	char buffer[128];
 	string result = "";
 	FILE* pipe;
-	while((numbytes = recv(sock, &c, 1, 0))){
+	while((numbytes = recv(sock, &c, 1, 0)) != 0){
 		temp += c;
 		if(temp.substr(temp.length() - 1) == "\n"){
 			// determine_command(temp, sock);
@@ -161,6 +161,7 @@ void establish_connnection(int sock){
 			printf("%s\n", result.c_str());
 			pclose(pipe);
 			temp = "";
+			result += "\r\n";
 			send(sock, result.c_str(), result.length(), 0);
 			result = "";
 		}
