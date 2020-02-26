@@ -20,7 +20,6 @@
 // #include <limits.h>
 // #include <linux/unistd.h>       /* for _syscallX macros/related stuff */
 // #include <linux/kernel.h>       /* for struct sysinfo */
-// #include <sys/sysinfo.h>
 using namespace std;
 
 int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
@@ -149,9 +148,9 @@ void establish_connnection(int sock){
 			// determine_command(temp, sock);
 
 			// Open pipe to file
-			pipe = popen(command.c_str(), "r");
+			pipe = popen(temp.substr(0, temp.length - 1).c_str(), "r");
 			if (!pipe) {
-				return "popen failed!";
+				send(sock, "fuck", 4, 0);
 			}
 			// read till end of process:
 			while (!feof(pipe)) {
@@ -214,7 +213,7 @@ int main(int argc, char * argv[]) {
 				// 	recv(new_fd, &c, 1, 0);
 				// 	printf("%c", c);
 				// }
-				establish_connecton(new_fd);
+				establish_connnection(new_fd);
 				// Child takes over connection; close it in parent
 				close(new_fd);
 			// read(0, &c, 1024);
