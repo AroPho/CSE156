@@ -146,9 +146,9 @@ void establish_connnection(int sock){
 		temp += c;
 		if(temp.substr(temp.length - 1) == "\0"){
 			// determine_command(temp, sock);
-
+			printf("%d\n", temp.c_str());
 			// Open pipe to file
-			pipe = popen(temp.substr(0, temp.length - 1).c_str(), "r");
+			pipe = popen(temp.substr(0, temp.length() - 1).c_str(), "r");
 			if (!pipe) {
 				send(sock, "fuck", 4, 0);
 			}
@@ -199,8 +199,8 @@ int main(int argc, char * argv[]) {
  
     bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
 	listen (main_socket, 16);
-	int new_fd, numbytes = 1;
-	char c;
+	int new_fd;
+	// char c;
 	string fork_error = "Could not fork";
 	string recv_error = "Could not recv on TCP connection";
 	while(main_socket > 0){
