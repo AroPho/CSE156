@@ -50,11 +50,13 @@ int main(int argc, char * argv[]){
     
         // exit(1);
     try{
-        // char c;
+        char c;
         while(1){
             getline(cin, input);
             input += "\n";
             send(new_fd, input.c_str(), input.length(), 0);
+            recv(new_fd, &c, 1, 0);
+            printf("%c", c);
         }
 
     }catch(...){
