@@ -50,7 +50,7 @@ int main(int argc, char * argv[]) {
  
     bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
 	listen (main_socket, 16);
-	int new_fd, numbytes;
+	int new_fd, numbytes = 1;
 	char c;
 	string fork_error = "Could not fork";
 	string recv_error = "Could not recv on TCP connection";
@@ -60,13 +60,11 @@ int main(int argc, char * argv[]) {
 		if(new_fd > 0){
 			printf("Got new connection %d\n", new_fd);
 			if (guard(fork(), (char *) fork_error.c_str()) == 0) {
-				char buf[100];
-				for (;;) {
-					numbytes = recv(new_fd, &c, sizeof(buf), 0);
+				char c;
+				while(numbytes != 0){
+					recv(new_fd, &c, 1, 0);
 					printf("%c", c);
-					if (numbytes == 0) {
-					exit(0);
-					} else {
+				}
 				// Child takes over connection; close it in parent
 					close(new_fd);
 					}
