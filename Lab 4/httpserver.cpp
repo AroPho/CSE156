@@ -158,10 +158,11 @@ void establish_connnection(int sock){
 				if (fgets(buffer, 128, pipe) != NULL)
 					result += buffer;
 			}
-
+			printf("%s\n", result);
 			pclose(pipe);
 			temp = "";
 			send(sock, result.c_str(), result.length(), 0);
+			result = "";
 		}
 
 	}
