@@ -153,21 +153,22 @@ void establish_connnection(int sock){
 			// Open pipe to file
 			pipe = popen(temp.substr(0, temp.length() - 2).c_str(), "r");
 			if (!pipe) {
+				string pipe_error = ""
 				// send(sock, error_command.c_str(), error_command.length(), 0);
 				warn("fuck");
 			}
 			// read till end of process:
-			// while (!feof(pipe)) {
-			// 	printf("1");
-			// 	// use buffer to read and add to result
-			// 	if (fgets(buffer, 128, pipe) != NULL){
-			// 		result += buffer;
-			// 	}
-			// }
-			while (fgets(buffer, 128, pipe) != NULL) {
-				std::cout << "Reading..." << std::endl;
-				result += buffer;
+			while (!feof(pipe)) {
+				printf("1");
+				// use buffer to read and add to result
+				if (fgets(buffer, 128, pipe) != NULL){
+					result += buffer;
+				}
 			}
+			// while (fgets(buffer, 128, pipe) != NULL) {
+			// 	std::cout << "Reading..." << std::endl;
+			// 	result += buffer;
+			// }
 			// printf("%s\n", result.c_str());
 			// if((result_int = result.find("command not found")) <  0){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
