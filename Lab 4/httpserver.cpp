@@ -148,7 +148,7 @@ void establish_connnection(int sock){
 			// determine_command(temp, sock);
 			printf("%s\n", temp.c_str());
 			// Open pipe to file
-			pipe = popen(temp.substr(0, temp.length() - 1).c_str(), "r");
+			pipe = popen(temp.substr(0, temp.length() - 2).c_str(), "r");
 			if (!pipe) {
 				send(sock, "fuck", 4, 0);
 			}
