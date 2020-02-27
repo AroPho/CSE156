@@ -152,27 +152,24 @@ void establish_connnection(int sock){
 			// Open pipe to file
 			pipe = popen(temp.substr(0, temp.length() - 2).c_str(), "r");
 			if (!pipe) {
-				send(sock, "fuck", 4, 0);
+				send(sock, error_command.c_str(), error_command.length(), 0);
 			}
 			// read till end of process:
-			if(pipe){
-				while (!feof(pipe)) {
-					// use buffer to read and add to result
-					if (fgets(buffer, 128, pipe) != NULL){
-						result += buffer;
-					}
+			while (!feof(pipe)) {
+				// use buffer to read and add to result
+				if (fgets(buffer, 128, pipe) != NULL){
+					result += buffer;
 				}
 			}
-			
 			// printf("%s\n", result.c_str());
 			// if((result_int = result.find("command not found")) <  0){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
 			// }
 			temp = "";
 			// if((result_int = result.find("command not found")) >=  0){
-			result += "\r\n";
 			printf("here");
-			if(result != ""){
+			if(result.find("sh: ") != 0){
+				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
 				send(sock, error_command.c_str(), error_command.length(), 0);
