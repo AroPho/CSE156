@@ -168,9 +168,11 @@ void establish_connnection(int sock){
 			temp = "";
 			// if((result_int = result.find("command not found")) >=  0){
 			result += "\r\n";
+			printf("here");
 			send(sock, result.c_str(), result.length(), 0);
 			// }
-			printf("here");
+
+			printf("okay");
 			result = "";
 		}
 
