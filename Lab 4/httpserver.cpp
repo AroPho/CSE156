@@ -179,7 +179,7 @@ void establish_connnection(int sock){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
-				send(sock, "hello", 5, 0);
+				send(sock, "1", 1, 0);
 			}
 			// }
 
