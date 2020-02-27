@@ -174,7 +174,6 @@ void establish_connnection(int sock){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
 			// }
 			pclose(pipe);
-			temp = "";
 			// if((result_int = result.find("command not found")) >=  0){
 			// printf("here");
 			if(result != ""){
@@ -188,6 +187,7 @@ void establish_connnection(int sock){
 
 			// printf("okay");
 			result = "";
+			temp = "";
 		}
 
 	}
