@@ -181,7 +181,7 @@ void establish_connnection(int sock){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
-				error_command = "sh: " + temp.substr(0, temp.length() - 2) + ": " + error_command;
+				error_command = "sh: " + temp + ": " + error_command;
 				send(sock, error_command.c_str(), error_command.length(), 0);
 			}
 			// }
