@@ -143,6 +143,7 @@ void establish_connnection(int sock){
 	string result = "";
 	FILE* pipe;
 	string error_command = "Command not Found";
+	int result_int;
 	while((numbytes = recv(sock, &c, 1, 0)) != 0){
 		temp += c;
 		if(temp.length() > (long) 1 && temp.substr(temp.length() - 2) == "\r\n"){
@@ -160,12 +161,12 @@ void establish_connnection(int sock){
 					result += buffer;
 			}
 			printf("%s\n", result.c_str());
-			if(result.find("command not found") != (unsigned long) -1){
+			if((result_int = result.find("command not found")) <  0){
 				send(sock, error_command.c_str(), error_command.length(), 1);
 			}
 			pclose(pipe);
 			temp = "";
-			if(result.find("command not found") == (unsigned long) -1){
+			if((result_int = result.find("command not found")) >=  0){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}
