@@ -158,17 +158,17 @@ void establish_connnection(int sock){
 				warn("fuck");
 			}
 			// read till end of process:
-			while (!feof(pipe)) {
-				printf("1");
-				// use buffer to read and add to result
-				if (fgets(buffer, 128, pipe) != NULL){
-					result += buffer;
-				}
-			}
-			// while (fgets(buffer, 128, pipe) != NULL) {
-			// 	std::cout << "Reading..." << std::endl;
-			// 	result += buffer;
+			// while (!feof(pipe)) {
+			// 	//printf("1");
+			// 	// use buffer to read and add to result
+			// 	if (fgets(buffer, 128, pipe) != NULL){
+			// 		result += buffer;
+			// 	}
 			// }
+			while (fgets(buffer, 128, pipe) != NULL) {
+				//std::cout << "Reading..." << std::endl;
+				result += buffer;
+			}
 			// printf("%s\n", result.c_str());
 			// if((result_int = result.find("command not found")) <  0){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
@@ -181,7 +181,7 @@ void establish_connnection(int sock){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
-				error_command = "sh: " + temp.substr(0, temp.length() - 2) + error_command;
+				error_command = "sh: " + temp.substr(0, temp.length() - 2) + ": " + error_command;
 				send(sock, error_command.c_str(), error_command.length(), 0);
 			}
 			// }
