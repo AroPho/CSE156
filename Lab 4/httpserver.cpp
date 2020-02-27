@@ -153,7 +153,8 @@ void establish_connnection(int sock){
 			// Open pipe to file
 			pipe = popen(temp.substr(0, temp.length() - 2).c_str(), "r");
 			if (!pipe) {
-				send(sock, error_command.c_str(), error_command.length(), 0);
+				// send(sock, error_command.c_str(), error_command.length(), 0);
+				warn("fuck");
 			}
 			// read till end of process:
 			// while (!feof(pipe)) {
