@@ -52,7 +52,10 @@ int main(int argc, char * argv[]){
         getaddrinfo(hostname.c_str(), port.c_str(), &hints, &addrs);
         new_fd = socket(addrs->ai_family, addrs->ai_socktype, addrs->ai_protocol);
         int confirm = connect(new_fd, addrs->ai_addr,addrs->ai_addrlen);
-        printf("%d\n", confirm);
+        if(confirm == -1){
+            warn("Unable to connect to server. Please try again or try different IP");
+            exit(0);
+        }
         int numbytes;
         string input;
 
