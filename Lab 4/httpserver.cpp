@@ -142,7 +142,7 @@ void establish_connnection(int sock){
 	char buffer[128];
 	string result = "";
 	FILE* pipe;
-	string error_command = "Command not Found";
+	string error_command = "Command not Found\r\n";
 	int result_int;
 	try{
 	while((numbytes = recv(sock, &c, 1, 0)) != 0){
@@ -179,7 +179,7 @@ void establish_connnection(int sock){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
-				send(sock, "1", 1, 0);
+				send(sock, error_command.c_str(), error_command.length(), 0);
 			}
 			// }
 
