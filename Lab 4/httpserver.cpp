@@ -160,12 +160,12 @@ void establish_connnection(int sock){
 					result += buffer;
 			}
 			printf("%s\n", result.c_str());
-			if(result.find("command not found") != (long) -1){
+			if(result.find("command not found") != (unsigned long) -1){
 				send(sock, error_command.c_str(), error_command.length(), 1);
 			}
 			pclose(pipe);
 			temp = "";
-			if(result.find("command not found") == (long) -1){
+			if(result.find("command not found") == (unsigned long) -1){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}
@@ -185,6 +185,11 @@ int main(int argc, char * argv[]) {
 //   socklen_t addr_len = sizeof(listen_addr);
 //   guard(getsockname(listen_fd, (struct sockaddr *) &listen_addr, &addr_len), "Could not get socket name");
 //   printf("Listening for connections on port %d\n", ntohs(listen_addr.sin_port));
+
+	if(argc != 2){
+		warn("Incorrect number of args");
+		exit(0);
+	}
 
 	struct sockaddr_in servaddr;
 	struct sockaddr_storage their_addr;
