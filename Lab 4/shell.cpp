@@ -65,9 +65,13 @@ int main(int argc, char * argv[]){
     try{
         char c;
         while(1){
+            printf("client $ ");
             getline(cin, input);
             input += "\n";
             send(new_fd, input.c_str(), input.length(), 0);
+            if(input == "exit"){
+                exit(0);
+            }
             recieving(new_fd);
         }
 
