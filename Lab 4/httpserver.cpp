@@ -144,6 +144,7 @@ void establish_connnection(int sock){
 	FILE* pipe;
 	string error_command = "Command not Found";
 	int result_int;
+	try{
 	while((numbytes = recv(sock, &c, 1, 0)) != 0){
 		temp += c;
 		if(temp.length() > (long) 1 && temp.substr(temp.length() - 2) == "\r\n"){
@@ -156,6 +157,7 @@ void establish_connnection(int sock){
 			}
 			// read till end of process:
 			while (!feof(pipe)) {
+				printf("1");
 				// use buffer to read and add to result
 				if (fgets(buffer, 128, pipe) != NULL){
 					result += buffer;
@@ -181,6 +183,9 @@ void establish_connnection(int sock){
 			pclose(pipe);
 		}
 
+	}
+	}catch(...){
+		warn;
 	}
 	exit(0);
 }
