@@ -160,12 +160,11 @@ void establish_connnection(int sock){
 				if (fgets(buffer, 128, pipe) != NULL)
 					result += buffer;
 			}
-			printf("%s\n", result.c_str());
+			// printf("%s\n", result.c_str());
 			// if((result_int = result.find("command not found")) <  0){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
 			// }
 			printf("where");
-			pclose(pipe);
 			temp = "";
 			// if((result_int = result.find("command not found")) >=  0){
 			result += "\r\n";
@@ -175,6 +174,7 @@ void establish_connnection(int sock){
 
 			printf("okay");
 			result = "";
+			pclose(pipe);
 		}
 
 	}
