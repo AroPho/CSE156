@@ -164,12 +164,15 @@ void establish_connnection(int sock){
 			// if((result_int = result.find("command not found")) <  0){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
 			// }
-			printf("where");
 			temp = "";
 			// if((result_int = result.find("command not found")) >=  0){
 			result += "\r\n";
 			printf("here");
-			send(sock, result.c_str(), result.length(), 0);
+			if(result.find("sh: ") != 0){
+				send(sock, result.c_str(), result.length(), 0);
+			}else{
+				send(sock, error_command.c_str(), error_command.length(), 0);
+			}
 			// }
 
 			printf("okay");
