@@ -142,8 +142,8 @@ void establish_connnection(int sock){
 	char buffer[128];
 	string result = "";
 	FILE* pipe;
-	string error_command = "Command not Found\n\r\n";
-	int result_int;
+	// string error_command = "Command not Found\n\r\n";
+	// int result_int;
 	try{
 	while((numbytes = recv(sock, &c, 1, 0)) != 0){
 		temp += c;
@@ -180,7 +180,7 @@ void establish_connnection(int sock){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
-				error_command = "sh: " + temp.substr(0, temp.length() - 2) + ": " + error_command;
+				string error_command = "sh: " + temp.substr(0, temp.length() - 2) + ": Command not Found\n\r\n";
 				send(sock, error_command.c_str(), error_command.length(), 0);
 			}
 			// }
