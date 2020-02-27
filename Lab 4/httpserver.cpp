@@ -144,7 +144,7 @@ void establish_connnection(int sock){
 	FILE* pipe;
 	while((numbytes = recv(sock, &c, 1, 0)) != 0){
 		temp += c;
-		if(temp.substr(temp.length() - 1) == "\n"){
+		if(temp.substr(temp.length() - 1) == "\r\n"){
 			// determine_command(temp, sock);
 			printf("%s\n", temp.c_str());
 			// Open pipe to file
@@ -163,6 +163,7 @@ void establish_connnection(int sock){
 			temp = "";
 			result += "\r\n";
 			send(sock, result.c_str(), result.length(), 0);
+			printf("here");
 			result = "";
 		}
 
