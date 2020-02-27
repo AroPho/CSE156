@@ -155,10 +155,12 @@ void establish_connnection(int sock){
 				send(sock, "fuck", 4, 0);
 			}
 			// read till end of process:
-			while (!feof(pipe)) {
-				// use buffer to read and add to result
-				if (fgets(buffer, 128, pipe) != NULL){
-					result += buffer;
+			if(pipe){
+				while (!feof(pipe)) {
+					// use buffer to read and add to result
+					if (fgets(buffer, 128, pipe) != NULL){
+						result += buffer;
+					}
 				}
 			}
 			
