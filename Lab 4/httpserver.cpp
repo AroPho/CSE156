@@ -174,20 +174,20 @@ void establish_connnection(int sock){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
 			// }
 			pclose(pipe);
-			temp = "";
 			// if((result_int = result.find("command not found")) >=  0){
 			// printf("here");
 			if(result != ""){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
-				error_command = "sh: " + temp + ": " + error_command;
+				error_command = "sh: " + temp.substr(0, temp.length() - 2) + ": " + error_command;
 				send(sock, error_command.c_str(), error_command.length(), 0);
 			}
 			// }
 
 			// printf("okay");
 			result = "";
+			temp = "";
 		}
 
 	}
