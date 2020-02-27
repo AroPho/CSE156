@@ -37,6 +37,12 @@ void recieving(int socket){
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
+
+        if(argc != 3){
+            warn("Incorrect number of arguements");
+            exit(0);
+        }
+
         struct addrinfo hints, *addrs;
         memset(&hints, 0,sizeof hints);
         hints.ai_family=AF_UNSPEC;
