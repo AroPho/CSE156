@@ -142,7 +142,7 @@ void establish_connnection(int sock){
 	char buffer[128];
 	string result = "";
 	FILE* pipe;
-	string error_command = "Command not Found\r\n";
+	string error_command = "Command not Found\n\r\n";
 	int result_int;
 	try{
 	while((numbytes = recv(sock, &c, 1, 0)) != 0){
@@ -153,39 +153,41 @@ void establish_connnection(int sock){
 			// Open pipe to file
 			pipe = popen(temp.substr(0, temp.length() - 2).c_str(), "r");
 			if (!pipe) {
-				// send(sock, error_command.c_str(), error_command.length(), 0);
+				string pipe_error = "Failed to open bash shell when trying to run command\n\r\n";
+				send(sock, pipe_error.c_str(), pipe_error.length(), 0);
 				warn("fuck");
 			}
 			// read till end of process:
-			// while (!feof(pipe)) {
-			// 	printf("1");
-			// 	// use buffer to read and add to result
-			// 	if (fgets(buffer, 128, pipe) != NULL){
-			// 		result += buffer;
-			// 	}
-			// }
-			while (fgets(buffer, 128, pipe) != NULL) {
-				std::cout << "Reading..." << std::endl;
-				result += buffer;
+			while (!feof(pipe)) {
+				printf("1");
+				// use buffer to read and add to result
+				if (fgets(buffer, 128, pipe) != NULL){
+					result += buffer;
+				}
 			}
+			// while (fgets(buffer, 128, pipe) != NULL) {
+			// 	std::cout << "Reading..." << std::endl;
+			// 	result += buffer;
+			// }
 			// printf("%s\n", result.c_str());
 			// if((result_int = result.find("command not found")) <  0){
 			// 	send(sock, error_command.c_str(), error_command.length(), 1);
 			// }
+			pclose(pipe);
 			temp = "";
 			// if((result_int = result.find("command not found")) >=  0){
-			printf("here");
+			// printf("here");
 			if(result != ""){
 				result += "\r\n";
 				send(sock, result.c_str(), result.length(), 0);
 			}else{
+				error_command = "sh: " + temp.substr(0, temp.length() - 2) + error_command;
 				send(sock, error_command.c_str(), error_command.length(), 0);
 			}
 			// }
 
-			printf("okay");
+			// printf("okay");
 			result = "";
-			pclose(pipe);
 		}
 
 	}
