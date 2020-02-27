@@ -62,7 +62,7 @@ int main(int argc, char * argv[]){
             warn("Unable to connect to server. Please try again or try different IP");
             exit(0);
         }
-        int numbytes;
+        //int numbytes;
         string input;
 
         
@@ -72,7 +72,7 @@ int main(int argc, char * argv[]){
     
         // exit(1);
     try{
-        char c;
+        // char c;
         while(1){
             printf("client $ ");
             getline(cin, input);
