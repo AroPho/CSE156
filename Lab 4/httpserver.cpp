@@ -144,6 +144,7 @@ void establish_connnection(int sock){
 	FILE* pipe;
 	string error_command = "Command not Found";
 	int result_int;
+	try{
 	while((numbytes = recv(sock, &c, 1, 0)) != 0){
 		temp += c;
 		if(temp.length() > (long) 1 && temp.substr(temp.length() - 2) == "\r\n"){
@@ -181,6 +182,9 @@ void establish_connnection(int sock){
 			pclose(pipe);
 		}
 
+	}
+	}catch(...){
+		warn;
 	}
 	exit(0);
 }
