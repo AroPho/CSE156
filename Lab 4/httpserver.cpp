@@ -185,7 +185,7 @@ void establish_connnection(int sock){
 
 	}
 	}catch(...){
-		warn;
+		warn("help");
 	}
 	exit(0);
 }
