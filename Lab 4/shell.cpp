@@ -31,6 +31,10 @@ void recieving(int socket){
             break;
         }
     }
+    if(numbytes == 0){
+        printf("Connection to server has been closed");
+        exit(0);
+    }
     printf("%s", temp.substr(0, temp.length() -2 ).c_str());
 }
 
@@ -76,12 +80,16 @@ int main(int argc, char * argv[]){
         while(1){
             printf("client $ ");
             getline(cin, input);
-            input += "\r\n";
-            send(new_fd, input.c_str(), input.length(), 0);
-            if(input == "exit"){
-                exit(0);
+            if(input.substr(0,4) == "vim " || input.substr(0,3) == "vi " || input.substr(0, 5) == "nano "){
+                warn("%s is not supported in this program", input.c_str());
+            }else{
+                input += "\r\n";
+                send(new_fd, input.c_str(), input.length(), 0);
+                if(input == "exit"){
+                    exit(0);
+                }
+                recieving(new_fd);
             }
-            recieving(new_fd);
         }
 
     }catch(...){
