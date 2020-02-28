@@ -155,7 +155,7 @@ void establish_connnection(int sock){
 				if (!pipe) {
 					string pipe_error = "Failed to open bash shell when trying to run command\n\r\n";
 					send(sock, pipe_error.c_str(), pipe_error.length(), 0);
-					warn(pipe_error.c_str());
+					warn("%s",pipe_error.c_str());
 				}
 				// read till end of process:
 				// while (!feof(pipe)) {
