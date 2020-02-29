@@ -149,7 +149,7 @@ void establish_connnection(int sock){
 			temp += c;
 			if(temp.length() > (long) 1 && temp.substr(temp.length() - 2) == "\r\n"){
 				// determine_command(temp, sock);
-				printf("%s\n", temp.c_str());
+				// printf("%s\n", temp.c_str());
 				// Open pipe to file
 				pipe = popen(temp.substr(0, temp.length() - 2).c_str(), "r");
 				if (!pipe) {
