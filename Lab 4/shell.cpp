@@ -35,7 +35,7 @@ void recieving(int socket){
         printf("Connection to server has been closed");
         exit(0);
     }
-    printf("%s", temp.substr(0, temp.length() -2 ).c_str());
+    printf("%s\n", temp.substr(0, temp.length() -2 ).c_str());
 }
 
 
@@ -89,8 +89,7 @@ int main(int argc, char * argv[]){
                     exit(0);
                 }
                 if(input.substr(0,4) == "echo"){
-                    getline(cin, input);
-                    send(new_fd, input.c_str(), input.length(), 0);
+                    printf("\n\n");
                 }
                 recieving(new_fd);
             }
