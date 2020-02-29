@@ -88,11 +88,11 @@ int main(int argc, char * argv[]){
                 if(input == "exit"){
                     exit(0);
                 }
-                if((input.length() == 4 || input.length() == 5) && input.substr(0,4) == "echo"){
-                    printf("\n\n");
-                }else{
-                    recieving(new_fd);
-                }
+                // if((input.length() == 4 || input.length() == 5) && input.substr(0,4) == "echo"){
+                //     printf("\n\n");
+                // }else{
+                recieving(new_fd);
+                
             }
         }
 
