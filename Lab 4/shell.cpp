@@ -88,6 +88,10 @@ int main(int argc, char * argv[]){
                 if(input == "exit"){
                     exit(0);
                 }
+                if(input.substr(0,4) == "echo"){
+                    getline(cin, input);
+                    send(new_fd, input.c_str(), input.length(), 0);
+                }
                 recieving(new_fd);
             }
         }
