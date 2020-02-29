@@ -84,7 +84,9 @@ int main(int argc, char * argv[]){
                 warn("%s is not supported in this program", input.c_str());
             }if((input.length() == 4 || input.length() == 5) && input.substr(0,4) == "echo"){
                 printf("\n\n");
-            }if(input == "exit"){
+            }if(input.length() == 4 && input.substr(0,4) == "exit"){
+                    printf("Closing connection with server");
+                    close(new_fd);
                     exit(0);
             }else{
                 input += "\r\n";
