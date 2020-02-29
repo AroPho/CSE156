@@ -21,6 +21,7 @@
 #include <iostream>
 using namespace std;
 
+// Recieves data from Server
 void recieving(int socket){
     int numbytes;
     char c;
@@ -66,28 +67,30 @@ int main(int argc, char * argv[]){
             warn("Unable to connect to server. Please try again or try different IP");
             exit(0);
         }
-        //int numbytes;
         string input;
 
-        
-        // host_buff = (string*) malloc(sizeof(string)*(num_args*800));
-
-        //cout << 2 << "\n";
-    
-        // exit(1);
     try{
         // char c;
         while(1){
+            // Gets input from stdin
             printf("client $ ");
             getline(cin, input);
+
+            // Prevents terminal texts from being used
             if(input.substr(0,4) == "vim " || input.substr(0,3) == "vi " || input.substr(0, 5) == "nano " || (input.length() ==  3 && input.substr(0,3) == "vim")|| (input.length() ==  2 && input.substr(0,2) == "vi")|| (input.length() ==  4 && input.substr(0,4) == "nano")){
                 warn("%s is not supported in this program", input.c_str());
+
+            // Initializes Exit command
             }if(input.length() == 4 && input.substr(0,4) == "exit"){
                     printf("Closing connection with server");
                     close(new_fd);
                     exit(0);
+
+            // Fixes bug in echo command when only echo is provided in stdin
             }if((input.length() == 4 || input.length() == 5) && input.substr(0,4) == "echo"){
                 printf("\n\n");
+
+            // Communicates with Server
             }else{
                 input += "\r\n";
                 send(new_fd, input.c_str(), input.length(), 0);
