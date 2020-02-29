@@ -176,7 +176,7 @@ void establish_connnection(int sock){
 				pclose(pipe);
 				// if((result_int = result.find("command not found")) >=  0){
 				// printf("here");
-				if(result != ""){
+				if(result != "" || temp.substr(0,5) == "echo "){
 					result += "\r\n";
 					send(sock, result.c_str(), result.length(), 0);
 				}else{
