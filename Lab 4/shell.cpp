@@ -80,7 +80,7 @@ int main(int argc, char * argv[]){
         while(1){
             printf("client $ ");
             getline(cin, input);
-            if(input.substr(0,4) == "vim " || input.substr(0,3) == "vi " || input.substr(0, 5) == "nano "){
+            if(input.substr(0,4) == "vim " || input.substr(0,3) == "vi " || input.substr(0, 5) == "nano " || (input.length() ==  3 && input.substr(0,3) == "vim")|| (input.length() ==  2 && input.substr(0,2) == "vi")|| (input.length() ==  4 && input.substr(0,4) == "nano")){
                 warn("%s is not supported in this program", input.c_str());
             }else{
                 input += "\r\n";
