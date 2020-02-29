@@ -245,7 +245,7 @@ int main(int argc, char * argv[]) {
 		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
 		//parse_recv(new_fd);
 		if(new_fd > 0){
-			printf("Got new connection %d\n", new_fd);
+			// printf("Got new connection %d\n", new_fd);
 			if (guard(fork(), (char *) fork_error.c_str()) == 0) {
 				// while(numbytes != 0){
 				// 	recv(new_fd, &c, 1, 0);
