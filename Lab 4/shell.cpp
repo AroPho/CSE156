@@ -82,15 +82,13 @@ int main(int argc, char * argv[]){
             getline(cin, input);
             if(input.substr(0,4) == "vim " || input.substr(0,3) == "vi " || input.substr(0, 5) == "nano " || (input.length() ==  3 && input.substr(0,3) == "vim")|| (input.length() ==  2 && input.substr(0,2) == "vi")|| (input.length() ==  4 && input.substr(0,4) == "nano")){
                 warn("%s is not supported in this program", input.c_str());
-            } if((input.length() == 4 || input.length() == 5) && input.substr(0,4) == "echo"){
+            }if((input.length() == 4 || input.length() == 5) && input.substr(0,4) == "echo"){
                 printf("\n\n");
-            }
-            else{
+            }if(input == "exit"){
+                    exit(0);
+            }else{
                 input += "\r\n";
                 send(new_fd, input.c_str(), input.length(), 0);
-                if(input == "exit"){
-                    exit(0);
-                }
                 recieving(new_fd);
                 
             }
