@@ -28,17 +28,20 @@ int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; 
 
 
 void *p2p_send(void *args){
-    struct sockaddr_in cliaddr;
-    socklen_t addr_size;
+    // struct sockaddr_in cliaddr;
+    // socklen_t addr_size;
     int sock = *((int*)args);
     //char input[1024];
-    int n;
+    // int n;
     string input;
+    string sending = "";
     // bzero(input, 1024);
     while(connection_bool){
         printf("%s> ", client_name.c_str());
+        sending = client_name + ": ";
         getline(cin, input);
         input += "\r\n";
+        sending += input;
         send(sock, input.c_str(), input.length(), 0);
     }
     return NULL;
@@ -89,7 +92,7 @@ void p2p_connect_connect(string command){
     if(new_fd != 0){
         string ping = "ping_client\r\n\r\n";
         send(new_fd, ping.c_str(), ping.length(), 0);
-        string fork_error = "Could not fork";
+        // string fork_error = "Could not fork";
         
         int_arr[0] = new_fd;
         connection_bool = true;
@@ -104,7 +107,7 @@ void p2p_connect_connect(string command){
 
 void p2p_wait_connect(int sock){
     struct sockaddr_in servaddr, cliaddr;
-    struct sockaddr_storage their_addr;
+    // struct sockaddr_storage their_addr;
 
     int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
     int int_arr[1];
@@ -164,9 +167,9 @@ void recieving(int socket){
             exit(0);
         }
         if(temp == "ping\r\n\r\n"){
-            printf("Connection from %s", temp.substr(temp.find("Name: ") + 6, temp.length() - temp.find("Name: ") + 5).c_str());
-            int first = temp.find(" ") + 1;
-            int last = temp.length() - first - 1;
+            // printf("Connection from %s", temp.substr(temp.find("Name: ") + 6, temp.length() - temp.find("Name: ") + 6).c_str());
+            // int first = temp.find(" ") + 1;
+            // int last = temp.length() - first - 1;
             p2p_wait_connect(socket);
         }
         if(temp.substr(0, 4) == "Ip: "){
