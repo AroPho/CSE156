@@ -10,8 +10,8 @@
 
 # List the sources, separated by spaces, for your program. 'SOURCES=foo.cpp bar.cpp', for
 # example. Do not include anything except sources files that you will compile!
-SOURCES=Chat_Server.cpp
-TEST_SOURCES = Chat_Client.cpp
+SOURCES=Chat_Client.cpp
+TEST_SOURCES = Chat_Server.cpp
 INCLUDES=$(wildcard *.h)
 
 # This is the name of the executable that this makefile will produce.
