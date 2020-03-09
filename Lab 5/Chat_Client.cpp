@@ -227,7 +227,7 @@ int main(int argc, char * argv[]){
         string input;
         while(1){
             // Gets input from stdin
-            printf("%s> ");
+            printf("%s> ", client_name.c_str());
             getline(cin, input);
 
             // Prevents terminal texts from being used
