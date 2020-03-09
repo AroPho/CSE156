@@ -220,6 +220,7 @@ int main(int argc, char * argv[]){
             exit(0);
         }
         
+        first_contact(new_fd);
         
 
     try{
