@@ -185,6 +185,11 @@ void recieving(int socket){
     }
 }
 
+void first_contact(int sock){
+    string temp = client_name + "\r\n\r\n";
+    send(sock, temp.c_str(), temp.length(), 0);
+}
+
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args
@@ -215,17 +220,18 @@ int main(int argc, char * argv[]){
             exit(0);
         }
         
+        
 
     try{
         // char c;
         string input;
         while(1){
             // Gets input from stdin
-            printf("client $ ");
+            printf("%s> ");
             getline(cin, input);
 
             // Prevents terminal texts from being used
-            input += "\r\n";
+            input += "\r\n\r\n";
             send(new_fd, input.c_str(), input.length(), 0);
             recieving(new_fd);       
         }
