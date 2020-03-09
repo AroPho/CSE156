@@ -133,6 +133,7 @@ string first_contact(int sock){
             break;
         }
     }
+    printf("%s\n", temp.c_str());
     return temp.substr(0, temp.length() - 4);
 }
 
@@ -167,6 +168,7 @@ void *establish_connection(void *){
             while((numbytes = recv(socket, &c, 1, 0)) != 0){
                 temp += c;
                 if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
+                    printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
                     command_find(temp.substr(temp.length() - 4), name, socket);
                     temp = "";
                 }
