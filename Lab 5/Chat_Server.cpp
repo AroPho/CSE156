@@ -68,9 +68,11 @@ void contact_list_send(int sock){
     string temp = "";
     int count = 1;
     for( map<string, int>::iterator iter=contact_list.begin(); iter!=contact_list.end(); ++iter) {  
-        temp += count + ") " + (*iter).first + "\n";
+        temp += to_string(count) + ") " + (*iter).first + "\n";
         count++;
-    }  
+    }
+    temp += "\r\n\r\n";  
+    send(sock, temp.c_str(), temp.length(), 0);
 }
 
 void add_to_list(int sock, string name){
@@ -107,7 +109,7 @@ void connect_clients(int sock, string line){
         string ip = "Ip: ";
         struct sockaddr_in addr;
         socklen_t addr_size = sizeof(struct sockaddr_in);
-        int res = getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
+        getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
         ip += inet_ntoa(addr.sin_addr);
 
         ip += " " + temp;

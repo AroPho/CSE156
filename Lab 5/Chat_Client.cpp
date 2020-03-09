@@ -26,40 +26,6 @@ string client_name;
 
 int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
-// Recieves data from Server
-void recieving(int socket){
-    int numbytes;
-    char c;
-    string temp = "";
-    while(1){
-        while((numbytes = recv(socket, &c, 1, 0)) != 0){
-            temp += c;
-            if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                break;
-            }
-        }
-        if(numbytes == 0){
-            printf("Connection to server has been closed");
-            exit(0);
-        }
-        if(temp == "ping\r\n\r\n"){
-            printf("Connection from %s", temp.substr(temp.find("Name: ") + 6, temp.length() - temp.find("Name: ") + 5));
-            int first = temp.find(" ") + 1;
-            int last = temp.length() - first - 1;
-            p2p_wait_connect(socket);
-        }
-        if(temp.substr(0, 4) == "Ip: "){
-            p2p_connect_connect(temp.substr(0, temp.length() - 4));
-
-        }else{
-            printf("%s", temp.c_str());
-        }
-        if(numbytes == 0){
-            printf("Connection to Server has closed, Shuting Down\n");
-            exit(0);
-        }
-    }
-}
 
 void *p2p_send(void *args){
     struct sockaddr_in cliaddr;
@@ -127,10 +93,10 @@ void p2p_connect_connect(string command){
         
         int_arr[0] = new_fd;
         connection_bool = true;
-        pthread_t tidsi;
-		pthread_create(&tidsi, NULL, p2p_recieve, (void*)(int_arr + new_fd));
-        pthread_t tidsi;
-		pthread_create(&tidsi, NULL, p2p_send, (void*)(int_arr + new_fd));
+        pthread_t tids1;
+		pthread_create(&tids1, NULL, p2p_recieve, (void*)(int_arr + new_fd));
+        pthread_t tids2;
+		pthread_create(&tids2, NULL, p2p_send, (void*)(int_arr + new_fd));
         // establish_connnection(new_fd);
         
     }
@@ -168,10 +134,10 @@ void p2p_wait_connect(int sock){
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
         int_arr[0] = new_fd;
         connection_bool = true;
-        pthread_t tidsi;
-		pthread_create(&tidsi, NULL, p2p_recieve, (void*)(int_arr + new_fd));
-        pthread_t tidsi;
-		pthread_create(&tidsi, NULL, p2p_send, (void*)(int_arr + new_fd));
+        pthread_t tids1;
+		pthread_create(&tids1, NULL, p2p_recieve, (void*)(int_arr + new_fd));
+        pthread_t tids2;
+		pthread_create(&tids2, NULL, p2p_send, (void*)(int_arr + new_fd));
         // if (guard(fork(), (char *) fork_error.c_str()) == 0) {
         // p2p_communicate(new_fd);
         // // establish_connnection(new_fd);
@@ -179,6 +145,41 @@ void p2p_wait_connect(int sock){
         // }
     }		
 	close(main_socket);
+}
+
+// Recieves data from Server
+void recieving(int socket){
+    int numbytes;
+    char c;
+    string temp = "";
+    while(1){
+        while((numbytes = recv(socket, &c, 1, 0)) != 0){
+            temp += c;
+            if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+                break;
+            }
+        }
+        if(numbytes == 0){
+            printf("Connection to server has been closed");
+            exit(0);
+        }
+        if(temp == "ping\r\n\r\n"){
+            printf("Connection from %s", temp.substr(temp.find("Name: ") + 6, temp.length() - temp.find("Name: ") + 5).c_str());
+            int first = temp.find(" ") + 1;
+            int last = temp.length() - first - 1;
+            p2p_wait_connect(socket);
+        }
+        if(temp.substr(0, 4) == "Ip: "){
+            p2p_connect_connect(temp.substr(0, temp.length() - 4));
+
+        }else{
+            printf("%s", temp.c_str());
+        }
+        if(numbytes == 0){
+            printf("Connection to Server has closed, Shuting Down\n");
+            exit(0);
+        }
+    }
 }
 
 
