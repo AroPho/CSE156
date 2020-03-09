@@ -1,0 +1,26 @@
+Aaron Nguyen
+anguy200
+ID: 1585632
+
+Issues with Program: 
+- My testing has not shown any major issues with the program, but there is a delay if the commands output is fairly sizable so that needs be considered.
+
+
+Table of Contents:
+
+Bin:
+- httpserver
+- httpserver.d
+- httpserver.o
+- shell
+- shell.d
+- shell.o
+
+Doc:
+- Design Doc
+- README
+
+Src:
+-  httpserver.cpp //Server Code
+- Makefile // Creates Excutables
+- shell.cpp // Client Code
