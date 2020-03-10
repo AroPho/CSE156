@@ -149,7 +149,7 @@ void command_find(string line, string name, int sock){
     if(line.substr(0,9) == "/connect "){
         connect_clients(sock, line.substr(9));
     }
-    if(line.substr(0,5) == "/list"){
+    if(line == "/list"){
         printf("here");
         contact_list_send(sock);
     }else{
@@ -181,7 +181,7 @@ void *establish_connection(void *){
                 temp += c;
                 if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
                     printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
-                    command_find(temp.substr(temp.length() - 5), name, socket);
+                    command_find(temp.substr(temp.length() - 4), name, socket);
                     temp = "";
                 }
             }
