@@ -135,7 +135,7 @@ string first_contact(int sock){
         }
     }
     map<string, int>::iterator iter = connections.find(temp.substr(0, temp.length()-4));
-    if(iter == connections.end()){
+    if(iter != connections.end()){
         return "";
     }
     printf("%s\n", temp.c_str());
