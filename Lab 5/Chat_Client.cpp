@@ -96,10 +96,10 @@ void p2p_connect_connect(string command){
         
         int_arr[0] = new_fd;
         connection_bool = true;
-        pthread_t tids1;
-		pthread_create(&tids1, NULL, p2p_recieve, (void*)(int_arr + new_fd));
-        pthread_t tids2;
-		pthread_create(&tids2, NULL, p2p_send, (void*)(int_arr + new_fd));
+        pthread_t tidsa;
+		pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
+        pthread_t tidsb;
+		pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
         // establish_connnection(new_fd);
         
     }
@@ -137,10 +137,10 @@ void p2p_wait_connect(int sock){
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
         int_arr[0] = new_fd;
         connection_bool = true;
-        pthread_t tids1;
-		pthread_create(&tids1, NULL, p2p_recieve, (void*)(int_arr + new_fd));
-        pthread_t tids2;
-		pthread_create(&tids2, NULL, p2p_send, (void*)(int_arr + new_fd));
+        pthread_t tidsa;
+		pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
+        pthread_t tidsb;
+		pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
         // if (guard(fork(), (char *) fork_error.c_str()) == 0) {
         // p2p_communicate(new_fd);
         // // establish_connnection(new_fd);
