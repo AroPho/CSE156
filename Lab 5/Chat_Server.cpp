@@ -244,7 +244,7 @@ int main(int argc, char * argv[]) {
 
             sem_wait(&empty);
             pthread_mutex_lock(&mutex1);
-            client_names[in] = new_name
+            client_names[in] = new_name;
             buff[in] = new_fd;
             in = (in + 1) % 4;
             pthread_mutex_unlock(&mutex1);
