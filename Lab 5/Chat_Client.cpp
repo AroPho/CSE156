@@ -155,34 +155,34 @@ void recieving(int socket){
     int numbytes;
     char c;
     string temp = "";
-    while(1){
-        while((numbytes = recv(socket, &c, 1, 0)) != 0){
-            temp += c;
-            if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-                break;
-            }
-        }
-        if(numbytes == 0){
-            printf("Connection to server has been closed");
-            exit(0);
-        }
-        if(temp == "ping\r\n\r\n"){
-            // printf("Connection from %s", temp.substr(temp.find("Name: ") + 6, temp.length() - temp.find("Name: ") + 6).c_str());
-            // int first = temp.find(" ") + 1;
-            // int last = temp.length() - first - 1;
-            p2p_wait_connect(socket);
-        }
-        if(temp.substr(0, 4) == "Ip: "){
-            p2p_connect_connect(temp.substr(0, temp.length() - 4));
-
-        }else{
-            printf("%s\n", temp.substr(0,temp.length() - 4).c_str());
-        }
-        if(numbytes == 0){
-            printf("Connection to Server has closed, Shuting Down\n");
-            exit(0);
+    
+    while((numbytes = recv(socket, &c, 1, 0)) != 0){
+        temp += c;
+        if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+            break;
         }
     }
+    if(numbytes == 0){
+        printf("Connection to server has been closed");
+        exit(0);
+    }
+    if(temp == "ping\r\n\r\n"){
+        // printf("Connection from %s", temp.substr(temp.find("Name: ") + 6, temp.length() - temp.find("Name: ") + 6).c_str());
+        // int first = temp.find(" ") + 1;
+        // int last = temp.length() - first - 1;
+        p2p_wait_connect(socket);
+    }
+    if(temp.substr(0, 4) == "Ip: "){
+        p2p_connect_connect(temp.substr(0, temp.length() - 4));
+
+    }else{
+        printf("%s\n", temp.substr(0,temp.length() - 4).c_str());
+    }
+    if(numbytes == 0){
+        printf("Connection to Server has closed, Shuting Down\n");
+        exit(0);
+    }
+    
 }
 
 void first_contact(int sock){
