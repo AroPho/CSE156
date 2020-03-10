@@ -80,6 +80,7 @@ void add_to_list(int sock, string name){
     pthread_mutex_lock(&mutex_list);
     contact_list[name] = sock;
     pthread_mutex_unlock(&mutex_list);
+    
 }
 
 void connect_clients(int sock, string line){
@@ -144,6 +145,11 @@ string first_contact(int sock){
 
 void command_find(string line, string name, int sock){
     printf("%s", line.c_str());
+    if(line != "/wait" && line.substr(0,9) == "/connect " &&  line == "/list"){
+        string error = "Invalid Command\r\n\r\n";
+        send(sock, error.c_str(), error.length(), 0);
+        return;
+    }
     if(line ==  "/wait"){
         add_to_list(sock, name);
     }
@@ -153,9 +159,6 @@ void command_find(string line, string name, int sock){
     if(line == "/list"){
         printf("here");
         contact_list_send(sock);
-    }else{
-        string error = "Invalid Command\r\n\r\n";
-        send(sock, error.c_str(), error.length(), 0);
     }
 
 }

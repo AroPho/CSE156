@@ -175,12 +175,12 @@ void recieving(int socket){
     if(temp.substr(0, 4) == "Ip: "){
         p2p_connect_connect(temp.substr(0, temp.length() - 4));
 
-    }else{
-        printf("%s\n", temp.substr(0,temp.length() - 4).c_str());
     }
-    if(numbytes == 0){
-        printf("Connection to Server has closed, Shuting Down\n");
-        exit(0);
+    if(temp == "wait\r\n\r\n"){
+        recieving(socket);
+    }
+    if(temp != "wait\r\n\r\n" && temp != "ping\r\n\r\n"){
+        printf("%s\n", temp.substr(0,temp.length() - 4).c_str());
     }
     
 }
