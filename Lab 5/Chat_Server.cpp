@@ -181,7 +181,7 @@ void *establish_connection(void *){
                 temp += c;
                 if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
                     printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
-                    command_find(temp.substr(temp.length() - 4), name, socket);
+                    command_find(temp.substr(temp.length() - 5), name, socket);
                     temp = "";
                 }
             }
