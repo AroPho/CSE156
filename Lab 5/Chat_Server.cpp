@@ -140,6 +140,7 @@ string first_contact(int sock){
     if(iter != connections.end()){
         return "";
     }
+    connections[temp.substr(temp.length() - 4)] = sock;
     printf("%s\n", temp.c_str());
     return temp.substr(0, temp.length() - 4);
 }
