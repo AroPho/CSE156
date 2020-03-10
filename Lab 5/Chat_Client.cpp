@@ -176,7 +176,7 @@ void recieving(int socket){
             p2p_connect_connect(temp.substr(0, temp.length() - 4));
 
         }else{
-            printf("%s", temp.c_str());
+            printf("%s\n", temp.substr(0,temp.length() - 4).c_str());
         }
         if(numbytes == 0){
             printf("Connection to Server has closed, Shuting Down\n");

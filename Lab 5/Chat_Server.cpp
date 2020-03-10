@@ -152,6 +152,9 @@ void command_find(string line, string name, int sock){
     if(line.substr(0,5) == "/list"){
         printf("here");
         contact_list_send(sock);
+    }else{
+        string error = "Invalid Command\r\n\r\n";
+        send(sock, error.c_str(), error.length(), 0);
     }
 
 }
