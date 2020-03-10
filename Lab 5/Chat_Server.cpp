@@ -150,6 +150,7 @@ void command_find(string line, string name, int sock){
         connect_clients(sock, line.substr(9));
     }
     if(line.substr(0,5) == "/list"){
+        printf("here");
         contact_list_send(sock);
     }
 
