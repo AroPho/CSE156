@@ -136,7 +136,7 @@ string first_contact(int sock){
             break;
         }
     }
-    map<string, int>::iterator iter = connections.find(temp.substr(0, temp.length()-4));
+    map<string, int>::iterator iter = connections.find(temp.substr(0, temp.length() - 4));
     if(iter != connections.end()){
         return "";
     }
