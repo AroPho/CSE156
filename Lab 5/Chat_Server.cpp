@@ -143,7 +143,7 @@ string first_contact(int sock){
 }
 
 void command_find(string line, string name, int sock){
-    printf("%s", line.c_str());
+    printf("%s", line.c_str())
     if(line ==  "/wait"){
         add_to_list(sock, name);
     }
@@ -181,8 +181,8 @@ void *establish_connection(void *){
             while((numbytes = recv(socket, &c, 1, 0)) != 0){
                 temp += c;
                 if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
-                    //printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
-                    command_find(temp.substr(temp.length() - 4), name, socket);
+                    // printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
+                    command_find(temp.substr(0, temp.length() - 4), name, socket);
                     temp = "";
                 }
             }
