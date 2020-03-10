@@ -129,21 +129,23 @@ string first_contact(int sock){
     int numbytes;
     char c;
     string temp = "";
+    string name;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
         temp += c;
         if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
             // contact_list[temp.substr(0, temp.length() - 4)] = sock;
+            name = temp.substr(0, temp.length() - 4);
             break;
         }
     }
-    map<string, int>::iterator iter = connections.find(temp.substr(0, temp.length() - 4));
+    map<string, int>::iterator iter = connections.find(name);
     if(iter != connections.end()){
         printf("here");
         return "NO\r\n\r\n";
     }
-    connections[temp.substr(temp.length() - 4)] = sock;
-    printf("%s\n", temp.c_str());
-    return temp.substr(0, temp.length() - 4);
+    connections[name] = sock;
+    printf("%s\n", name.c_str());
+    return name;
 }
 
 void command_find(string line, string name, int sock){
