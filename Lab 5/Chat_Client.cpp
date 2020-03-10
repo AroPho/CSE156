@@ -194,6 +194,7 @@ void first_contact(int sock){
     while((numbytes = recv(sock,&c, 1, 0) != 0)){
         temp += c;
         if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
+            printf("%s\n", temp.c_str());
             if(temp == "TAKEN\r\n\r\n"){
                 printf("Client ID is already taken");
                 exit(0);
