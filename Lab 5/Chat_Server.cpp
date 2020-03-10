@@ -231,7 +231,7 @@ int main(int argc, char * argv[]) {
 	listen (main_socket, 16);
 	int new_fd;
 	// char c;
-	string fork_error = "Could not fork";
+	string not_taken = "Good\r\n\r\n";
 	string recv_error = "Could not recv on TCP connection";
     string new_name;
 
@@ -243,8 +243,11 @@ int main(int argc, char * argv[]) {
 		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
         new_name = first_contact(new_fd);
         if(new_name == ""){
+            string repeat = "TAKEN\r\n\r\n";
+            send(new_fd, repeat.c_str(), repeat.length(), 0);
             new_fd = 0;
         }
+        send(new_fd, not_taken.c_str(), not_taken.length(), 0);
 		//parse_recv(new_fd);
 		if(new_fd > 0){
 			// printf("Got new connection %d\n", new_fd);

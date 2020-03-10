@@ -188,6 +188,18 @@ void recieving(int socket){
 void first_contact(int sock){
     string temp = client_name + "\r\n\r\n";
     send(sock, temp.c_str(), temp.length(), 0);
+    int numbytes;
+    char c;
+    temp = "";
+    while((numbytes = recv(sock,&c, 1, 0) != 0)){
+        temp += c;
+        if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
+            if(temp == "TAKEN\r\n\r\n"){
+                printf("Client ID is already taken");
+                exit(0);
+            }
+        }
+    }
 }
 
 
