@@ -143,7 +143,7 @@ string first_contact(int sock){
 }
 
 void command_find(string line, string name, int sock){
-    printf("%s", line.c_str())
+    printf("%s", line.c_str());
     if(line ==  "/wait"){
         add_to_list(sock, name);
     }
