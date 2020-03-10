@@ -185,7 +185,7 @@ void *establish_connection(void *){
             while((numbytes = recv(socket, &c, 1, 0)) != 0){
                 temp += c;
                 if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
-                    // printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
+                    printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
                     command_find(temp.substr(0, temp.length() - 4), name, socket);
                     temp = "";
                 }
