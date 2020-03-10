@@ -198,6 +198,7 @@ void first_contact(int sock){
                 printf("Client ID is already taken");
                 exit(0);
             }
+            break;
         }
     }
 }
