@@ -56,6 +56,7 @@ pthread_mutex_t mutex_list = PTHREAD_MUTEX_INITIALIZER;
 
 
 map<string, int> contact_list;
+map<string, int> connections;
 
 int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
@@ -133,6 +134,10 @@ string first_contact(int sock){
             break;
         }
     }
+    map<string, int>::iterator iter = connections.find(temp.substr(0, temp.length()-4));
+    if(iter == connections.end()){
+        return "";
+    }
     printf("%s\n", temp.c_str());
     return temp.substr(0, temp.length() - 4);
 }
@@ -143,6 +148,9 @@ void command_find(string line, string name, int sock){
     }
     if(line.substr(0,9) == "/connect "){
         connect_clients(sock, line.substr(9));
+    }
+    if(line.substr(0,5) == "/list"){
+        contact_list_send(sock);
     }
 
 }
@@ -173,8 +181,9 @@ void *establish_connection(void *){
                     temp = "";
                 }
             }
+            connections.erase(name);
         }catch(...){
-
+            connections.erase(name);
         }
     }
 }
@@ -223,6 +232,10 @@ int main(int argc, char * argv[]) {
 
 	while(main_socket > 0){
 		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
+        new_name = first_contact(new_fd);
+        if(new_name == ""){
+            new_fd = 0;
+        }
 		//parse_recv(new_fd);
 		if(new_fd > 0){
 			// printf("Got new connection %d\n", new_fd);
@@ -231,7 +244,7 @@ int main(int argc, char * argv[]) {
 
             sem_wait(&empty);
             pthread_mutex_lock(&mutex1);
-            client_names[in] = first_contact(new_fd);
+            client_names[in] = new_name
             buff[in] = new_fd;
             in = (in + 1) % 4;
             pthread_mutex_unlock(&mutex1);
