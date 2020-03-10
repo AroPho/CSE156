@@ -138,7 +138,7 @@ string first_contact(int sock){
     }
     map<string, int>::iterator iter = connections.find(temp.substr(0, temp.length() - 4));
     if(iter != connections.end()){
-        return "";
+        return "NO\r\n\r\n";
     }
     connections[temp.substr(temp.length() - 4)] = sock;
     printf("%s\n", temp.c_str());
@@ -243,7 +243,7 @@ int main(int argc, char * argv[]) {
 	while(main_socket > 0){
 		new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &addr_size);
         new_name = first_contact(new_fd);
-        if(new_name == ""){
+        if(new_name == "NO\r\n\r\n"){
             string repeat = "TAKEN\r\n\r\n";
             send(new_fd, repeat.c_str(), repeat.length(), 0);
             new_fd = 0;
