@@ -66,12 +66,12 @@ void p2p_wait_connect(int sock){
 }
 
 void wait_recieve(int sock){
-    char c[1];
+    char c;
     int numbytes;
     string temp;
     // printf("here\n");
     while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
-        if(strlen(c) != 0){
+        if(c != NULL){
             printf("%s", c);
             temp += c;
         }
