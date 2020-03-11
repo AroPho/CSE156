@@ -172,6 +172,7 @@ void recieving(int socket){
         // printf("%s> ", client_name.c_str());
         // printf("here");
         wait_recieve(socket);
+        printf("here\n");
         quit = false;
     }
 
