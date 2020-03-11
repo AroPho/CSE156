@@ -87,7 +87,7 @@ void connect_clients(int sock, string line){
         getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
         ip += inet_ntoa(addr.sin_addr);
 
-        string address = ip + " " + temp;
+        string address = ip + " " + temp.substr(0, temp.length() - 4);
         printf("%s\n", ip.c_str());
         send(sock, ip.c_str(), ip.length(), 0);
     }else{
