@@ -29,7 +29,7 @@ void wait_recieve(int sock){
     char c;
     int numbytes;
     string temp;
-    while((numbytes = recv(sock, &c, 1, 0)) != 0 && quit == false){
+    while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
         temp += c;
         printf("%d\n", quit);
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
