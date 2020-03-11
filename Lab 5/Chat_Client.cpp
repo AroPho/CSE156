@@ -79,7 +79,6 @@ void p2p_connect_connect(string command){
         pthread_t tidsb;
 		pthread_create(&tidsb, NULL, p2p_send, NULL);
         char input[1024];
-        int n;
         string temp = "";
         printf("client_connect\n");
         while((n = recv(new_fd, &input, 1024,0)) != 0){
