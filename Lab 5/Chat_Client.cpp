@@ -42,7 +42,7 @@ void wait_recieve(int sock){
         }
     }
     if(temp == "ping\r\n\r\n"){
-        p2p_wait_connect(socket);
+        // p2p_wait_connect(socket);
     }
 
 }
@@ -87,7 +87,7 @@ void recieving(int socket){
 
     // Info -> Chat
     if(temp.substr(0, 4) == "Ip: "){
-        p2p_connect_connect(temp.substr(0, temp.length() - 4));
+        // p2p_connect_connect(temp.substr(0, temp.length() - 4));
 
     }
 

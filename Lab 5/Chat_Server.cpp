@@ -97,7 +97,7 @@ void command_find(string line, string name, int sock){
         remove_from_list(name);
     }
     if(line.substr(0,9) == "/connect "){
-        connect_clients(sock, line.substr(9));
+        //connect_clients(sock, line.substr(9));
     }
 }
 
