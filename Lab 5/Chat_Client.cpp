@@ -106,7 +106,6 @@ void p2p_wait_connect(int sock){
     // struct sockaddr_storage their_addr;
 
     int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
-    int int_arr[1];
 
     //Create Listen Socket
     bzero( &servaddr, sizeof(servaddr));
@@ -165,7 +164,7 @@ void recieving(int socket){
 
     // Info -> Chat
     if(temp.substr(0, 4) == "Ip: "){
-        printf("%s", temp.substr(0, temp.length() - 4));
+        printf("%s", temp.substr(0, temp.length() - 4).c_str());
         // p2p_connect_connect(temp.substr(0, temp.length() - 4));
 
     }
