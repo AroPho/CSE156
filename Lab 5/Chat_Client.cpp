@@ -51,13 +51,25 @@ void wait_recieve(int sock){
 
 }
 
-int kbhit()
+// int kbhit()
+// {
+//     struct timeval tv = { 0L, 0L };
+//     fd_set fds;
+//     FD_ZERO(&fds);
+//     FD_SET(0, &fds);
+//     return select(1, &fds, NULL, NULL, &tv);
+// }
+
+bool inputAvailable()  
 {
-    struct timeval tv = { 0L, 0L };
-    fd_set fds;
-    FD_ZERO(&fds);
-    FD_SET(0, &fds);
-    return select(1, &fds, NULL, NULL, &tv);
+  struct timeval tv;
+  fd_set fds;
+  tv.tv_sec = 0;
+  tv.tv_usec = 0;
+  FD_ZERO(&fds);
+  FD_SET(STDIN_FILENO, &fds);
+  select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
+  return (FD_ISSET(0, &fds));
 }
 
 void *wait(void *){
@@ -71,9 +83,10 @@ void *wait(void *){
         //     input = "";
         // }
         //printf("%lu", input.length());
-        if(kbhit()){
+        if(inputAvailable()){
             getline(cin, input);
         }
+        
         // printf("here\n");
         if(input == "/quit"){
             printf("1\n");
