@@ -25,6 +25,46 @@ bool connection_bool = false;
 string client_name;
 bool quit = false;
 
+
+void p2p_wait_connect(int sock){
+    struct sockaddr_in servaddr, cliaddr;
+    // struct sockaddr_storage their_addr;
+
+    int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+    //Create Listen Socket
+    bzero( &servaddr, sizeof(servaddr));
+
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
+    servaddr.sin_port = htons(0);
+
+    bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
+    listen (main_socket, 16);
+
+    socklen_t len = sizeof(servaddr);
+    getsockname(main_socket, (struct sockaddr *) &servaddr, &len);
+    string port = to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
+    send(sock, port.c_str(), port.length(), 0);
+
+    // char input[1024];
+    // socklen_t addr_size = sizeof cliaddr;
+    // // string fork_error = "Could not fork";
+    // int n;
+    // n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
+    // if(n > 0){
+    //     int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    //     connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
+    //     int_arr[0] = new_fd;
+    //     connection_bool = true;
+    //     // pthread_t tidsa;
+	// 	// pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
+    //     // pthread_t tidsb;
+	// 	// pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
+    // }		
+	close(main_socket);
+}
+
 void wait_recieve(int sock){
     char c[1];
     int numbytes;
@@ -32,7 +72,7 @@ void wait_recieve(int sock){
     // printf("here\n");
     while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
         if(strlen(c) != 0){
-            printf("%c", c);
+            printf("%s", c);
             temp += c;
         }
         //printf("%s\n", temp.c_str());
@@ -42,7 +82,7 @@ void wait_recieve(int sock){
         }
     }
     if(temp == "ping\r\n\r\n"){
-        // p2p_wait_connect(socket);
+        p2p_wait_connect(sock);
     }
     if(quit == true){
         // printf("2\n");
@@ -91,45 +131,6 @@ void *wait(void *){
         }
     }
     
-}
-
-void p2p_wait_connect(int sock){
-    struct sockaddr_in servaddr, cliaddr;
-    // struct sockaddr_storage their_addr;
-
-    int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
-
-    //Create Listen Socket
-    bzero( &servaddr, sizeof(servaddr));
-
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
-    servaddr.sin_port = htons(0);
-
-    bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
-    listen (main_socket, 16);
-
-    socklen_t len = sizeof(servaddr);
-    getsockname(main_socket, (struct sockaddr *) &servaddr, &len);
-    string port = to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
-    send(sock, port.c_str(), port.length(), 0);
-
-    // char input[1024];
-    // socklen_t addr_size = sizeof cliaddr;
-    // // string fork_error = "Could not fork";
-    // int n;
-    // n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
-    // if(n > 0){
-    //     int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
-    //     connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
-    //     int_arr[0] = new_fd;
-    //     connection_bool = true;
-    //     // pthread_t tidsa;
-	// 	// pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
-    //     // pthread_t tidsb;
-	// 	// pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
-    // }		
-	close(main_socket);
 }
 
 
