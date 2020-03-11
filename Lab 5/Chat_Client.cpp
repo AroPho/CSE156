@@ -62,7 +62,7 @@ void *wait(void *){
             return NULL;
         }
         if(input != "/quit"){
-            printf("%s not supported in wait mode\n", input.c_str()); 
+            printf("Command %s not recognized\n", input.c_str()); 
         }
         if(connection_bool == true){
             return NULL;
