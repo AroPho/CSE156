@@ -150,7 +150,7 @@ void wait_recieve(int sock){
 
     while(main_socket > 0){
         new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &len);
-        printf("%d\n", new_fd)
+        printf("%d\n", new_fd);
         if(new_fd > 0){
             connection_socket = new_fd;
             connection_bool = true;
