@@ -95,6 +95,7 @@ void recieving(int socket){
     if(temp == "wait\r\n\r\n"){
         pthread_t tidsc;
 		pthread_create(&tidsc, NULL, wait, NULL);
+        printf("here");
         wait_recieve(socket);
     }
 
