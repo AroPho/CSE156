@@ -63,8 +63,10 @@ int kbhit()
 void *wait(void *){
     string input;
     // int c;
-    printf("%s> ", client_name.c_str());
     while(1){
+        if(input != ""){
+            printf("%s> ", client_name.c_str());
+        }
         if(kbhit()){
             getline(cin, input);
         }
@@ -74,9 +76,9 @@ void *wait(void *){
             quit = true;
             return NULL;
         }
-        if(input != "/quit" && input != "") {
+        if(input != "/quit") {
             printf("Command %s not recognized\n", input.c_str()); 
-            printf("%s> ", client_name.c_str());
+            
         }
         if(connection_bool == true){
             return NULL;
@@ -114,6 +116,7 @@ void recieving(int socket){
     if(temp == "wait\r\n\r\n"){
         pthread_t tidsc;
 		pthread_create(&tidsc, NULL, wait, NULL);
+        printf("%s> ", client_name.c_str());
         // printf("here");
         wait_recieve(socket);
     }
