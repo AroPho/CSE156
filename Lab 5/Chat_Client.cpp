@@ -71,6 +71,7 @@ void p2p_connect_connect(string command){
 
     string hostname = line.substr(0, line.find(" "));
     string port = line.substr((line.find(" ") + 1));
+    printf("%s %s\n", hostname.c_str(), port.c_str());
 
     bzero(&servaddr, sizeof(servaddr)); 
     servaddr.sin_addr.s_addr = inet_addr(hostname.c_str()); 
@@ -168,7 +169,7 @@ void wait_recieve(int sock){
             break;
         }
     }
-    if(temp.substr(0,4) == "ping"){
+    if(temp.substr(0,temp.length() - 4) == "ping"){
         printf("1");
         p2p_wait_connect(sock);
     }
