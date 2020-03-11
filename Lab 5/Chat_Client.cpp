@@ -26,6 +26,79 @@ int connection_socket;
 string client_name;
 bool quit = false;
 
+void *p2p_send(void *){
+    // struct sockaddr_in cliaddr;
+    // socklen_t addr_size;
+    int sock = connection_socket;
+    //char input[1024];
+    // int n;
+    string input;
+    string sending = "";
+    // bzero(input, 1024);
+    while(connection_bool){
+        printf("%s> ", client_name.c_str());
+        sending = client_name + ": ";
+        getline(cin, input);
+        input += "\r\n";
+        sending += input;
+        send(sock, input.c_str(), input.length(), 0);
+    }
+    return NULL;
+
+}
+
+void *p2p_recieve(void *){
+    char input[1024];
+    int n;
+    int sock = connection_socket;
+    string temp = "";
+    while((n = recv(sock, &input, 1024,0)) != 0){
+        temp += input;
+        if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
+            printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
+        }
+        bzero(input, 1024);
+        
+    }
+    connection_bool = false;
+    return NULL;
+
+}
+
+void p2p_connect_connect(string command){
+    struct sockaddr_in servaddr;
+    string line = command.substr(5);
+
+    string hostname = line.substr(0, line.find(" "));
+    string port = line.substr((line.find(" ") + 1));
+
+    bzero(&servaddr, sizeof(servaddr)); 
+    servaddr.sin_addr.s_addr = inet_addr(hostname.c_str()); 
+    servaddr.sin_port = htons(stoi(port)); 
+    servaddr.sin_family = AF_INET; 
+    
+    // create datagram socket 
+    int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    int does_it_work;
+    
+    if((does_it_work = connect(new_fd,(struct sockaddr *)&servaddr, sizeof(servaddr))) == -1){
+        new_fd = 0;
+    }
+    if(new_fd != 0){
+        string ping = "ping_client\r\n\r\n";
+        send(new_fd, ping.c_str(), ping.length(), 0);
+        // string fork_error = "Could not fork";
+        connection_bool = true;
+        connection_socket = new_fd;
+        pthread_t tidsa;
+		pthread_create(&tidsa, NULL, p2p_recieve, NULL);
+        pthread_t tidsb;
+		pthread_create(&tidsb, NULL, p2p_send, NULL);
+        // establish_connnection(new_fd);
+        
+    }
+}
 
 void p2p_wait_connect(int sock){
     struct sockaddr_in cliaddr;
@@ -39,17 +112,17 @@ void p2p_wait_connect(int sock){
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
         connection_socket = new_fd;
         connection_bool = true;
-        // pthread_t tidsb;
-		// pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
-    }
-    string temp = "";
-    while((n = recv(sock, &input, 1024,0)) != 0){
-        temp += input;
-        if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
-            printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
+        pthread_t tidsb;
+		pthread_create(&tidsb, NULL, p2p_send, NULL);
+        string temp = "";
+        while((n = recv(sock, &input, 1024,0)) != 0){
+            temp += input;
+            if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
+                printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
+            }
+            bzero(input, 1024);
+            
         }
-        bzero(input, 1024);
-        
     }
     connection_bool = false;
 }
