@@ -247,8 +247,8 @@ void recieving(int socket){
 
     //Info -> Wait
     if(temp == "wait\r\n\r\n"){
-        pthread_t tidsc;
-		pthread_create(&tidsc, NULL, wait, NULL);
+        // pthread_t tidsc;
+		// pthread_create(&tidsc, NULL, wait, NULL);
         // printf("%s> ", client_name.c_str());
         // printf("here");
         wait_recieve(socket);
