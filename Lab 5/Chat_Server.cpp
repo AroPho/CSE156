@@ -140,7 +140,9 @@ void command_find(string line, string name, int sock){
         connect_clients(sock, line.substr(9));
     }
     if(line.substr(0,6) == "Port: "){
-        ports[sock] = stoi(line.substr(line.find(" ") + 1));
+        string port = line.substr(line.find(" ") + 1);
+        printf("%s\n", port.c_str());
+        ports[sock] = stoi(port);
     }
 }
 
