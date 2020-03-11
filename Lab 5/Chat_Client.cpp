@@ -164,7 +164,7 @@ void wait_recieve(int sock){
         }
         //printf("%s\n", temp.c_str());
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-            // printf("%s\n", temp.c_str());
+            printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
             break;
         }
     }
