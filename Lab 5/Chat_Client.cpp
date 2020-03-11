@@ -49,18 +49,21 @@ void wait_recieve(int sock){
 
 void *wait(void *){
     string input;
-    printf("%s> ", client_name.c_str());
-    getline(cin, input);
-    if(input == "/quit"){
-        quit = true;
-        return NULL;
+    while(1){
+        printf("%s> ", client_name.c_str());
+        getline(cin, input);
+        if(input == "/quit"){
+            quit = true;
+            return NULL;
+        }
+        if(input != "/quit"){
+            printf("%s not supported in wait mode", input.c_str()); 
+        }
+        if(connection_bool == true){
+            return NULL;
+        }
     }
-    if(input != "/quit"){
-        printf("%s not supported in wait mode", input.c_str()); 
-    }
-    if(connection_bool == true){
-        return NULL;
-    }
+    
 }
 
 
