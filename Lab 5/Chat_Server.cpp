@@ -60,6 +60,7 @@ void connect_clients(int sock, string line){
     char c;
     pthread_mutex_lock(&mutex_list);
     int other_client ;
+    printf("%s\n", line.c_str());
     map<string, int>::iterator iter =  contact_list.find(line);
     if(iter == contact_list.end()){
         other_client = -1;
