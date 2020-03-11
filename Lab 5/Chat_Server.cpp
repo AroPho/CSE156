@@ -87,7 +87,7 @@ void connect_clients(int sock, string line){
         string ip = inet_ntoa(addr.sin_addr);
 
         string address = "IP: " + ip + " " + temp;
-        // printf("%s\n", address.c_str());
+        printf("%s\n", address.c_str());
         send(sock, address.c_str(), address.length(), 0);
     }else{
         temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
