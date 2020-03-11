@@ -29,22 +29,20 @@ void wait_recieve(int sock){
     char c;
     int numbytes;
     string temp;
-    while((numbytes = recv(sock, &c, 1, 0)) != 0){
+    while((numbytes = recv(sock, &c, 1, 0)) != 0 && quit == false){
         temp += c;
         printf("%d\n", quit);
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
             break;
         }
-        if(quit == true){
-            printf("2\n");
-            string quitting = "/quit\r\n\r\n";
-            send(sock, quitting.c_str(), quitting.length(), 0);
-            break;
-            
-        }
     }
     if(temp == "ping\r\n\r\n"){
         // p2p_wait_connect(socket);
+    }
+    if(quit == true){
+        printf("2\n");
+        string quitting = "/quit\r\n\r\n";
+        send(sock, quitting.c_str(), quitting.length(), 0);
     }
 
 }
@@ -60,7 +58,7 @@ void *wait(void *){
             return NULL;
         }
         if(input != "/quit"){
-            printf("%s not supported in wait mode", input.c_str()); 
+            printf("%s not supported in wait mode\n", input.c_str()); 
         }
         if(connection_bool == true){
             return NULL;
