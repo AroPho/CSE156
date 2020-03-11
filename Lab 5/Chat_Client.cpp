@@ -65,13 +65,13 @@ void *wait(void *){
     // int c;
     printf("%s> ", client_name.c_str());
     while(1){
-        if(input.length() != 0){
+        if(input != ""){
             printf("%s> ", client_name.c_str());
         }
         if(kbhit()){
             getline(cin, input);
         }
-        printf("here\n");
+        // printf("here\n");
         if(input == "/quit"){
             printf("1\n");
             quit = true;
