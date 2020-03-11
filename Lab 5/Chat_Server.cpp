@@ -81,15 +81,15 @@ void connect_clients(int sock, string line){
                 break;
             }
         }
-        string ip = "Ip: ";
+        string ip = "";
         struct sockaddr_in addr;
         socklen_t addr_size = sizeof(struct sockaddr_in);
         getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
         ip += inet_ntoa(addr.sin_addr);
 
-        string address = ip + " " + temp.substr(0, temp.length() - 4);
-        printf("%s\n", ip.c_str());
-        send(sock, ip.c_str(), ip.length(), 0);
+        string address = "IP: " + ip + " " + temp.substr(0, temp.length() - 4);
+        printf("%s\n", address.c_str());
+        send(sock, address.c_str(), address.length(), 0);
     }else{
         temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
         send(sock, temp.c_str(), temp.length(), 0);
