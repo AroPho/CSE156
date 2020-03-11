@@ -62,10 +62,11 @@ int kbhit()
 
 void *wait(void *){
     string input;
+    string name = client_name;
     // int c;
     while(1){
         if(input.length() != 0){
-            printf("%s> ", client_name.c_str());
+            printf("%s> ", name.c_str());
             input = "";
         }
         //printf("%lu", input.length());
