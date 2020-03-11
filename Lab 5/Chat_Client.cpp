@@ -98,7 +98,7 @@ void p2p_connect_connect(string command){
         // establish_connnection(new_fd);
     }
     while(connection_bool){
-        
+
     }
 }
 
@@ -110,7 +110,7 @@ void p2p_wait_connect(int sock){
     int n;
     printf("ayo");
     n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
-    printf("here");
+    printf("%s\n", input);
     if(n > 0){
         int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
@@ -169,6 +169,7 @@ void wait_recieve(int sock){
         }
     }
     if(temp == "ping\r\n\r\n"){
+        printf("1");
         p2p_wait_connect(sock);
     }
     if(quit == true){
