@@ -107,7 +107,6 @@ void p2p_wait_connect(int sock){
         int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
         connection_socket = new_fd;
-        connection_bool = true;
         pthread_t tidsb;
 		pthread_create(&tidsb, NULL, p2p_send, NULL);
         string temp = "";
@@ -157,11 +156,12 @@ void wait_recieve(int sock){
         }
         //printf("%s\n", temp.c_str());
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-            printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
+            // printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
             break;
         }
     }
     if(temp.substr(0,temp.length() - 4) == "ping"){
+        connection_bool = true;
         printf("1");
         p2p_wait_connect(main_socket);
     }
