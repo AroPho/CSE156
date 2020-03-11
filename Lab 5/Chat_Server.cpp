@@ -73,6 +73,7 @@ void connect_clients(int sock, string line){
 
     if(other_client != -1){
         // printf("here\n");
+        send(other_client, temp.c_str(),temp.length(), 0);
         string ip = "Ip: ";
         struct sockaddr_in addr;
         socklen_t addr_size = sizeof(addr);
@@ -80,7 +81,6 @@ void connect_clients(int sock, string line){
         ip += inet_ntoa(addr.sin_addr);
         printf("%s\n", ip.c_str());
 
-        send(other_client, temp.c_str(),temp.length(), 0);
         map<int, int>::iterator Piter =  ports.find(other_client);
         int port = Piter -> second;
         

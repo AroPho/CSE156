@@ -106,9 +106,10 @@ void p2p_wait_connect(int sock){
     char input[1024];
     socklen_t addr_size = sizeof cliaddr;
     int n;
+    printf("ayo");
     n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
+    printf("here");
     if(n > 0){
-        printf("here");
         int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
         connection_socket = new_fd;
@@ -192,9 +193,9 @@ bool inputAvailable()
 
 void *wait(void *){
     string input;
-    string name = client_name;
+    // string name = client_name;
     // int c;
-    printf("%s> ", name.c_str());
+    // printf("%s> ", name.c_str());
     while(1){
         //printf("%lu", input.length());
         if(inputAvailable()){
@@ -209,7 +210,7 @@ void *wait(void *){
             return NULL;
         }
         if(input != "/quit" && input.length() != 0) {
-            printf("Command %s not recognized\n%s> ", input.c_str(), name.c_str()); 
+            printf("Command %s not recognized\n", input.c_str()); 
             input = "";
         }
         if(connection_bool == true){
