@@ -35,6 +35,7 @@ void wait_recieve(int sock){
             break;
         }
         if(quit == true){
+            printf("2\n");
             string quitting = "/quit\r\n\r\n";
             send(sock, quitting.c_str(), quitting.length(), 0);
             break;
@@ -53,6 +54,7 @@ void *wait(void *){
         printf("%s> ", client_name.c_str());
         getline(cin, input);
         if(input == "/quit"){
+            printf("1\n");
             quit = true;
             return NULL;
         }
@@ -77,10 +79,6 @@ void recieving(int socket){
         temp += c;
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
             break;
-        }
-        if(quit == true){
-            string quitting = "/quit\r\n\r\n";
-            
         }
     }
     if(numbytes == 0){
@@ -117,7 +115,7 @@ void first_contact(int sock){
     while((numbytes = recv(sock,&c, 1, 0) != 0)){
         temp += c;
         if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
-            printf("%s\n", temp.c_str());
+            // printf("%s\n", temp.c_str());
             if(temp == "TAKEN\r\n\r\n"){
                 printf("Client ID is already taken");
                 exit(0);
