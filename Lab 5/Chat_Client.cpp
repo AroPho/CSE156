@@ -81,8 +81,8 @@ void *wait(void *){
             return NULL;
         }
         if(input != "/quit" && input.length() != 0) {
-            printf("Command %s not recognized\n", input.c_str()); 
             printf("%s> ", name.c_str());
+            printf("Command %s not recognized\n", input.c_str()); 
             input = "";
         }
         if(connection_bool == true){
