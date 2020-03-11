@@ -101,12 +101,13 @@ void p2p_wait_connect(int sock){
     socklen_t addr_size = sizeof cliaddr;
     int n;
     printf("ayo");
-    n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
-    printf("%s\n", input);
+    // n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
+    // printf("%s\n", input);
     if(n > 0){
         int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
         connection_socket = new_fd;
+        connection_bool = true;
         pthread_t tidsb;
 		pthread_create(&tidsb, NULL, p2p_send, NULL);
         string temp = "";
@@ -161,7 +162,6 @@ void wait_recieve(int sock){
         }
     }
     if(temp.substr(0,temp.length() - 4) == "ping"){
-        connection_bool = true;
         printf("1");
         p2p_wait_connect(main_socket);
     }
