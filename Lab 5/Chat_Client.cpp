@@ -59,7 +59,9 @@ void *wait(void *){
         if(input.length() != 0){
             printf("%s> ", client_name.c_str());
         }
-        if((c = cin.peek()) != 10){
+        c = cin.peek();
+        printf("%d\n", c);
+        if(c != 10){
             printf("%d", c);
             getline(cin, input);
         }
@@ -69,7 +71,7 @@ void *wait(void *){
             quit = true;
             return NULL;
         }
-        if(input != "/quit"){
+        if(input != "/quit" && c != 10{
             printf("Command %s not recognized\n", input.c_str()); 
         }
         if(connection_bool == true){
