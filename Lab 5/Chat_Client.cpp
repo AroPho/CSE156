@@ -56,9 +56,9 @@ void *wait(void *){
         return NULL;
     }
     if(input != "/quit"){
-        printf("%s not supported in wait mode", input); 
+        printf("%s not supported in wait mode", input.c_str()); 
     }
-    if(connection_bool = true){
+    if(connection_bool == true){
         return NULL;
     }
 }
