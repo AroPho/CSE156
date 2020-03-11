@@ -96,6 +96,8 @@ void p2p_connect_connect(string command){
         pthread_t tidsb;
 		pthread_create(&tidsb, NULL, p2p_send, NULL);
         // establish_connnection(new_fd);
+    }
+    while(connection_bool){
         
     }
 }
