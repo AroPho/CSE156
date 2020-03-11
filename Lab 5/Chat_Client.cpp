@@ -31,7 +31,7 @@ void wait_recieve(int sock){
     string temp;
     while((numbytes = recv(sock, &c, 1, 0)) != 0){
         temp += c;
-        printf("%b\n", quit);
+        printf("%s\n", quit);
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
             break;
         }
