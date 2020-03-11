@@ -82,9 +82,9 @@ void connect_clients(int sock, string line){
 
         send(other_client, temp.c_str(),temp.length(), 0);
         map<int, int>::iterator Piter =  ports.find(other_client);
-        temp = Piter -> second;
+        int port = Piter -> second;
         
-        ip += " " + temp + "\r\n\r\n";
+        ip += " " + to_string(port) + "\r\n\r\n";
         printf("%s\n", ip.c_str());
         send(sock, ip.c_str(), ip.length(), 0);
     }else{
