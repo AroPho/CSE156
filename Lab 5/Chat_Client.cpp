@@ -242,8 +242,8 @@ void recieving(int socket){
 
     // Info -> Chat
     if(temp.substr(0, 4) == "Ip: "){
-        printf("%s", temp.substr(0, temp.length() - 4).c_str());
-        // p2p_connect_connect(temp.substr(0, temp.length() - 4));
+        //printf("%s", temp.substr(0, temp.length() - 4).c_str());
+        p2p_connect_connect(temp.substr(0, temp.length() - 4));
 
     }
 
