@@ -172,7 +172,7 @@ void wait_recieve(int sock){
     }
     if(temp.substr(0,temp.length() - 4) == "ping"){
         printf("1");
-        p2p_wait_connect(sock);
+        p2p_wait_connect(main_socket);
     }
     if(quit == true){
         // printf("2\n");
