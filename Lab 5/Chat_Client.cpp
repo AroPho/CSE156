@@ -47,24 +47,6 @@ void *p2p_send(void *){
 
 }
 
-void *p2p_recieve(void *){
-    char input[1024];
-    int n;
-    int sock = connection_socket;
-    string temp = "";
-    while((n = recv(sock, &input, 1024,0)) != 0){
-        temp += input;
-        if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
-            printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
-        }
-        bzero(input, 1024);
-        
-    }
-    connection_bool = false;
-    return NULL;
-
-}
-
 void p2p_connect_connect(string command){
     struct sockaddr_in servaddr;
     string line = command.substr(5);
@@ -88,19 +70,28 @@ void p2p_connect_connect(string command){
     }
     printf("%d\n", new_fd);
     if(new_fd != 0){
+        int n;
         string ping = "ping_client\r\n\r\n";
         send(new_fd, ping.c_str(), ping.length(), 0);
         // string fork_error = "Could not fork";
         connection_bool = true;
         connection_socket = new_fd;
-        pthread_t tidsa;
-		pthread_create(&tidsa, NULL, p2p_recieve, NULL);
         pthread_t tidsb;
 		pthread_create(&tidsb, NULL, p2p_send, NULL);
+        char input[1024];
+        int n;
+        string temp = "";
+        printf("client_connect\n");
+        while((n = recv(new_fd, &input, 1024,0)) != 0){
+            temp += input;
+            if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
+                printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
+            }
+            bzero(input, 1024);
+            
+        }
+        connection_bool = false;
         // establish_connnection(new_fd);
-    }
-    while(connection_bool){
-
     }
 }
 
@@ -121,6 +112,7 @@ void p2p_wait_connect(int sock){
         pthread_t tidsb;
 		pthread_create(&tidsb, NULL, p2p_send, NULL);
         string temp = "";
+        printf("wait_connect");
         while((n = recv(sock, &input, 1024,0)) != 0){
             temp += input;
             if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
