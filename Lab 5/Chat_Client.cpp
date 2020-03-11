@@ -71,8 +71,8 @@ void wait_recieve(int sock){
     string temp;
     // printf("here\n");
     while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
-        if(c != NULL){
-            printf("%s", c);
+        if(numbytes == 1){
+            // printf("%c", c);
             temp += c;
         }
         //printf("%s\n", temp.c_str());
