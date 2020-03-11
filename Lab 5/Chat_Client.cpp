@@ -85,6 +85,7 @@ void *wait(void *){
         //printf("%lu", input.length());
         if(inputAvailable()){
             getline(cin, input);
+            printf("%s> ", name.c_str());
         }
         
         // printf("here\n");
@@ -94,7 +95,6 @@ void *wait(void *){
             return NULL;
         }
         if(input != "/quit" && input.length() != 0) {
-            printf("%s> ", name.c_str());
             printf("Command %s not recognized\n", input.c_str()); 
             input = "";
         }
