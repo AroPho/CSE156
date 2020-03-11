@@ -56,8 +56,8 @@ void contact_list_send(int sock){
 }
 
 void connect_clients(int sock, string line){
-    int numbytes;
-    char c;
+    // int numbytes;
+    // char c;
     pthread_mutex_lock(&mutex_list);
     int other_client ;
     // printf("%s\n", line.c_str());
