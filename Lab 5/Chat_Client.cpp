@@ -47,6 +47,7 @@ void p2p_wait_connect(int sock){
     string port = to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
     send(sock, port.c_str(), port.length(), 0);
 
+    while(1){
     // char input[1024];
     // socklen_t addr_size = sizeof cliaddr;
     // // string fork_error = "Could not fork";
@@ -61,7 +62,8 @@ void p2p_wait_connect(int sock){
 	// 	// pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
     //     // pthread_t tidsb;
 	// 	// pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
-    // }		
+    // }
+    }		
 	close(main_socket);
 }
 
