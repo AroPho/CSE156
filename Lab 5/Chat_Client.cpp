@@ -168,7 +168,7 @@ void wait_recieve(int sock){
             break;
         }
     }
-    if(temp == "ping\r\n\r\n"){
+    if(temp.substr(0,4) == "ping"){
         printf("1");
         p2p_wait_connect(sock);
     }
