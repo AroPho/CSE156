@@ -29,6 +29,7 @@ void wait_recieve(int sock){
     char c;
     int numbytes;
     string temp;
+    printf("here\n");
     while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
         temp += c;
         printf("%d\n", quit);
@@ -95,7 +96,7 @@ void recieving(int socket){
     if(temp == "wait\r\n\r\n"){
         pthread_t tidsc;
 		pthread_create(&tidsc, NULL, wait, NULL);
-        printf("here");
+        // printf("here");
         wait_recieve(socket);
     }
 
