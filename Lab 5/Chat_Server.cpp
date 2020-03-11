@@ -88,7 +88,9 @@ void connect_clients(int sock, string line){
                 break;
             }
         }
-        // send(sock, address.c_str(), address.length(), 0);
+        ip += " " + temp;
+        printf("%s\n", ip.c_str());
+        send(sock, temp.c_str(), temp.length(), 0);
     }else{
         temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
         send(sock, temp.c_str(), temp.length(), 0);
