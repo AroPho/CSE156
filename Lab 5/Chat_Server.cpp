@@ -56,7 +56,6 @@ void contact_list_send(int sock){
 }
 
 void connect_clients(int sock, string line){
-    string temp = "ping\r\n\r\n";
     int numbytes;
     char c;
     pthread_mutex_lock(&mutex_list);
@@ -73,22 +72,21 @@ void connect_clients(int sock, string line){
 
     if(other_client != -1){
         // printf("here\n");
-        send(other_client, temp.c_str(),temp.length(), 0);
         string ip = "Ip: ";
         struct sockaddr_in addr;
         socklen_t addr_size = sizeof(addr);
         getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
         ip += inet_ntoa(addr.sin_addr);
-        printf("%s\n", ip.c_str());
+        // printf("%s\n", ip.c_str());
 
         map<int, int>::iterator Piter =  ports.find(other_client);
         int port = Piter -> second;
         
         ip += " " + to_string(port) + "\r\n\r\n";
-        printf("%s\n", ip.c_str());
+        // printf("%s\n", ip.c_str());
         send(sock, ip.c_str(), ip.length(), 0);
     }else{
-        temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
+        string temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
         send(sock, temp.c_str(), temp.length(), 0);
     }
     
@@ -141,7 +139,7 @@ void command_find(string line, string name, int sock){
     }
     if(line.substr(0,6) == "Port: "){
         string port = line.substr(line.find(" ") + 1);
-        printf("%s\n", port.c_str());
+        // printf("%s\n", port.c_str());
         ports[sock] = stoi(port);
     }
 }

@@ -39,6 +39,10 @@ void *p2p_send(void *){
         printf("%s> ", client_name.c_str());
         sending = client_name + ": ";
         getline(cin, input);
+        if(input == "/quit"){
+            connection_bool = false;
+            break;
+        }
         input += "\r\n";
         sending += input;
         send(sock, input.c_str(), input.length(), 0);
@@ -61,7 +65,7 @@ void p2p_connect_connect(string command){
     servaddr.sin_family = AF_INET; 
     
     // create datagram socket 
-    int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    int new_fd = socket(AF_INET, SOCK_STREAM, 0);
 
     int does_it_work;
     
@@ -71,13 +75,16 @@ void p2p_connect_connect(string command){
     printf("%d\n", new_fd);
     if(new_fd != 0){
         int n;
-        string ping = "ping_client\r\n\r\n";
-        send(new_fd, ping.c_str(), ping.length(), 0);
+        // string ping = "ping\r\n\r\n";
+        // send(new_fd, ping.c_str(), ping.length(), 0);
         // string fork_error = "Could not fork";
+
         connection_bool = true;
         connection_socket = new_fd;
+
         pthread_t tidsb;
 		pthread_create(&tidsb, NULL, p2p_send, NULL);
+
         char input[1024];
         string temp = "";
         printf("client_connect\n");
@@ -95,45 +102,33 @@ void p2p_connect_connect(string command){
 }
 
 void p2p_wait_connect(int sock){
-    struct sockaddr_in cliaddr;
-
-    char input[1024];
-    socklen_t addr_size = sizeof cliaddr;
-    int n;
+    int numbytes;
     printf("ayo");
+    char c;
+    string temp;
     // n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
     // printf("%s\n", input);
-    if(n > 0){
-        int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
-        connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
-        connection_socket = new_fd;
-        connection_bool = true;
-        pthread_t tidsb;
-		pthread_create(&tidsb, NULL, p2p_send, NULL);
-        string temp = "";
-        printf("wait_connect");
-        while((n = recv(sock, &input, 1024,0)) != 0){
-            temp += input;
-            if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
-                printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
-            }
-            bzero(input, 1024);
-            
+    while((numbytes = recv(sock, &c, 1, 0)) != 0 && connection_bool){
+        temp += c;
+        if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
+            printf("%s", temp.c_str());
+            temp = "";
         }
     }
     connection_bool = false;
 }
 
 void wait_recieve(int sock){
-    char c;
-    int numbytes;
-    string temp;
+    // char c;
+    // int numbytes;
+    string temp = "";
     // printf("here\n");
 
     struct sockaddr_in servaddr;
     // struct sockaddr_storage their_addr;
 
-    int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    int main_socket = socket(AF_INET, SOCK_STREAM, 0);
+    int new_fd;
 
     //Create Listen Socket
     bzero( &servaddr, sizeof(servaddr));
@@ -150,27 +145,25 @@ void wait_recieve(int sock){
     string port = "Port: " + to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
     send(sock, port.c_str(), port.length(), 0);
 
-    while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
-        if(numbytes == 1){
-            // printf("%c", c);
-            temp += c;
-        }
-        //printf("%s\n", temp.c_str());
-        if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-            // printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
+
+    while(main_socket > 0){
+        new_fd = accept(main_socket, (struct sockaddr *)&servaddr, &len);
+        if(new_fd > 0){
+            connection_socket = new_fd;
+            connection_bool = true;
+            printf("%d\n", new_fd);
+            p2p_wait_connect(main_socket);
             break;
         }
-    }
-    if(temp.substr(0,temp.length() - 4) == "ping"){
-        printf("1");
-        p2p_wait_connect(main_socket);
-    }
-    if(quit == true){
-        // printf("2\n");
-        string quitting = "/quit\r\n\r\n";
-        send(sock, quitting.c_str(), quitting.length(), 0);
+        if(quit == true){
+            // printf("2\n");
+            string quitting = "/quit\r\n\r\n";
+            send(sock, quitting.c_str(), quitting.length(), 0);
+            break;
         
+        }
     }
+
     close(main_socket);
 
 }
