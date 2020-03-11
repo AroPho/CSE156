@@ -64,11 +64,12 @@ void *wait(void *){
     string input;
     string name = client_name;
     // int c;
+    printf("%s> ", name.c_str());
     while(1){
-        if(input.length() != 0){
-            printf("%s> ", name.c_str());
-            input = "";
-        }
+        // if(input.length() != 0){
+        //     printf("%s> ", name.c_str());
+        //     input = "";
+        // }
         //printf("%lu", input.length());
         if(kbhit()){
             getline(cin, input);
@@ -81,7 +82,8 @@ void *wait(void *){
         }
         if(input != "/quit" && input.length() != 0) {
             printf("Command %s not recognized\n", input.c_str()); 
-            
+            printf("%s> ", name.c_str());
+            input = "";
         }
         if(connection_bool == true){
             return NULL;
