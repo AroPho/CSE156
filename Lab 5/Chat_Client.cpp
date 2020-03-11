@@ -86,7 +86,7 @@ void *wait(void *){
         
         // printf("here\n");
         if(input == "/quit"){
-            printf("1\n");
+            // printf("1\n");
             quit = true;
             return NULL;
         }
@@ -99,6 +99,46 @@ void *wait(void *){
         }
     }
     
+}
+
+void p2p_wait_connect(int sock){
+    struct sockaddr_in servaddr, cliaddr;
+    // struct sockaddr_storage their_addr;
+
+    int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    int int_arr[1];
+
+    //Create Listen Socket
+    bzero( &servaddr, sizeof(servaddr));
+
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
+    servaddr.sin_port = htons(0);
+
+    bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
+    listen (main_socket, 16);
+
+    socklen_t len = sizeof(servaddr);
+    getsockname(main_socket, (struct sockaddr *) &servaddr, &len);
+    string port = to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
+    send(sock, port.c_str(), port.length(), 0);
+
+    // char input[1024];
+    // socklen_t addr_size = sizeof cliaddr;
+    // // string fork_error = "Could not fork";
+    // int n;
+    // n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
+    // if(n > 0){
+    //     int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    //     connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
+    //     int_arr[0] = new_fd;
+    //     connection_bool = true;
+    //     // pthread_t tidsa;
+	// 	// pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
+    //     // pthread_t tidsb;
+	// 	// pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
+    // }		
+	close(main_socket);
 }
 
 
@@ -119,8 +159,13 @@ void recieving(int socket){
         exit(0);
     }
 
+    if(temp.substr(0, 7) == "Error: "){
+        printf("User not found");
+    }
+
     // Info -> Chat
     if(temp.substr(0, 4) == "Ip: "){
+        printf("%s", temp.substr(0, temp.length() - 4));
         // p2p_connect_connect(temp.substr(0, temp.length() - 4));
 
     }

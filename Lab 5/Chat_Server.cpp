@@ -54,6 +54,46 @@ void contact_list_send(int sock){
     send(sock, temp.c_str(), temp.length(), 0);
 }
 
+void connect_clients(int sock, string line){
+    string temp = "ping\r\n\r\n";
+    int numbytes;
+    char c;
+    pthread_mutex_lock(&mutex_list);
+    int other_client ;
+    map<string, int>::iterator iter =  contact_list.find(line);
+    if(iter == contact_list.end()){
+        other_client = -1;
+    }else{
+        other_client = iter -> second;
+        contact_list.erase(line.substr(0, line.length() - 4));
+    }
+    pthread_mutex_unlock(&mutex_list);
+
+    if(other_client != -1){
+        send(other_client, temp.c_str(),temp.length(), 0);
+        temp = " ";
+        while((numbytes = recv(other_client, &c, 1, 0)) != 0){
+            temp += c;
+            if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
+                // contact_list[temp.substr(0, temp.length() - 4)] = sock;
+                break;
+            }
+        }
+        string ip = "Ip: ";
+        struct sockaddr_in addr;
+        socklen_t addr_size = sizeof(struct sockaddr_in);
+        getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
+        ip += inet_ntoa(addr.sin_addr);
+
+        ip += " " + temp;
+        send(sock, ip.c_str(), ip.length(), 0);
+    }else{
+        temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
+        send(sock, temp.c_str(), temp.length(), 0);
+    }
+    
+}
+
 string first_contact(int sock){
     int numbytes;
     char c;
@@ -97,7 +137,7 @@ void command_find(string line, string name, int sock){
         remove_from_list(name);
     }
     if(line.substr(0,9) == "/connect "){
-        //connect_clients(sock, line.substr(9));
+        connect_clients(sock, line.substr(9));
     }
 }
 
