@@ -59,7 +59,7 @@ void *wait(void *){
         if(input.length() != 0){
             printf("%s> ", client_name.c_str());
         }
-        if((c = cin.peek()) != EOF){
+        if((c = cin.peek()) != 10){
             printf("%d", c);
             getline(cin, input);
         }
