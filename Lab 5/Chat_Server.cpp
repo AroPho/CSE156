@@ -81,7 +81,7 @@ void command_find(string line, string name, int sock){
     printf("%s\n", line.c_str());
     
     if(line != "/wait" && line.substr(0,9) != "/connect " &&  line != "/list" && line != "/quit"){
-        string error = "Command " +  line + "not recognized\r\n\r\n";
+        string error = "Command " +  line + " not recognized\r\n\r\n";
         send(sock, error.c_str(), error.length(), 0);
         return;
     }

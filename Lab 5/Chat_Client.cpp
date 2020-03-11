@@ -168,6 +168,10 @@ int main(int argc, char * argv[]){
             // Gets input from stdin
             printf("%s> ", client_name.c_str());
             getline(cin, input);
+            
+            if(input == "/quit"){
+                exit(0);
+            }
 
             // Prevents terminal texts from being used
             input += "\r\n\r\n";
