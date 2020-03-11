@@ -28,6 +28,7 @@ pthread_mutex_t mutex_list = PTHREAD_MUTEX_INITIALIZER;
 
 map<string, int> contact_list;
 map<string, int> connections;
+map<int, int> ports;
 
 void add_to_list(int sock, string name){
     pthread_mutex_lock(&mutex_list);
@@ -80,16 +81,11 @@ void connect_clients(int sock, string line){
         printf("%s\n", ip.c_str());
 
         send(other_client, temp.c_str(),temp.length(), 0);
-        temp = "";
-        while((numbytes = recv(other_client, &c, 1, 0)) != 0){
-            temp += c;
-            printf("%c", c);
-            if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
-                break;
-            }
-        }
-        // ip += " " + temp;
-        // printf("%s\n", ip.c_str());
+        map<int, int>::iterator Piter =  ports.find(other_client);
+        temp = Piter -> second;
+        
+        ip += " " + temp + "\r\n\r\n";
+        printf("%s\n", ip.c_str());
         send(sock, ip.c_str(), ip.length(), 0);
     }else{
         temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
@@ -124,7 +120,7 @@ string first_contact(int sock){
 void command_find(string line, string name, int sock){
     printf("%s\n", line.c_str());
     
-    if(line != "/wait" && line.substr(0,9) != "/connect " &&  line != "/list" && line != "/quit"){
+    if(line != "/wait" && line.substr(0,9) != "/connect " &&  line != "/list" && line != "/quit" && line.substr(0,6) != "Port: " ){
         string error = "Command " +  line + " not recognized\r\n\r\n";
         send(sock, error.c_str(), error.length(), 0);
         return;
@@ -142,6 +138,9 @@ void command_find(string line, string name, int sock){
     }
     if(line.substr(0,9) == "/connect "){
         connect_clients(sock, line.substr(9));
+    }
+    if(line.substr(0,6) == "Port: "){
+        ports[sock] = stoi(line.substr(line.find(" ") + 1));
     }
 }
 
