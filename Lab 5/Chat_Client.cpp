@@ -141,13 +141,15 @@ void wait_recieve(int sock){
     listen (main_socket, 16);
 
     socklen_t len = sizeof(servaddr);
+    struct sockaddr_storage their_addr;
+
     getsockname(main_socket, (struct sockaddr *) &servaddr, &len);
     string port = "Port: " + to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
     send(sock, port.c_str(), port.length(), 0);
 
 
     while(main_socket > 0){
-        new_fd = accept(main_socket, (struct sockaddr *)&servaddr, &len);
+        new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &len);
         if(new_fd > 0){
             connection_socket = new_fd;
             connection_bool = true;
