@@ -86,6 +86,7 @@ void p2p_connect_connect(string command){
     if((does_it_work = connect(new_fd,(struct sockaddr *)&servaddr, sizeof(servaddr))) == -1){
         new_fd = 0;
     }
+    printf("%d\n", new_fd);
     if(new_fd != 0){
         string ping = "ping_client\r\n\r\n";
         send(new_fd, ping.c_str(), ping.length(), 0);
