@@ -48,11 +48,11 @@ void p2p_wait_connect(int sock){
     send(sock, port.c_str(), port.length(), 0);
 
     while(1){
-        char input[1024];
-        socklen_t addr_size = sizeof cliaddr;
-        // string fork_error = "Could not fork";
-        int n;
-        n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
+    // char input[1024];
+    // socklen_t addr_size = sizeof cliaddr;
+    // // string fork_error = "Could not fork";
+    // int n;
+    // n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
     // if(n > 0){
     //     int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
     //     connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
@@ -84,7 +84,6 @@ void wait_recieve(int sock){
         }
     }
     if(temp == "ping\r\n\r\n"){
-        connection_bool = true;
         p2p_wait_connect(sock);
     }
     if(quit == true){
@@ -172,7 +171,6 @@ void recieving(int socket){
         // printf("%s> ", client_name.c_str());
         // printf("here");
         wait_recieve(socket);
-        printf("here\n");
         quit = false;
     }
 

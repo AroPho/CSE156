@@ -83,8 +83,8 @@ void connect_clients(int sock, string line){
         temp = "";
         while((numbytes = recv(other_client, &c, 1, 0)) != 0){
             temp += c;
+            printf("%c", c);
             if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
-                // contact_list[temp.substr(0, temp.length() - 4)] = sock;
                 break;
             }
         }
