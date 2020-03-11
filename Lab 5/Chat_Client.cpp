@@ -71,7 +71,7 @@ void *wait(void *){
             quit = true;
             return NULL;
         }
-        if(input != "/quit" && c != 10{
+        if(input != "/quit" && c != 10){
             printf("Command %s not recognized\n", input.c_str()); 
         }
         if(connection_bool == true){
