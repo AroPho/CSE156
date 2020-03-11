@@ -26,14 +26,17 @@ string client_name;
 bool quit = false;
 
 void wait_recieve(int sock){
-    char c;
+    char c[1];
     int numbytes;
     string temp;
     // printf("here\n");
     while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
-        temp += c;
-        printf("%s\n", temp.c_str());
+        if(strlen(c) != 0){
+            temp += c;
+        }
+        //printf("%s\n", temp.c_str());
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+            printf("%s\n", temp.c_str());
             break;
         }
     }
