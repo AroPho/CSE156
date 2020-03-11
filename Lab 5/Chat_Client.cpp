@@ -68,7 +68,7 @@ void *wait(void *){
             printf("%s> ", client_name.c_str());
             input = "";
         }
-        printf("%lu", input.length());
+        //printf("%lu", input.length());
         if(kbhit()){
             getline(cin, input);
         }
