@@ -33,10 +33,8 @@ void add_to_list(int sock, string name){
     pthread_mutex_lock(&mutex_list);
     contact_list[name] = sock;
     pthread_mutex_unlock(&mutex_list);
-    while(
     string msg = "wait\r\n\r\n";
     send(sock, msg.c_str(), msg.length(), 0);
-    )
 }
 
 void remove_from_list(string name){
