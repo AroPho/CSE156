@@ -71,7 +71,7 @@ void connect_clients(int sock, string line){
     pthread_mutex_unlock(&mutex_list);
 
     if(other_client != -1){
-        printf("here\n");
+        // printf("here\n");
         send(other_client, temp.c_str(),temp.length(), 0);
         temp = " ";
         while((numbytes = recv(other_client, &c, 1, 0)) != 0){
@@ -81,15 +81,12 @@ void connect_clients(int sock, string line){
                 break;
             }
         }
-        string ip = "";
+        string ip = "Ip: ";
         struct sockaddr_in addr;
-        socklen_t addr_size = sizeof(struct sockaddr_in);
+        socklen_t addr_size = sizeof(addr);
         getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
         ip += inet_ntoa(addr.sin_addr);
-
-        
         printf("%s\n", ip.c_str());
-        printf("%s\n", temp.substr(0, temp.length() - 4).c_str());
         // send(sock, address.c_str(), address.length(), 0);
     }else{
         temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
