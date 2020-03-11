@@ -29,10 +29,10 @@ void wait_recieve(int sock){
     char c;
     int numbytes;
     string temp;
-    printf("here\n");
+    // printf("here\n");
     while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
         temp += c;
-        // printf("%d\n", quit);
+        printf("%s\n", temp.c_str());
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
             break;
         }
@@ -41,7 +41,7 @@ void wait_recieve(int sock){
         // p2p_wait_connect(socket);
     }
     if(quit == true){
-        printf("2\n");
+        // printf("2\n");
         string quitting = "/quit\r\n\r\n";
         send(sock, quitting.c_str(), quitting.length(), 0);
     }
