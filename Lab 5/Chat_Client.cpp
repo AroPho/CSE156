@@ -108,6 +108,7 @@ void p2p_wait_connect(int sock){
     int n;
     n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
     if(n > 0){
+        printf("here");
         int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
         connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
         connection_socket = new_fd;
@@ -160,7 +161,7 @@ void wait_recieve(int sock){
         }
         //printf("%s\n", temp.c_str());
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-            printf("%s\n", temp.c_str());
+            // printf("%s\n", temp.c_str());
             break;
         }
     }
