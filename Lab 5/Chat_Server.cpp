@@ -60,7 +60,7 @@ void connect_clients(int sock, string line){
     char c;
     pthread_mutex_lock(&mutex_list);
     int other_client ;
-    printf("%s\n", line.c_str());
+    // printf("%s\n", line.c_str());
     map<string, int>::iterator iter =  contact_list.find(line);
     if(iter == contact_list.end()){
         other_client = -1;
@@ -71,6 +71,7 @@ void connect_clients(int sock, string line){
     pthread_mutex_unlock(&mutex_list);
 
     if(other_client != -1){
+        printf("here\n");
         send(other_client, temp.c_str(),temp.length(), 0);
         temp = " ";
         while((numbytes = recv(other_client, &c, 1, 0)) != 0){
@@ -87,6 +88,7 @@ void connect_clients(int sock, string line){
         ip += inet_ntoa(addr.sin_addr);
 
         ip += " " + temp;
+        printf("%s\n", ip.c_str());
         send(sock, ip.c_str(), ip.length(), 0);
     }else{
         temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
