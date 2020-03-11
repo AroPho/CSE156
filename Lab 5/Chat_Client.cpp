@@ -32,6 +32,7 @@ void wait_recieve(int sock){
     // printf("here\n");
     while((numbytes = recv(sock, &c, 1, MSG_DONTWAIT)) != 0 && quit == false){
         if(strlen(c) != 0){
+            printf("%c", c);
             temp += c;
         }
         //printf("%s\n", temp.c_str());
