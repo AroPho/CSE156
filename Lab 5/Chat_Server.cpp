@@ -128,6 +128,10 @@ void *establish_connection(void *){
                 }
             }
             connections.erase(name);
+            map<string, int>::iterator iter = contact_list.find(name);
+            if( iter != contact_list.end()){
+                contact_list.erase(name);
+            }
         }catch(...){
             connections.erase(name);
         }

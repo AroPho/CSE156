@@ -51,18 +51,24 @@ void wait_recieve(int sock){
 
 }
 
+int kbhit()
+{
+    struct timeval tv = { 0L, 0L };
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(0, &fds);
+    return select(1, &fds, NULL, NULL, &tv);
+}
+
 void *wait(void *){
     string input;
-    int c;
+    // int c;
     printf("%s> ", client_name.c_str());
     while(1){
         if(input.length() != 0){
             printf("%s> ", client_name.c_str());
         }
-        c = cin.peek();
-        printf("%d\n", c);
-        if(c != 10){
-            printf("%d", c);
+        if(kbhit()){
             getline(cin, input);
         }
         printf("here\n");
@@ -71,7 +77,7 @@ void *wait(void *){
             quit = true;
             return NULL;
         }
-        if(input != "/quit" && c != 10){
+        if(input != "/quit" && c != 10) {
             printf("Command %s not recognized\n", input.c_str()); 
         }
         if(connection_bool == true){
