@@ -53,9 +53,16 @@ void wait_recieve(int sock){
 
 void *wait(void *){
     string input;
+    int c;
+    printf("%s> ", client_name.c_str());
     while(1){
-        printf("%s> ", client_name.c_str());
-        getline(cin, input);
+        if(input.length() != 0){
+            printf("%s> ", client_name.c_str());
+        }
+        if((c = cin.peek()) != EOF){
+            getline(cin, input);
+        }
+        printf("here\n");
         if(input == "/quit"){
             printf("1\n");
             quit = true;
