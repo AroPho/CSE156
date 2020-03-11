@@ -147,6 +147,7 @@ void wait_recieve(int sock){
     string port = "Port: " + to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
     send(sock, port.c_str(), port.length(), 0);
 
+    printf("here\n");
 
     while(main_socket > 0){
         new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &len);
