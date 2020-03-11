@@ -23,132 +23,46 @@ using namespace std;
 
 bool connection_bool = false;
 string client_name;
+bool quit = false;
 
-int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
-
-
-void *p2p_send(void *args){
-    // struct sockaddr_in cliaddr;
-    // socklen_t addr_size;
-    int sock = *((int*)args);
-    //char input[1024];
-    // int n;
-    string input;
-    string sending = "";
-    // bzero(input, 1024);
-    while(connection_bool){
-        printf("%s> ", client_name.c_str());
-        sending = client_name + ": ";
-        getline(cin, input);
-        input += "\r\n";
-        sending += input;
-        send(sock, input.c_str(), input.length(), 0);
-    }
-    return NULL;
-
-
-}
-
-void *p2p_recieve(void *args){
-    char input[1024];
-    int n;
-    int sock = *((int*)args);
-    string temp = "";
-    while((n = recv(sock, &input, 1024,0)) != 0){
-        temp += input;
-        if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
-            printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
+void wait_recieve(int sock){
+    char c;
+    int numbytes;
+    string temp;
+    while((numbytes = recv(sock, &c, 1, 0)) != 0){
+        temp += c;
+        if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+            break;
         }
-        bzero(input, 1024);
-        
+        if(quit == true){
+            string quitting = "/quit\r\n\r\n";
+            send(sock, quitting.c_str(), quitting.length(), 0);
+            break;
+            
+        }
     }
-    connection_bool = false;
-    return NULL;
+    if(temp == "ping\r\n\r\n"){
+        p2p_wait_connect(socket);
+    }
 
 }
 
-void p2p_connect_connect(string command){
-    struct sockaddr_in servaddr;
-    string line = command.substr(5);
-
-    string hostname = line.substr(0, line.find(" "));
-    string port = line.substr((line.find(" ") + 1));
-
-    int int_arr[1];
-
-    bzero(&servaddr, sizeof(servaddr)); 
-    servaddr.sin_addr.s_addr = inet_addr(hostname.c_str()); 
-    servaddr.sin_port = htons(stoi(port)); 
-    servaddr.sin_family = AF_INET; 
-    
-    // create datagram socket 
-    int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
-
-    int does_it_work;
-    
-    if((does_it_work = connect(new_fd,(struct sockaddr *)&servaddr, sizeof(servaddr))) == -1){
-        new_fd = 0;
+void *wait(void *){
+    string input;
+    printf("%s> ", client_name.c_str());
+    getline(cin, input);
+    if(input == "/quit"){
+        quit = true;
+        return NULL;
     }
-    if(new_fd != 0){
-        string ping = "ping_client\r\n\r\n";
-        send(new_fd, ping.c_str(), ping.length(), 0);
-        // string fork_error = "Could not fork";
-        
-        int_arr[0] = new_fd;
-        connection_bool = true;
-        pthread_t tidsa;
-		pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
-        pthread_t tidsb;
-		pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
-        // establish_connnection(new_fd);
-        
+    if(input != "/quit"){
+        printf("%s not supported in wait mode", input); 
+    }
+    if(connection_bool = true){
+        return NULL;
     }
 }
 
-void p2p_wait_connect(int sock){
-    struct sockaddr_in servaddr, cliaddr;
-    // struct sockaddr_storage their_addr;
-
-    int main_socket = socket(AF_INET, SOCK_DGRAM, 0);
-    int int_arr[1];
-
-    //Create Listen Socket
-    bzero( &servaddr, sizeof(servaddr));
-
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = htons(INADDR_ANY);
-    servaddr.sin_port = htons(0);
-
-    bind(main_socket, (struct sockaddr *) &servaddr, sizeof(servaddr));
-    listen (main_socket, 16);
-
-    socklen_t len = sizeof(servaddr);
-    getsockname(main_socket, (struct sockaddr *) &servaddr, &len);
-    string port = to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
-    send(sock, port.c_str(), port.length(), 0);
-
-    char input[1024];
-    socklen_t addr_size = sizeof cliaddr;
-    // string fork_error = "Could not fork";
-    int n;
-    n = recvfrom(main_socket, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
-    if(n > 0){
-        int new_fd = socket(AF_INET, SOCK_DGRAM, 0);
-        connect(new_fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr));
-        int_arr[0] = new_fd;
-        connection_bool = true;
-        pthread_t tidsa;
-		pthread_create(&tidsa, NULL, p2p_recieve, (void*)(int_arr + new_fd));
-        pthread_t tidsb;
-		pthread_create(&tidsb, NULL, p2p_send, (void*)(int_arr + new_fd));
-        // if (guard(fork(), (char *) fork_error.c_str()) == 0) {
-        // p2p_communicate(new_fd);
-        // // establish_connnection(new_fd);
-        // exit(0);
-        // }
-    }		
-	close(main_socket);
-}
 
 // Recieves data from Server
 void recieving(int socket){
@@ -161,25 +75,31 @@ void recieving(int socket){
         if(temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
             break;
         }
+        if(quit == true){
+            string quitting = "/quit\r\n\r\n";
+            
+        }
     }
     if(numbytes == 0){
         printf("Connection to server has been closed");
         exit(0);
     }
-    if(temp == "ping\r\n\r\n"){
-        // printf("Connection from %s", temp.substr(temp.find("Name: ") + 6, temp.length() - temp.find("Name: ") + 6).c_str());
-        // int first = temp.find(" ") + 1;
-        // int last = temp.length() - first - 1;
-        p2p_wait_connect(socket);
-    }
+
+    // Info -> Chat
     if(temp.substr(0, 4) == "Ip: "){
         p2p_connect_connect(temp.substr(0, temp.length() - 4));
 
     }
+
+    //Info -> Wait
     if(temp == "wait\r\n\r\n"){
-        recieving(socket);
+        pthread_t tidsc;
+		pthread_create(&tidsc, NULL, wait, NULL);
+        wait_recieve(socket);
     }
-    if(temp != "wait\r\n\r\n" && temp != "ping\r\n\r\n"){
+
+    // Info -> Info
+    if(temp != "wait\r\n\r\n" && temp.substr(0, 4) != "Ip: "){
         printf("%s\n", temp.substr(0,temp.length() - 4).c_str());
     }
     
@@ -203,7 +123,6 @@ void first_contact(int sock){
         }
     }
 }
-
 
 int main(int argc, char * argv[]){
     //Checks for appropriate number of args

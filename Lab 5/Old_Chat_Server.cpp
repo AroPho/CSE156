@@ -26,8 +26,55 @@ string client_names[4];
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_list = PTHREAD_MUTEX_INITIALIZER;
 
+// Map Reference
+//
+//
+//
+//
+// #include <iostream>
+// #include <map>
+// #include <string.h>
+
+// using namespace std;
+
+// int main()
+// {
+//     map<string, int> Contacts;
+    
+//     Contacts["Bob"] = 1;
+//     Contacts["Alice"] = 2;
+//     Contacts["Charlie"] = 3;
+    
+//     map<string, int>::iterator iter = Contacts.begin();
+//     string temp = "";
+//     iter++;
+//     temp += (*iter).first;
+//     cout << temp << "\n";
+//     cout << Contacts.find("Bob") -> second;
+// }
+
+
+
 map<string, int> contact_list;
 map<string, int> connections;
+
+int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
+
+void send_client(int sock, string msg){
+    string temp = msg + "\r\n\r\n";
+    send(sock, temp.c_str(), temp.length(), 0);
+}
+
+void contact_list_send(int sock){
+    string temp = "";
+    int count = 1;
+    for( map<string, int>::iterator iter=contact_list.begin(); iter!=contact_list.end(); ++iter) {  
+        temp += to_string(count) + ") " + (*iter).first + "\n";
+        count++;
+    }
+    temp += "\r\n\r\n";  
+    send(sock, temp.c_str(), temp.length(), 0);
+}
 
 void add_to_list(int sock, string name){
     pthread_mutex_lock(&mutex_list);
@@ -43,15 +90,45 @@ void remove_from_list(string name){
     pthread_mutex_unlock(&mutex_list);
 }
 
-void contact_list_send(int sock){
-    string temp = "";
-    int count = 1;
-    for( map<string, int>::iterator iter=contact_list.begin(); iter!=contact_list.end(); ++iter) {  
-        temp += to_string(count) + ") " + (*iter).first + "\n";
-        count++;
+void connect_clients(int sock, string line){
+    string temp = "ping\r\n\r\n";
+    int numbytes;
+    char c;
+    pthread_mutex_lock(&mutex_list);
+    int other_client ;
+    map<string, int>::iterator iter =  contact_list.find(line.substr(0, line.length() - 4));
+    if(iter == contact_list.end()){
+        other_client = -1;
+    }else{
+        other_client = iter -> second;
+        contact_list.erase(line.substr(0, line.length() - 4));
     }
-    temp += "\r\n\r\n";  
-    send(sock, temp.c_str(), temp.length(), 0);
+    pthread_mutex_unlock(&mutex_list);
+
+    if(other_client != -1){
+        send(other_client, temp.c_str(),temp.length(), 0);
+        temp = " ";
+        while((numbytes = recv(other_client, &c, 1, 0)) != 0){
+            temp += c;
+            if(temp.length() >= 4 && temp.substr(temp.length() - 4) == "\r\n\r\n"){
+                // contact_list[temp.substr(0, temp.length() - 4)] = sock;
+                break;
+            }
+        }
+        string ip = "Ip: ";
+        struct sockaddr_in addr;
+        socklen_t addr_size = sizeof(struct sockaddr_in);
+        getpeername(other_client, (struct sockaddr *)&addr, &addr_size);
+        ip += inet_ntoa(addr.sin_addr);
+
+        ip += " " + temp;
+        send(sock, ip.c_str(), ip.length(), 0);
+    }else{
+        temp = "Error: " + line.substr(0, line.length() - 4) + " is no longer waiting for a connection or you typed the name wrong\r\n\r\n";
+        send(sock, temp.c_str(), temp.length(), 0);
+    }
+
+    
 }
 
 string first_contact(int sock){
@@ -78,27 +155,26 @@ string first_contact(int sock){
 }
 
 void command_find(string line, string name, int sock){
-    printf("%s\n", line.c_str());
-    
+    printf("%s", line.c_str());
     if(line != "/wait" && line.substr(0,9) != "/connect " &&  line != "/list" && line != "/quit"){
         string error = "Invalid Command\r\n\r\n";
         send(sock, error.c_str(), error.length(), 0);
         return;
     }
-
-    if(line == "/list"){
-        // printf("here");
-        contact_list_send(sock);
-    }
     if(line ==  "/wait"){
         add_to_list(sock, name);
-    }
-     if(line == "/quit"){
-        remove_from_list(name);
     }
     if(line.substr(0,9) == "/connect "){
         connect_clients(sock, line.substr(9));
     }
+    if(line == "/list"){
+        printf("here");
+        contact_list_send(sock);
+    }
+    if(line == "/quit"){
+        remove_from_list(name);
+    }
+
 }
 
 void *establish_connection(void *){
