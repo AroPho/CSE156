@@ -132,7 +132,7 @@ void p2p_wait_connect(int sock){
         }
         // printf("%c", c);
         if(quit == true || temp == "/quit\r\n"){
-            // printf("2\n");
+            printf("2\n");
             string quitting = "/quit\r\n";
             send(sock, quitting.c_str(), quitting.length(), 0);
             break; 
@@ -199,7 +199,7 @@ void wait_recieve(int sock){
 
 }
 
-bool inputAvailable()  {
+bool inputAvailable() {
     struct timeval tv;
     fd_set fds;
     tv.tv_sec = 0;
@@ -224,7 +224,7 @@ void *wait(void *){
         
         // printf("here\n");
         if(input == "/quit"){
-            // printf("1\n");
+            printf("1\n");
             quit = true;
             return NULL;
         }
