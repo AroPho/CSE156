@@ -109,6 +109,10 @@ void p2p_wait_connect(int sock){
     string temp;
     // n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
     // printf("%s\n", input);
+
+    pthread_t tidsb;
+	pthread_create(&tidsb, NULL, p2p_send, NULL);
+
     while((numbytes = recv(sock, &c, 1, 0)) != 0 && connection_bool){
         temp += c;
         // printf("%c", c);
@@ -149,15 +153,15 @@ void wait_recieve(int sock){
     string port = "Port: " + to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
     send(sock, port.c_str(), port.length(), 0);
 
-    printf("here\n");
+    // printf("here\n");
 
     while(main_socket > 0){
         new_fd = accept(main_socket, (struct sockaddr *)&their_addr, &len);
-        printf("%d\n", new_fd);
+        // printf("%d\n", new_fd);
         if(new_fd > 0){
             connection_socket = new_fd;
             connection_bool = true;
-            printf("%d\n", new_fd);
+            // printf("%d\n", new_fd);
             p2p_wait_connect(new_fd);
             break;
         }
@@ -246,8 +250,8 @@ void recieving(int socket){
 
     //Info -> Wait
     if(temp == "wait\r\n\r\n"){
-        // pthread_t tidsc;
-		// pthread_create(&tidsc, NULL, wait, NULL);
+        pthread_t tidsc;
+		pthread_create(&tidsc, NULL, wait, NULL);
         // printf("%s> ", client_name.c_str());
         // printf("here");
         wait_recieve(socket);
