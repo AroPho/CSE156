@@ -26,6 +26,20 @@ int connection_socket;
 string client_name;
 bool quit = false;
 
+bool inputAvailable()  
+{
+  struct timeval tv;
+  fd_set fds;
+  tv.tv_sec = 0;
+  tv.tv_usec = 0;
+  FD_ZERO(&fds);
+  FD_SET(STDIN_FILENO, &fds);
+  select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
+  return (FD_ISSET(0, &fds));
+}
+
+
+
 void *p2p_send(void *){
     // struct sockaddr_in cliaddr;
     // socklen_t addr_size;
@@ -197,18 +211,6 @@ void wait_recieve(int sock){
 
     close(main_socket);
 
-}
-
-bool inputAvailable()  
-{
-  struct timeval tv;
-  fd_set fds;
-  tv.tv_sec = 0;
-  tv.tv_usec = 0;
-  FD_ZERO(&fds);
-  FD_SET(STDIN_FILENO, &fds);
-  select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
-  return (FD_ISSET(0, &fds));
 }
 
 void *wait(void *){
