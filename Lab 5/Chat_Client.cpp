@@ -91,10 +91,11 @@ void p2p_connect_connect(string command){
         char input[1024];
         string temp = "";
         printf("client_connect\n");
-        while((n = recv(new_fd, &input, 1024,0)) != 0){
+        while((n = recv(new_fd, &input, 1024,0)) != 0 && connection_bool){
             temp += input;
             if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
-                printf("\n%s\n%s>  ", temp.substr(0, temp.length() - 2).c_str(), name.c_str());
+                printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
+                cout << name;
             }
             bzero(input, 1024);
             
@@ -120,7 +121,8 @@ void p2p_wait_connect(int sock){
         temp += c;
         // printf("%c", c);
         if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
-            printf("\n%s\n%s>", temp.substr(0, temp.length() - 2).c_str(), name.c_str());
+            printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
+            cout << name;
             temp = "";
         }
     }
