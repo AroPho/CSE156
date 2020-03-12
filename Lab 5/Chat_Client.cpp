@@ -54,10 +54,11 @@ void *p2p_send(void *){
 void p2p_connect_connect(string command){
     struct sockaddr_in servaddr;
     string line = command.substr(4);
+    string name = client_name;
 
     string hostname = line.substr(0, line.find(" "));
     string port = line.substr((line.find(" ") + 1));
-    printf("%s %s\n", hostname.c_str(), port.c_str());
+    // printf("%s %s\n", hostname.c_str(), port.c_str());
 
     bzero(&servaddr, sizeof(servaddr)); 
     servaddr.sin_addr.s_addr = inet_addr(hostname.c_str()); 
@@ -92,7 +93,7 @@ void p2p_connect_connect(string command){
         while((n = recv(new_fd, &input, 1024,0)) != 0){
             temp += input;
             if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
-                printf("\n%s\n%s>  ", temp.substr(0, temp.length() -2).c_str(), client_name.c_str());
+                printf("\n%s%s>  ", temp.substr.c_str(), name.c_str());
             }
             bzero(input, 1024);
             
@@ -107,6 +108,7 @@ void p2p_wait_connect(int sock){
     printf("ayo");
     char c;
     string temp;
+    string name = client_name;
     // n = recvfrom(sock, &input, 1024, 0, (struct sockaddr *)&cliaddr, &addr_size);
     // printf("%s\n", input);
 
@@ -117,7 +119,7 @@ void p2p_wait_connect(int sock){
         temp += c;
         // printf("%c", c);
         if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
-            printf("%s", temp.c_str());
+            printf("\n%s%s>", temp.c_str(), name.c_str());
             temp = "";
         }
     }
