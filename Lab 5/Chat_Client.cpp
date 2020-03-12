@@ -96,11 +96,18 @@ void p2p_connect_connect(string command){
             if(n == 1){
                 temp += c;
             }
+            if(quit == true && temp == "quit\r\n"){
+                // printf("2\n");
+                string quitting = "/quit\r\n";
+                send(new_fd, quitting.c_str(), quitting.length(), 0);
+                break; 
+            }
             if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
                 printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
                 cout << name;
                 temp = "";
             }
+        }
             
         }
         connection_bool = false;
@@ -125,16 +132,16 @@ void p2p_wait_connect(int sock){
             temp += c;
         }
         // printf("%c", c);
-        if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
-            printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
-            cout << name;
-            temp = "";
-        }
-        if(quit == true){
+        if(quit == true && temp == "quit\r\n"){
             // printf("2\n");
             string quitting = "/quit\r\n";
             send(sock, quitting.c_str(), quitting.length(), 0);
             break; 
+        }
+        if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
+            printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
+            cout << name;
+            temp = "";
         }
     }
     connection_bool = false;
@@ -184,7 +191,7 @@ void wait_recieve(int sock){
         if(quit == true){
             // printf("2\n");
             string quitting = "/quit\r\n\r\n";
-            send(new_fd, quitting.c_str(), quitting.length(), 0);
+            send(sock, quitting.c_str(), quitting.length(), 0);
             break;
         }
     }
