@@ -26,6 +26,7 @@ int connection_socket;
 string client_name;
 bool quit = false;
 
+int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
 void *p2p_send(void *){
     // struct sockaddr_in cliaddr;
@@ -156,6 +157,8 @@ void wait_recieve(int sock){
     // struct sockaddr_storage their_addr;
 
     int main_socket = socket(AF_INET, SOCK_STREAM, 0);
+    int flags = guard(fcntl(main_socket, F_GETFL), "could not get flags on TCP listening socket");
+    guard(fcntl(main_socket, F_SETFL, flags | O_NONBLOCK), "could not set TCP listening socket to be non-blocking");
     int new_fd;
 
     //Create Listen Socket
@@ -174,6 +177,8 @@ void wait_recieve(int sock){
     getsockname(main_socket, (struct sockaddr *) &servaddr, &len);
     string port = "Port: " + to_string(ntohs(servaddr.sin_port)) + "\r\n\r\n";
     send(sock, port.c_str(), port.length(), 0);
+
+
 
     // printf("here\n");
 
