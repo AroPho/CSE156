@@ -53,7 +53,7 @@ void *p2p_send(void *){
 
 void p2p_connect_connect(string command){
     struct sockaddr_in servaddr;
-    string line = command.substr(5);
+    string line = command.substr(4);
 
     string hostname = line.substr(0, line.find(" "));
     string port = line.substr((line.find(" ") + 1));
@@ -73,7 +73,7 @@ void p2p_connect_connect(string command){
         // printf
         new_fd = 0;
     }
-    printf("%d\n", new_fd);
+    // printf("%d\n", new_fd);
     if(new_fd != 0){
         int n;
         // string ping = "ping\r\n\r\n";
@@ -111,7 +111,7 @@ void p2p_wait_connect(int sock){
     // printf("%s\n", input);
     while((numbytes = recv(sock, &c, 1, 0)) != 0 && connection_bool){
         temp += c;
-        printf("%c", c);
+        // printf("%c", c);
         if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
             printf("%s", temp.c_str());
             temp = "";
