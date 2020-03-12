@@ -26,19 +26,6 @@ int connection_socket;
 string client_name;
 bool quit = false;
 
-bool inputAvailable()  
-{
-  struct timeval tv;
-  fd_set fds;
-  tv.tv_sec = 0;
-  tv.tv_usec = 0;
-  FD_ZERO(&fds);
-  FD_SET(STDIN_FILENO, &fds);
-  select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
-  return (FD_ISSET(0, &fds));
-}
-
-
 
 void *p2p_send(void *){
     // struct sockaddr_in cliaddr;
@@ -50,14 +37,13 @@ void *p2p_send(void *){
     string input;
     string sending = "";
     // bzero(input, 1024);
-    while(connection_bool){
+    while(connection_bool && !quit){
         printf("%s> ", name.c_str());
         sending = name + ": ";
         getline(cin, input);
         if(input == "/quit"){
             connection_bool = false;
             quit = true;
-            break;
         }
         input += "\r\n";
         sending += input;
