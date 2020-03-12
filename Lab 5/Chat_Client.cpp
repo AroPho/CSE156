@@ -70,7 +70,7 @@ void p2p_connect_connect(string command){
     int does_it_work;
     
     if((does_it_work = connect(new_fd,(struct sockaddr *)&servaddr, sizeof(servaddr))) == -1){
-        printf
+        // printf
         new_fd = 0;
     }
     printf("%d\n", new_fd);
