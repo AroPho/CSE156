@@ -30,14 +30,15 @@ void *p2p_send(void *){
     // struct sockaddr_in cliaddr;
     // socklen_t addr_size;
     int sock = connection_socket;
+    string name = client_name;
     //char input[1024];
     // int n;
     string input;
     string sending = "";
     // bzero(input, 1024);
     while(connection_bool){
-        printf("%s> ", client_name.c_str());
-        sending = client_name + ": ";
+        printf("%s> ", name.c_str());
+        sending = name + ": ";
         getline(cin, input);
         if(input == "/quit"){
             connection_bool = false;
