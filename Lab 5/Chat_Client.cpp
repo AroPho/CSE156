@@ -42,6 +42,7 @@ void *p2p_send(void *){
         getline(cin, input);
         if(input == "/quit"){
             connection_bool = false;
+            quit = true;
             break;
         }
         input += "\r\n";
@@ -129,6 +130,12 @@ void p2p_wait_connect(int sock){
             cout << name;
             temp = "";
         }
+        if(quit == true){
+            // printf("2\n");
+            string quitting = "/quit\r\n";
+            send(sock, quitting.c_str(), quitting.length(), 0);
+            break; 
+        }
     }
     connection_bool = false;
 }
@@ -177,9 +184,8 @@ void wait_recieve(int sock){
         if(quit == true){
             // printf("2\n");
             string quitting = "/quit\r\n\r\n";
-            send(sock, quitting.c_str(), quitting.length(), 0);
+            send(new_fd, quitting.c_str(), quitting.length(), 0);
             break;
-        
         }
     }
 
