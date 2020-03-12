@@ -70,6 +70,7 @@ void p2p_connect_connect(string command){
     int does_it_work;
     
     if((does_it_work = connect(new_fd,(struct sockaddr *)&servaddr, sizeof(servaddr))) == -1){
+        printf
         new_fd = 0;
     }
     printf("%d\n", new_fd);
@@ -110,6 +111,7 @@ void p2p_wait_connect(int sock){
     // printf("%s\n", input);
     while((numbytes = recv(sock, &c, 1, 0)) != 0 && connection_bool){
         temp += c;
+        printf("%c", c);
         if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
             printf("%s", temp.c_str());
             temp = "";
@@ -156,7 +158,7 @@ void wait_recieve(int sock){
             connection_socket = new_fd;
             connection_bool = true;
             printf("%d\n", new_fd);
-            p2p_wait_connect(main_socket);
+            p2p_wait_connect(new_fd);
             break;
         }
         if(quit == true){
