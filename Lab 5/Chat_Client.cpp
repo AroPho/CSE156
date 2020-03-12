@@ -96,7 +96,7 @@ void p2p_connect_connect(string command){
             if(n == 1){
                 temp += c;
             }
-            if(quit == true && temp == "quit\r\n"){
+            if(quit == true || temp == "/quit\r\n"){
                 // printf("2\n");
                 string quitting = "/quit\r\n";
                 send(new_fd, quitting.c_str(), quitting.length(), 0);
@@ -107,7 +107,6 @@ void p2p_connect_connect(string command){
                 cout << name;
                 temp = "";
             }
-        }
             
         }
         connection_bool = false;
@@ -132,7 +131,7 @@ void p2p_wait_connect(int sock){
             temp += c;
         }
         // printf("%c", c);
-        if(quit == true && temp == "quit\r\n"){
+        if(quit == true || temp == "/quit\r\n"){
             // printf("2\n");
             string quitting = "/quit\r\n";
             send(sock, quitting.c_str(), quitting.length(), 0);
@@ -267,6 +266,7 @@ void recieving(int socket){
     if(temp.substr(0, 4) == "Ip: "){
         //printf("%s", temp.substr(0, temp.length() - 4).c_str());
         p2p_connect_connect(temp.substr(0, temp.length() - 4));
+        quit = false;
 
     }
 
