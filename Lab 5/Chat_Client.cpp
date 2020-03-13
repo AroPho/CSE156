@@ -160,7 +160,7 @@ void p2p_wait_connect(int sock){
             temp = "";
         }
     }
-    printf("Shuting Down Connection to Client");
+    // printf("Shuting Down Connection to Client");
     connection_bool = false;
 }
 
@@ -220,7 +220,9 @@ void wait_recieve(int sock){
             break;
         }
     }
-    printf("Shuting Down Connection to Client");
+    printf("Shuting Down Connection to Client\n");
+    string quitting = "/quit\r\n\r\n";
+    send(sock, quitting.c_str(), quitting.length(), 0);
     close(main_socket);
 
 }
