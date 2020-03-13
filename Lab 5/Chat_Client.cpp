@@ -173,7 +173,7 @@ void wait_recieve(int sock){
 
     string no_flag = "could not get flags on TCP listening socket";
     string blocking = "could not set TCP listening socket to be non-blocking";
-    char * char_block = blocking.c_str();
+    char * char_block = (char*) blocking.c_str();
 
     int main_socket = socket(AF_INET, SOCK_STREAM, 0);
     int flags = guard(fcntl(main_socket, F_GETFL), (char*) no_flag.c_str());
