@@ -118,8 +118,7 @@ void p2p_connect_connect(string command){
             }
             if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
                 // printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
-                cout << "\n" << temp.substr(0, temp.length() - 2).c_str() << "\n";
-                cout << name << "> ";
+                cout << "\n" << temp.substr(0, temp.length() - 2).c_str() << "\n" << name << "> ";
                 temp = "";
             }
             
@@ -155,8 +154,7 @@ void p2p_wait_connect(int sock){
         }
         if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
             // printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
-            cout << "\n" << temp.substr(0, temp.length() - 2).c_str() << "\n";
-            cout << name << "> ";
+            cout << "\n" << temp.substr(0, temp.length() - 2).c_str() << "\n" << name << "> ";
             temp = "";
         }
     }
