@@ -28,9 +28,22 @@ bool quit = false;
 
 int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
+void my_handler(int s){
+    quit = true;
+}
+
 void *p2p_send(void *){
     // struct sockaddr_in cliaddr;
     // socklen_t addr_size;
+
+    struct sigaction sigIntHandler;
+
+    sigIntHandler.sa_handler = my_handler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+
+    sigaction(SIGINT, &sigIntHandler, NULL);
+
     int sock = connection_socket;
     string name = client_name;
     //char input[1024];
@@ -39,7 +52,7 @@ void *p2p_send(void *){
     string sending = "";
     // bzero(input, 1024);
     while(connection_bool && !quit){
-        printf("%s> ", name.c_str());
+        cout << name << ": ";
         sending = name + ": ";
         getline(cin, input);
         if(input == "/quit"){
@@ -105,7 +118,7 @@ void p2p_connect_connect(string command){
             }
             if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
                 printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
-                cout << name;
+                cout << name << "> ";
                 temp = "";
             }
             
@@ -133,17 +146,19 @@ void p2p_wait_connect(int sock){
         }
         // printf("%c", c);
         if(quit == true || temp == "/quit\r\n"){
-            printf("2\n");
+            // printf("2\n");
+            
             string quitting = "/quit\r\n";
             send(sock, quitting.c_str(), quitting.length(), 0);
             break; 
         }
         if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
             printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
-            cout << name;
+            cout << name << "> ";
             temp = "";
         }
     }
+    printf("Shuting Down Connection to Client");
     connection_bool = false;
 }
 
@@ -199,7 +214,7 @@ void wait_recieve(int sock){
             break;
         }
     }
-
+    printf("Shuting Down Connection to Client");
     close(main_socket);
 
 }
@@ -217,7 +232,16 @@ bool inputAvailable() {
 
 void *wait(void *){
     string input;
-    // string name = client_name;
+    string name = client_name;
+
+    struct sigaction sigIntHandler;
+
+    sigIntHandler.sa_handler = my_handler;
+    sigemptyset(&sigIntHandler.sa_mask);
+    sigIntHandler.sa_flags = 0;
+
+    sigaction(SIGINT, &sigIntHandler, NULL);
+
     // int c;
     // printf("%s> ", name.c_str());
     while(1){
@@ -229,12 +253,13 @@ void *wait(void *){
         
         // printf("here\n");
         if(input == "/quit"){
-            printf("1\n");
+            // printf("1\n");
             quit = true;
             return NULL;
         }
         if(input != "/quit" && input.length() != 0) {
             printf("Command %s not recognized\n", input.c_str()); 
+            cout << name;
             input = "";
         }
         if(connection_bool == true){
