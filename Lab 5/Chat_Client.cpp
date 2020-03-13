@@ -240,13 +240,13 @@ void *wait(void *){
     string input;
     string name = client_name;
 
-    struct sigaction sigIntHandler;
+    // struct sigaction sigIntHandler;
 
-    sigIntHandler.sa_handler = my_handler;
-    sigemptyset(&sigIntHandler.sa_mask);
-    sigIntHandler.sa_flags = 0;
+    // sigIntHandler.sa_handler = my_handler;
+    // sigemptyset(&sigIntHandler.sa_mask);
+    // sigIntHandler.sa_flags = 0;
 
-    sigaction(SIGINT, &sigIntHandler, NULL);
+    // sigaction(SIGINT, &sigIntHandler, NULL);
 
     // int c;
     // printf("%s> ", name.c_str());
@@ -289,7 +289,7 @@ void recieving(int socket){
         }
     }
     if(numbytes == 0){
-        printf("Connection to server has been closed");
+        printf("Connection to server has been closed\n");
         exit(0);
     }
 
