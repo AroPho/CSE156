@@ -28,7 +28,7 @@ bool quit = false;
 
 int guard(int n, char * err) { if (n == -1) { perror(err); exit(1); } return n; }
 
-void my_handler(int s){
+void my_handler(int ){
     quit = true;
 }
 
