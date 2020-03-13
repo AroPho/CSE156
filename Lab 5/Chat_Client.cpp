@@ -36,13 +36,13 @@ void *p2p_send(void *){
     // struct sockaddr_in cliaddr;
     // socklen_t addr_size;
 
-    struct sigaction sigIntHandler;
+    // struct sigaction sigIntHandler;
 
-    sigIntHandler.sa_handler = my_handler;
-    sigemptyset(&sigIntHandler.sa_mask);
-    sigIntHandler.sa_flags = 0;
+    // sigIntHandler.sa_handler = my_handler;
+    // sigemptyset(&sigIntHandler.sa_mask);
+    // sigIntHandler.sa_flags = 0;
 
-    sigaction(SIGINT, &sigIntHandler, NULL);
+    // sigaction(SIGINT, &sigIntHandler, NULL);
 
     int sock = connection_socket;
     string name = client_name;
