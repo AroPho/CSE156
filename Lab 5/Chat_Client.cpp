@@ -52,7 +52,7 @@ void *p2p_send(void *){
     string sending = "";
     // bzero(input, 1024);
     while(connection_bool && !quit){
-        cout << name << ": ";
+        cout << name << "> ";
         sending = name + ": ";
         getline(cin, input);
         if(input == "/quit"){
@@ -117,7 +117,8 @@ void p2p_connect_connect(string command){
                 break; 
             }
             if(temp.length() > 2 && temp.substr(temp.length() -2) == "\r\n"){
-                printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
+                // printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
+                cout << "\n" << temp.substr(0, temp.length() - 2).c_str() << "\n";
                 cout << name << "> ";
                 temp = "";
             }
@@ -153,7 +154,8 @@ void p2p_wait_connect(int sock){
             break; 
         }
         if(temp.length() > 2 && temp.substr(temp.length() - 2) == "\r\n"){
-            printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
+            // printf("\n%s\n", temp.substr(0, temp.length() - 2).c_str());
+            cout << "\n" << temp.substr(0, temp.length() - 2).c_str() << "\n";
             cout << name << "> ";
             temp = "";
         }
@@ -300,6 +302,8 @@ void recieving(int socket){
         //printf("%s", temp.substr(0, temp.length() - 4).c_str());
         p2p_connect_connect(temp.substr(0, temp.length() - 4));
         quit = false;
+        string quitting = "/quit\r\n";
+        send(socket, quitting.c_str(), quitting.length(), 0);
 
     }
 
