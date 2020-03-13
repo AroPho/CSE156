@@ -171,9 +171,12 @@ void wait_recieve(int sock){
     struct sockaddr_in servaddr;
     // struct sockaddr_storage their_addr;
 
+    char *no_flag = "could not get flags on TCP listening socket";
+    char *blocking = "could not set TCP listening socket to be non-blocking";
+
     int main_socket = socket(AF_INET, SOCK_STREAM, 0);
-    int flags = guard(fcntl(main_socket, F_GETFL), "could not get flags on TCP listening socket");
-    guard(fcntl(main_socket, F_SETFL, flags | O_NONBLOCK), "could not set TCP listening socket to be non-blocking");
+    int flags = guard(fcntl(main_socket, F_GETFL), no_flag);
+    guard(fcntl(main_socket, F_SETFL, flags | O_NONBLOCK), blocking);
     int new_fd;
 
     //Create Listen Socket
