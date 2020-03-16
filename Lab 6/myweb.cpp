@@ -72,7 +72,7 @@ int main(int argc, char * argv[]){
 	argv += optind;
 
     // Getting port/path/hostname from args
-    char * hostname = argv[1];
+    char * hostname = argv[0];
     string port;
     string path = hostname;
     int first;
