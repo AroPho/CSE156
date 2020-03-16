@@ -74,39 +74,39 @@ int main(int argc, char * argv[]){
     // Getting port/path/hostname from args
     char * hostname = argv[1];
     string port;
-    string temp = hostname;
+    string path = hostname;
     int first;
     int last;
     string file;
-    if((last = getnthindex(temp, '/', 3)) == -1){
-        temp += "/";
+    if((last = getnthindex(path, '/', 3)) == -1){
+        path += "/";
     }
 
     string hostname_str = "";
-    if(temp.substr(0,4) == "http"){
-        first = getnthindex(temp, ':', 2);
+    if(path.substr(0,4) == "http"){
+        first = getnthindex(path, ':', 2);
         if(first != -1){
-            hostname_str = temp.substr(0, first);
-            temp = temp.substr(first);
-            file = temp.substr(temp.find("/"));
-            port = temp.substr(first + 1, temp.find("/") - first - 1);
+            hostname_str = path.substr(0, first);
+            path = path.substr(first);
+            file = path.substr(path.find("/"));
+            port = path.substr(first + 1, path.find("/") - first - 1);
         }else{
             port = "80";
-            first = getnthindex(temp, '/', 3);
-            file = temp.substr(first);
-            hostname_str = temp.substr(0, first);
+            first = getnthindex(path, '/', 3);
+            file = path.substr(first);
+            hostname_str = path.substr(0, first);
         }
     }else{
-        if((first = temp.find(":") ) != -1){
-            hostname_str = temp.substr(0, first);
-            last = temp.find("/");
-            port = temp.substr(temp.find(":") + 1, last - first - 1 );
+        if((first = path.find(":") ) != -1){
+            hostname_str = path.substr(0, first);
+            last = path.find("/");
+            port = path.substr(path.find(":") + 1, last - first - 1 );
         }else{
-            hostname_str = temp.substr(0, temp.find("/"));
+            hostname_str = path.substr(0, path.find("/"));
             port = "80";
         
         }
-        file = temp.substr(temp.find("/"));
+        file = path.substr(path.find("/"));
     }
     printf("%s %s\n", hostname_str.c_str(), port.c_str());
     exit(0);
