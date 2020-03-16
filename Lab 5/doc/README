@@ -1,0 +1,27 @@
+Aaron Nguyen
+anguy200
+ID: 1585632
+
+Issues with Program: 
+- Ctrl-C does not work, and when switching between sending, receiving, or quitting in client requires you to hit enter twice.
+- Formatting of Chat is also kind of wack and I do not know how to fix it within the
+constraints
+
+Table of Contents:
+
+Bin:
+- Chat_Client
+- Chat_Client.d
+- Chat_Client.o
+- Chat_Server
+- Chat_Server.d
+- Chat_Server.o
+
+Doc:
+- Design Doc
+- README
+
+Src:
+-  Chat_Server.cpp //Server Code
+- Makefile // Creates Excutables
+- Chat_Client.cpp // Client Code
