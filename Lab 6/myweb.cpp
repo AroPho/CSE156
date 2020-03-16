@@ -53,10 +53,7 @@ int main(int argc, char * argv[]){
     
     //Checks for appropriate number of args
     if(argc < 3){
-        warn("Insufficient number of arguements givin");
-    }
-    if(argc > 4){
-        warn("To many arguements givin");
+        printf("ree\n");
     }
     bool head_bool = false;
 
