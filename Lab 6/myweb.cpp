@@ -88,6 +88,7 @@ int main(int argc, char * argv[]){
         if(first != -1){
             hostname_str = path.substr(0, first);
             last = path.find("/");
+            printf("%d\n", last);
             path = path.substr(first);
             file = path.substr(path.find("/"));
             port = path.substr(first + 1, last - first - 1);
