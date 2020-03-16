@@ -74,7 +74,7 @@ int main(int argc, char * argv[]){
     // Getting port/path/hostname from args
     char * hostname = argv[0];
     string port;
-    string path = hostname;
+    string path(hostname);
     int first;
     int last;
     string file;
