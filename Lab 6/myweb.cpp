@@ -87,9 +87,10 @@ int main(int argc, char * argv[]){
         first = getnthindex(path, ':', 2);
         if(first != -1){
             hostname_str = path.substr(0, first);
+            last = path.find("/");
             path = path.substr(first);
             file = path.substr(path.find("/"));
-            port = path.substr(first + 1, path.find("/") - first - 1);
+            port = path.substr(first + 1, last - first - 1);
         }else{
             port = "80";
             first = getnthindex(path, '/', 3);
