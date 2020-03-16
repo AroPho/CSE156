@@ -95,10 +95,20 @@ int main(int argc, char * argv[]){
             file = temp.substr(first);
             hostname_str = temp.substr(0, first);
         }
-        printf("%s %s\n", hostname_str.c_str(), port.c_str());
-        exit(0);
-
+    }else{
+        if((first = temp.find(":") ) != -1){
+            hostname = temp.substr(0, first);
+            last = temp.find("/");
+            port = temp.substr(temp.find(":") + 1, last - first - 1 );
+        }else{
+            hostname = temp.substr(0, temp.find("/"));
+            port = "80";
+        
+        }
+        file = temp.substr(temp.find("/"));
     }
+    printf("%s %s\n", hostname_str.c_str(), port.c_str());
+    exit(0)
 
 
     
