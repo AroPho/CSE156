@@ -1,21 +1,25 @@
-#include <sys/types.h>
-#include <sys/socket.h>
-// #include <bits/stdc++.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string>
-#include <err.h>
+#include <string.h>
+#include <unistd.h> 
 #include <fcntl.h>
+#include <stdio.h> 
+#include <err.h>
+#include <errno.h>
+#include <sys/socket.h> 
+#include <sys/types.h>
+#include <stdlib.h> 
+#include <netinet/in.h> 
+#include <netdb.h>
 #include <arpa/inet.h>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 using namespace std;
 
 
 int getnthindex(string s, char t, int n)
 {
     int count = 0;
-    for (int i = 0; i < s.length(); i++)
+    for (int i = 0; (unsigned long) i < s.length(); i++)
     {
         if (s[i] == t)
         {
@@ -77,13 +81,13 @@ int main(int argc, char * argv[]){
     int first;
     int last;
     string file;
-    if((last = getnthindex(temp, "/", 3)) == -1){
+    if((last = getnthindex(temp, '/', 3)) == -1){
         temp += "/";
     }
 
     string hostname_str = "";
     if(temp.substr(0,4) == "http"){
-        first = getnthindex(temp, ":", 2);
+        first = getnthindex(temp, ':', 2);
         if(first != -1){
             hostname_str = temp.substr(0, first);
             temp = temp.substr(first);
@@ -91,7 +95,7 @@ int main(int argc, char * argv[]){
             port = temp.substr(first + 1, temp.find("/") - first - 1);
         }else{
             port = "80";
-            first = getnthindex(temp, "/", 3);
+            first = getnthindex(temp, '/', 3);
             file = temp.substr(first);
             hostname_str = temp.substr(0, first);
         }
