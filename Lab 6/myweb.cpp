@@ -1,21 +1,21 @@
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 #include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
+#include <string>
 #include <err.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
 using namespace std;
 
 
-public int getnthindex(string s, char t, int n)
+int getnthindex(string s, char t, int n)
 {
     int count = 0;
-    for (int i = 0; i < s.Length; i++)
+    for (int i = 0; i < s.length(); i++)
     {
         if (s[i] == t)
         {
@@ -75,7 +75,7 @@ int main(int argc, char * argv[]){
     string port;
     string temp = hostname;
     int first;
-    int last
+    int last;
     string file;
     if((last = getnthindex(temp, "/", 3)) == -1){
         temp += "/";
@@ -91,24 +91,24 @@ int main(int argc, char * argv[]){
             port = temp.substr(first + 1, temp.find("/") - first - 1);
         }else{
             port = "80";
-            first = getnthindex(temp, "/", 3)
+            first = getnthindex(temp, "/", 3);
             file = temp.substr(first);
             hostname_str = temp.substr(0, first);
         }
     }else{
         if((first = temp.find(":") ) != -1){
-            hostname = temp.substr(0, first);
+            hostname_str = temp.substr(0, first);
             last = temp.find("/");
             port = temp.substr(temp.find(":") + 1, last - first - 1 );
         }else{
-            hostname = temp.substr(0, temp.find("/"));
+            hostname_str = temp.substr(0, temp.find("/"));
             port = "80";
         
         }
         file = temp.substr(temp.find("/"));
     }
     printf("%s %s\n", hostname_str.c_str(), port.c_str());
-    exit(0)
+    exit(0);
 
 
     
@@ -143,65 +143,65 @@ int main(int argc, char * argv[]){
        
 
     
-    // try{
-    //     // connect(sockfd,res->ai_addr,res->ai_addrlen);
+    try{
+        // connect(sockfd,res->ai_addr,res->ai_addrlen);
         
-    //     // Checks for what type of http request needs to be sent
-    //     if(head_bool){
-    //         send(sockfd, header_send.c_str(), header_send.length(), 0);
-    //     }
-    //     if(!head_bool){
-    //         send(sockfd, get_request.c_str(), get_request.length(), 0);
-    //     }
-    //     // cout << "here";
-    //     int numbytes;
-    //     int written = 0;
-    //     int end_header = 0;
-    //     int length = -1;
-    //     string temp;
-    //     string filename = "output.dat";
-    //     char c;
-    //     int fd;
+        // Checks for what type of http request needs to be sent
+        if(head_bool){
+            send(sockfd, header_send.c_str(), header_send.length(), 0);
+        }
+        if(!head_bool){
+            send(sockfd, get_request.c_str(), get_request.length(), 0);
+        }
+        // cout << "here";
+        int numbytes;
+        int written = 0;
+        int end_header = 0;
+        int length = -1;
+        string temp;
+        string filename = "output.dat";
+        char c;
+        int fd;
 
-    //     // If GET request create output.dat file
-    //     if(!head_bool){
-    //         remove(filename.c_str());
-    //         fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
-    //     }
-    //     // cout << "here2\n";
+        // If GET request create output.dat file
+        if(!head_bool){
+            remove(filename.c_str());
+            fd = open(filename.c_str(), O_WRONLY | O_CREAT, 0777);
+        }
+        // cout << "here2\n";
 
-    //     // Starts recieving response from server
-    //     while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
-    //         if(end_header != 1){
-    //           temp += c;
-    //         }
+        // Starts recieving response from server
+        while((numbytes = recv(sockfd, &c, 1, 0)) != 0){
+            if(end_header != 1){
+              temp += c;
+            }
 
-    //         //Writes to file if end of header
-    //         if(end_header == 1){
-    //             written += write(fd, &c, 1);
-    //         }
-    //         if(head_bool){
-    //             printf("%c", c);
-    //         }
-    //         if(written == length){
-    //             break;
-    //         }
+            //Writes to file if end of header
+            if(end_header == 1){
+                written += write(fd, &c, 1);
+            }
+            if(head_bool){
+                printf("%c", c);
+            }
+            if(written == length){
+                break;
+            }
 
-    //         // Checks for end of header
-    //         if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
-    //                 end_header = 1;
-    //                 if(head_bool){
-    //                     break;
-    //                 }
-    //                 // cout << "1";
-    //                 length = catch_length(temp);
-    //                 // printf("here");
-    //         }
-    //     }
-    //     close(fd);
-    //     close(sockfd);
-    // }catch(...){
-    //     close(sockfd);
-    //     warn("Warning internal server error closing connections");
-    // }
+            // Checks for end of header
+            if(end_header == 0 && temp.length() > 3 && temp.substr(temp.length() - 4) == "\r\n\r\n"){ //Checks for end of header
+                    end_header = 1;
+                    if(head_bool){
+                        break;
+                    }
+                    // cout << "1";
+                    length = catch_length(temp);
+                    // printf("here");
+            }
+        }
+        close(fd);
+        close(sockfd);
+    }catch(...){
+        close(sockfd);
+        warn("Warning internal server error closing connections");
+    }
 }

@@ -1,11 +1,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <bits/stdc++.h>
+// #include <bits/stdc++.h>
 #include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
+#include <string>
 #include <err.h>
 #include <fcntl.h>
 #include <arpa/inet.h>
