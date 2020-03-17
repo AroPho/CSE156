@@ -382,7 +382,7 @@ int main(int argc, char * argv[]){
         }
         file = path.substr(path.find("/"));
     }
-    printf("%s %s\n", hostname_str.c_str(), port.c_str());
+    // printf("%s %s\n", hostname_str.c_str(), port.c_str());
     path = hostname;
 
 
