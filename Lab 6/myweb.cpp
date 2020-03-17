@@ -98,7 +98,7 @@ void https(int sock, string file, string hostname){
     {
         //Error occurred, log and close down ssl
         ShutdownSSL();
-        printf("error\n");
+        printf("error %d\n", ssl_err);
         exit(0);
     }
     try{
