@@ -318,7 +318,7 @@ int main(int argc, char * argv[]){
 
         }else{
 
-            port = "80";
+            port = "443";
             last = getnthindex(path, '/', 3);
             first = path.find("://") + 3;
             file = path.substr(last);
