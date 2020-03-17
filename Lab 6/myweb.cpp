@@ -28,6 +28,7 @@ using namespace std;
 
 SSL_CTX *sslctx;
 SSL *cSSL;
+bool head_bool = false;
 
 
 void InitializeSSL()
@@ -156,10 +157,10 @@ void ssl_communication(int sock, string file, string hostname){
             }
         }
         close(fd);
-        ShutdownSSL()
-        close(sockfd);
+        ShutdownSSL();
+        close(sock);
     }catch(...){
-        close(sockfd);
+        close(sock);
         warn("Warning internal server error closing connections");
     }
 }
@@ -314,8 +315,8 @@ int main(int argc, char * argv[]){
     InitializeSSL();
 
     struct addrinfo hints, *addrs;
-	struct sockaddr_storage their_addr;
-	socklen_t addr_size;
+	// struct sockaddr_storage their_addr;
+	// socklen_t addr_size;
 
     memset(&hints, 0,sizeof hints);
     hints.ai_family=AF_UNSPEC;
