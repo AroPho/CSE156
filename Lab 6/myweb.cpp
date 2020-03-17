@@ -109,7 +109,7 @@ void https(int sock, string file, string hostname){
     
     
     SSL_CTX *ctx = SSL_CTX_new (meth);
-    SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+    SSL_CTX_set_options(ctx, SSL_OP_SINGLE_DH_USE);
     int use_cert = SSL_CTX_use_certificate_file(ctx, "/serverCertificate.pem" , SSL_FILETYPE_PEM);
 
     int use_prv = SSL_CTX_use_PrivateKey_file(ctx, "/serverCertificate.pem", SSL_FILETYPE_PEM);
