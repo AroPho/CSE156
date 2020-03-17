@@ -109,6 +109,7 @@ void https(int sock, string file, string hostname){
         
         // Checks for what type of http request needs to be sent
         if(head_bool){
+            printf("%s\n", head_req);
             SSL_write(cSSL, head_req, strlen(head_req));
         }
         if(!head_bool){
