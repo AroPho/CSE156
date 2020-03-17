@@ -65,6 +65,26 @@ void ShutdownSSL(SSL *cSSL)
     }
 }
 
+void ShowCerts(SSL* ssl)
+{   X509 *cert;
+    char *line;
+
+    cert = SSL_get_peer_certificate(ssl); /* get the server's certificate */
+    if ( cert != NULL )
+    {
+    printf("Server certificates:\n");
+    line = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0);
+    printf("Subject: %s\n", line);
+    free(line);       /* free the malloc'ed string */
+    line = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0);
+    printf("Issuer: %s\n", line);
+    free(line);       /* free the malloc'ed string */
+    X509_free(cert);     /* free the malloc'ed certificate copy */
+}
+else
+    printf("No certificates.\n");
+}
+
 
 
 int getnthindex(string s, char t, int n)
@@ -115,11 +135,13 @@ void https(int sock, string file, string hostname){
     int use_prv = SSL_CTX_use_PrivateKey_file(ctx, "/serverCertificate.pem", SSL_FILETYPE_PEM);
 
 
-    // SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
     SSL *ssl_sock = SSL_new(ctx);
     SSL_set_fd(ssl_sock, sock);
     //Here is the SSL Accept portion.  Now all reads and writes must use SSL
     int ssl_err = SSL_connect(ssl_sock);
+    ShowCerts(ssl_sock);
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
+
     if(ssl_err <= 0)
     {
         //Error occurred, log and close down ssl
