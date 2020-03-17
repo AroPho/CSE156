@@ -28,7 +28,7 @@ using namespace std;
 // #define KEY_FILE  HOME  "1024ckey.pem"
 // #define CIPHER_LIST "AES128-SHA"
 #define CA_FILE NULL
-#define CA_DIR  "etc/ssl/certs"
+#define CA_DIR  "etc/ssl/certs/ca-bundle.crt"
 // #define KEY_PASSWD "keypass"
 
 bool head_bool = false;
