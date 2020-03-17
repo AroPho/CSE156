@@ -312,7 +312,8 @@ int main(int argc, char * argv[]){
     //Checks for appropriate number of args
     if(argc != 3 && argc != 2){
         printf("Wrong amount of Args\n");
-        printf("./myweb (website):(optional port)/(optional path) (optional -h)")
+        printf("./myweb (website):(optional port)/(optional path) (optional -h)");
+        exit(0);
     }
     // bool head_bool = false;
 
