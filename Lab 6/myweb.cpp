@@ -101,10 +101,11 @@ int catch_length(string line){
 void https(int sock, string file, string hostname){
     InitializeSSL();
 
-    if(!(sslctx = SSL_CTX_new( TLSv1_client_method()))){
+    const SSL_METHOD *meth = TLSv1_2_client_method();
+    if(!(sslctx = SSL_CTX_new( meth))){
         exit(1);
     }
-    SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+    // SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
     cSSL = SSL_new(sslctx);
     SSL_set_fd(cSSL, sock);
