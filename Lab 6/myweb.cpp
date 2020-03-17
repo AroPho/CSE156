@@ -341,6 +341,7 @@ int main(int argc, char * argv[]){
     printf("%s\n", ip.c_str());
 
     if(hostname_str.substr(0,5) == "https"){
+        printf("here\n");
         ssl_communication(sockfd, file, hostname_str);
     }else{
         no_https(sockfd, file, hostname_str);
