@@ -276,7 +276,7 @@ int main(int argc, char * argv[]){
 
     string hostname_str = "";
     if(path.substr(0,4) == "http"){
-        first = getnthindex(path, ':', 3);
+        first = getnthindex(path, ':', 2);
         if(first != -1){
 
             hostname_str = path.substr(0, first); 
@@ -289,9 +289,10 @@ int main(int argc, char * argv[]){
         }else{
 
             port = "80";
-            first = getnthindex(path, '/', 3);
-            file = path.substr(first + 1);
-            hostname_str = path.substr(path.find("://") + 3, first - 2);
+            last = getnthindex(path, '/', 3);
+            first = path.find("://") + 3
+            file = path.substr(first);
+            hostname_str = path.substr(first, last - first - 1);
 
         }
     }else{
