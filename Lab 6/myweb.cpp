@@ -332,7 +332,7 @@ int main(int argc, char * argv[]){
     struct sockaddr_in addr;
     socklen_t addr_size = sizeof(addr);
     getpeername(sockfd, (struct sockaddr *)&addr, &addr_size);
-    string ip = inet_ntoa(addr.in_addr);
+    string ip = inet_ntoa(addr.sin_addr);
     printf("%s\n", ip.c_str());
 
     connect(sockfd,addrs->ai_addr,addrs->ai_addrlen);
