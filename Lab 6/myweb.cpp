@@ -153,7 +153,7 @@ void https(int sock, string file, string hostname){
         // cout << "here2\n";
 
         // Starts recieving response from server
-        while((numbytes = SSL_read(cSSL, &c, 1)) != 0){
+        while((numbytes = SSL_read(ssl_sock, &c, 1)) != 0){
             if(end_header != 1){
               temp += c;
             }
