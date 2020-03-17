@@ -87,7 +87,7 @@ void https(int sock, string file, string hostname){
     const SSL_METHOD *meth = TLSv1_2_client_method();
     
     
-    ssl_method = SSL_CTX_new( meth)
+    ssl_method = SSL_CTX_new( meth);
     // SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
     ssl_sock = SSL_new(ssl_method);
@@ -100,8 +100,8 @@ void https(int sock, string file, string hostname){
         printf("Error creating SSL connection.  err=%x\n", ssl_err);
         log_ssl();
         fflush(stdout);
-        SSL_shutdown(cSSL);
-        SSL_free(cSSL);
+        SSL_shutdown(ssl_sock);
+        SSL_free(ssl_sock);
         //printf("error %d\n", ssl_err);
         exit(0);
     }
@@ -116,9 +116,9 @@ void https(int sock, string file, string hostname){
         // Checks for what type of http request needs to be sent
         if(head_bool){
             printf("%s\n", head_req);
-            int len = SSL_write(cSSL, head_req, strlen(head_req));
+            int len = SSL_write(ssl_sock, head_req, strlen(head_req));
             if (len < 0) {
-                int err = SSL_get_error(cSSL, len);
+                int err = SSL_get_error(ssl_sock, len);
                 switch (err) {
                 case SSL_ERROR_WANT_WRITE:
                     cout << 0;
@@ -133,7 +133,7 @@ void https(int sock, string file, string hostname){
             }
         }
         if(!head_bool){
-            SSL_write(cSSL, get_request.c_str(), get_request.length());
+            SSL_write(ssl_sock, get_request.c_str(), get_request.length());
         }
         // cout << "here";
         int numbytes;
@@ -181,13 +181,13 @@ void https(int sock, string file, string hostname){
             }
         }
         close(fd);
-        SSL_shutdown(cSSL);
-        SSL_free(cSSL);
+        SSL_shutdown(ssl_sock);
+        SSL_free(ssl_sock);
         close(sock);
     }catch(...){
         close(sock);
-        SSL_shutdown(cSSL);
-        SSL_free(cSSL);
+        SSL_shutdown(ssl_sock);
+        SSL_free(ssl_sock);
         warn("Warning internal server error closing connections");
     }
 }
