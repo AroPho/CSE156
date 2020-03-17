@@ -312,6 +312,7 @@ int main(int argc, char * argv[]){
         file = path.substr(path.find("/"));
     }
     printf("%s %s\n", hostname_str.c_str(), port.c_str());
+    path = hostname;
 
 
     
@@ -340,7 +341,7 @@ int main(int argc, char * argv[]){
     string ip = inet_ntoa(addr.sin_addr);
     printf("%s\n", ip.c_str());
 
-    if(hostname_str.substr(0,5) == "https"){
+    if(path.substr(0,5) == "https"){
         printf("here\n");
         ssl_communication(sockfd, file, hostname_str);
     }else{
