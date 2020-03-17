@@ -176,9 +176,11 @@ void no_https(int sockfd, string file, string hostname){
         
         // Checks for what type of http request needs to be sent
         if(head_bool){
+            printf("%s\n", header_send.c_str());
             send(sockfd, header_send.c_str(), header_send.length(), 0);
         }
         if(!head_bool){
+            printf("%s\n", get_request.c_str());
             send(sockfd, get_request.c_str(), get_request.length(), 0);
         }
         // cout << "here";
