@@ -22,7 +22,7 @@ TARGET=myweb
 CXXFLAGS=-std=gnu++11 -Wall -Wextra -Wpedantic -Wshadow -g -Og
 
 # Define the linker flags for your project. You probably don't need to add anything here.
-LDFLAGS= -lpthread -L/usr/local/ssl/lib
+LDFLAGS= -lpthread
 LDLIBS = -lssl -lcrypto
 
 # These are the flags that you should submit your code with. We will make sure that your
