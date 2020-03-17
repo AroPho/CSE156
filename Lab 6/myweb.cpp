@@ -86,7 +86,7 @@ int catch_length(string line){
 	return -1;
 }
 
-void ssl_communication(int sock, string file, string hostname){
+void https_send(int sock, string file, string hostname){
     sslctx = SSL_CTX_new( TLSv1_2_client_method());
     SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
@@ -343,7 +343,7 @@ int main(int argc, char * argv[]){
 
     if(path.substr(0,5) == "https"){
         printf("here\n");
-        ssl_communication(sockfd, file, hostname_str);
+        https_send(sockfd, file, hostname_str);
     }else{
         no_https(sockfd, file, hostname_str);
     }
