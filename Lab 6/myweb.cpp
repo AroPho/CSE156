@@ -335,7 +335,7 @@ int main(int argc, char * argv[]){
         }else{
 
             hostname_str = path.substr(0, path.find("/"));
-            port = "80";
+            port = "443";
         
         }
         file = path.substr(path.find("/"));
