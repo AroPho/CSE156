@@ -158,7 +158,7 @@ void https(int sock, string file, string hostname){
 
     if (cert != NULL) {
 
-    if (SSL_get_verify_result(ssl) == X509_V_OK) { 
+    if (SSL_get_verify_result(ssl_sock) == X509_V_OK) { 
 
         /* validation is ok */
 
