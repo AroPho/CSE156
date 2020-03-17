@@ -268,7 +268,7 @@ int main(int argc, char * argv[]){
     int last;
     string file;
     if((last = getnthindex(path, '/', 3)) == -1 && path.substr(0,4) == "http"){
-        printf("here");
+        // printf("here");
         path += "/";
     }else if((last = path.find("/")) == -1){
         path += "/";
@@ -309,7 +309,7 @@ int main(int argc, char * argv[]){
         }
         file = path.substr(path.find("/"));
     }
-    printf("%s %s\n", hostname_str.c_str(), port.c_str());
+    // printf("%s %s\n", hostname_str.c_str(), port.c_str());
 
 
     
@@ -332,8 +332,8 @@ int main(int argc, char * argv[]){
 
     connect(sockfd,addrs->ai_addr,addrs->ai_addrlen);
     if(hostname_str.substr(0,5) == "https"){
-        ssl_communication(sockfd, file, hostname);
+        ssl_communication(sockfd, file, hostname_str);
     }else{
-        no_https(sockfd, file, hostname);
+        no_https(sockfd, file, hostname_str);
     }
 }
