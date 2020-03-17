@@ -54,7 +54,7 @@ void ShutdownSSL()
  void log_ssl()
 {
     int err;
-    while (err == ERR_get_error()) {
+    while (err = ERR_get_error()) {
         char *str = ERR_error_string(err, 0);
         if (!str)
             return;
