@@ -242,7 +242,7 @@ int main(int argc, char * argv[]){
     if(argc < 3){
         printf("ree\n");
     }
-    bool head_bool = false;
+    // bool head_bool = false;
 
     // checks if there is a -h present in args
     char opt;
