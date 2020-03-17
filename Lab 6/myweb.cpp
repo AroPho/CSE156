@@ -292,7 +292,7 @@ int main(int argc, char * argv[]){
             last = getnthindex(path, '/', 3);
             first = path.find("://") + 3;
             file = path.substr(first);
-            hostname_str = path.substr(first, last - first - 1);
+            hostname_str = path.substr(first, last - first);
 
         }
     }else{
