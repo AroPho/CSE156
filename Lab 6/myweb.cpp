@@ -104,7 +104,7 @@ void https(int sock, string file, string hostname){
         string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
         string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
-        char *head_req = new char [header_send.lengh() + 1];
+        char *head_req = new char [header_send.length() + 1];
         strcpy(head_req, header_send.c_str());
         
         // Checks for what type of http request needs to be sent
