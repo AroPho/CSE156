@@ -107,10 +107,10 @@ void ssl_communication(int sock, string file, string hostname){
         
         // Checks for what type of http request needs to be sent
         if(head_bool){
-            SSL_write()(cSSL, header_send.c_str(), header_send.length());
+            SSL_write(cSSL, header_send.c_str(), header_send.length());
         }
         if(!head_bool){
-            SSL_write()(cSSL, get_request.c_str(), get_request.length();
+            SSL_write(cSSL, get_request.c_str(), get_request.length());
         }
         // cout << "here";
         int numbytes;
