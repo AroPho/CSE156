@@ -27,8 +27,6 @@ using namespace std;
 // #define CA_DIR  NULL
 // #define KEY_PASSWD "keypass"
 
-SSL_CTX *sslctx;
-SSL *cSSL;
 bool head_bool = false;
 
 
@@ -99,7 +97,12 @@ int catch_length(string line){
 }
 
 void https(int sock, string file, string hostname){
-    InitializeSSL();
+    SSL_load_error_strings();
+    SSL_library_init();
+    OpenSSL_add_all_algorithms();
+    
+    SSL_CTX *sslctx;
+    SSL *cSSL;
 
     const SSL_METHOD *meth = TLSv1_2_client_method();
     if(!(sslctx = SSL_CTX_new( meth))){
