@@ -270,7 +270,7 @@ int main(int argc, char * argv[]){
     if((last = getnthindex(path, '/', 3)) == -1 && path.substr(0,4) == "http"){
         printf("here");
         path += "/";
-    }else if(path.find("/") == -1){
+    }else if((last = path.find("/")) == -1){
         path += "/";
     }
 
