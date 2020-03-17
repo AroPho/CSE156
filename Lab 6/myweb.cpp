@@ -29,26 +29,6 @@ using namespace std;
 
 bool head_bool = false;
 
-
-void InitializeSSL()
-{
-    SSL_load_error_strings();
-    SSL_library_init();
-    OpenSSL_add_all_algorithms();
-}
-
-void DestroySSL()
-{
-    ERR_free_strings();
-    EVP_cleanup();
-}
-
-void ShutdownSSL()
-{
-    SSL_shutdown(cSSL);
-    SSL_free(cSSL);
-}
-
  void log_ssl()
 {
     int err;
@@ -120,7 +100,8 @@ void https(int sock, string file, string hostname){
         printf("Error creating SSL connection.  err=%x\n", ssl_err);
         log_ssl();
         fflush(stdout);
-        ShutdownSSL();
+        SSL_shutdown(cSSL);
+        SSL_free(cSSL);
         //printf("error %d\n", ssl_err);
         exit(0);
     }
@@ -200,10 +181,13 @@ void https(int sock, string file, string hostname){
             }
         }
         close(fd);
-        ShutdownSSL();
+        SSL_shutdown(cSSL);
+        SSL_free(cSSL);
         close(sock);
     }catch(...){
         close(sock);
+        SSL_shutdown(cSSL);
+        SSL_free(cSSL);
         warn("Warning internal server error closing connections");
     }
 }
