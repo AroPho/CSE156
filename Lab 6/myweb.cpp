@@ -81,16 +81,14 @@ void https(int sock, string file, string hostname){
     OpenSSL_add_all_algorithms();
     SSL_load_error_strings();
     
-    SSL_CTX *ssl_method;
-    SSL *ssl_sock;
 
     const SSL_METHOD *meth = TLSv1_2_client_method();
     
     
-    ssl_method = SSL_CTX_new( meth);
+    SSL_CTX *ctx = SSL_CTX_new (meth);
     // SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
-    ssl_sock = SSL_new(ssl_method);
+    SSL *ssl_sock; = SSL_new(ssl_method);
     SSL_set_fd(ssl_sock, sock);
     //Here is the SSL Accept portion.  Now all reads and writes must use SSL
     int ssl_err = SSL_connect(ssl_sock);
