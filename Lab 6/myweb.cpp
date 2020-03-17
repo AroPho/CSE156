@@ -47,7 +47,7 @@ void DestroySSL()
     EVP_cleanup();
 }
 
-void ShutdownSSL()
+void ShutdownSSL(SSL *cSSL)
 {
     SSL_shutdown(cSSL);
     SSL_free(cSSL);
@@ -126,7 +126,7 @@ void https(int sock, string file, string hostname){
         printf("Error creating SSL connection.  err=%x\n", ssl_err);
         log_ssl();
         fflush(stdout);
-        ShutdownSSL();
+        ShutdownSSL(ssl_sock);
         //printf("error %d\n", ssl_err);
         exit(0);
     }
@@ -206,11 +206,11 @@ void https(int sock, string file, string hostname){
             }
         }
         close(fd);
-        ShutdownSSL();
+        ShutdownSSL(ssl_sock);
         close(sock);
     }catch(...){
         close(sock);
-        ShutdownSSL();
+        ShutdownSSL(ssl_sock);
         warn("Warning internal server error closing connections");
     }
 }
