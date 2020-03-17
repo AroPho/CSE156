@@ -51,6 +51,19 @@ void ShutdownSSL()
     SSL_free(cSSL);
 }
 
+ void log_ssl()
+{
+    int err;
+    while (err = ERR_get_error()) {
+        char *str = ERR_error_string(err, 0);
+        if (!str)
+            return;
+        printf(str);
+        printf("\n");
+        fflush(stdout);
+    }
+}
+
 
 
 int getnthindex(string s, char t, int n)
@@ -97,8 +110,11 @@ void https(int sock, string file, string hostname){
     if(ssl_err <= 0)
     {
         //Error occurred, log and close down ssl
+        printf("Error creating SSL connection.  err=%x\n", err);
+        log_ssl();
+        fflush(stdout);
         ShutdownSSL();
-        printf("error %d\n", ssl_err);
+        //printf("error %d\n", ssl_err);
         exit(0);
     }
     try{
