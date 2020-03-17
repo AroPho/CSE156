@@ -131,9 +131,10 @@ void https(int sock, string file, string hostname){
     SSL_CTX *ctx = SSL_CTX_new (meth);
     // SSL_CTX_set_options(ctx, SSL_OP_SINGLE_DH_USE);
 
-    int verify = SSL_CTX_load_verify_locations(ctx, CAFILE, CApath);
+    SSL_CTX_load_verify_locations(ctx, CAFILE, CApath);
     // printf("%d\n", verify);
-    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
+    int verify = SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
+    printf("%d\n", verify);
 
     SSL *ssl_sock = SSL_new(ctx);
     SSL_set_fd(ssl_sock, sock);
