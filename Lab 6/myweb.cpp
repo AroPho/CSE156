@@ -110,7 +110,7 @@ void https(int sock, string file, string hostname){
         // Checks for what type of http request needs to be sent
         if(head_bool){
             printf("%s\n", head_req);
-            SSL_write(cSSL, (const char *) head_req, strlen(head_req));
+            SSL_write(cSSL, "hi\r\n\r\n", 6);
         }
         if(!head_bool){
             SSL_write(cSSL, get_request.c_str(), get_request.length());
@@ -345,7 +345,7 @@ int main(int argc, char * argv[]){
     printf("%s\n", ip.c_str());
 
     if(path.substr(0,5) == "https"){
-        printf("here\n");
+        // printf("here\n");
         https(sockfd, file, hostname_str);
     }else{
         no_https(sockfd, file, hostname_str);
