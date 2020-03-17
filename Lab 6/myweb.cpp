@@ -14,7 +14,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <openssl/bio.h>
+// #include <openssl/bio.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
@@ -81,19 +81,19 @@ void https(int sock, string file, string hostname){
     SSL_library_init();
     OpenSSL_add_all_algorithms();
     
-    SSL_CTX *sslctx;
-    SSL *cSSL;
+    SSL_CTX *ssl_method;
+    SSL *ssl_sock;
 
     const SSL_METHOD *meth = TLSv1_2_client_method();
-    if(!(sslctx = SSL_CTX_new( meth))){
-        exit(1);
-    }
+    
+    
+    ssl_method = SSL_CTX_new( meth)
     // SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
-    cSSL = SSL_new(sslctx);
-    SSL_set_fd(cSSL, sock);
+    ssl_sock = SSL_new(ssl_method);
+    SSL_set_fd(ssl_sock, sock);
     //Here is the SSL Accept portion.  Now all reads and writes must use SSL
-    int ssl_err = SSL_connect(cSSL);
+    int ssl_err = SSL_connect(ssl_sock);
     if(ssl_err <= 0)
     {
         //Error occurred, log and close down ssl
@@ -339,6 +339,7 @@ int main(int argc, char * argv[]){
     }
     printf("%s %s\n", hostname_str.c_str(), port.c_str());
     path = hostname;
+    hostname = "https://www.example.com";
 
 
     
