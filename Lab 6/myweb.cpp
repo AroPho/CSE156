@@ -82,7 +82,7 @@ int catch_length(string line){
 
 void https(int sock, string file, string hostname){
     SSL_library_init();
-    OpenSSL_add_all_algorithms();
+    SSLeay_add_all_algorithms();
     SSL_load_error_strings();
     
 
