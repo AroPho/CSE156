@@ -115,14 +115,14 @@ void https(int sock, string file, string hostname){
                 int err = SSL_get_error(cSSL, len);
                 switch (err) {
                 case SSL_ERROR_WANT_WRITE:
-                    return 0;
+                    cout << 0;
                 case SSL_ERROR_WANT_READ:
-                    return 0;
+                    cout << 0;
                 case SSL_ERROR_ZERO_RETURN:
                 case SSL_ERROR_SYSCALL:
                 case SSL_ERROR_SSL:
                 default:
-                    return -1;
+                    cout << -1;
                 }
             }
         }
