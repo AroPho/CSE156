@@ -28,7 +28,7 @@ using namespace std;
 // #define KEY_FILE  HOME  "1024ckey.pem"
 // #define CIPHER_LIST "AES128-SHA"
 #define CAFILE NULL
-#define CApath  "etc/ssl/certs/ca-bundle.crt"
+#define CApath  "etc/ssl/certs"
 // #define KEY_PASSWD "keypass"
 
 bool head_bool = false;
@@ -131,9 +131,11 @@ void https(int sock, string file, string hostname){
     SSL_CTX *ctx = SSL_CTX_new (meth);
     // SSL_CTX_set_options(ctx, SSL_OP_SINGLE_DH_USE);
 
+
+
     SSL_CTX_load_verify_locations(ctx, CAFILE, CApath);
     // printf("%d\n", verify);
-    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
+    // SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
 
     SSL *ssl_sock = SSL_new(ctx);
     SSL_set_fd(ssl_sock, sock);
@@ -149,6 +151,30 @@ void https(int sock, string file, string hostname){
         //printf("error %d\n", ssl_err);
         exit(0);
     }
+
+    cert = SSL_get_peer_certificate(ssl_sock);
+
+    if (cert != NULL) {
+
+    if (SSL_get_verify_result(ssl) == X509_V_OK) { 
+
+        /* validation is ok */
+
+    } else {
+
+        /* verification failed, end conn, print error message */
+        printf("cert\n");
+        exit(0);
+
+    }
+
+    } else {
+
+    /* invalid certificate, end connections, print error message */
+
+    }
+
+
     try{
 
         string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
