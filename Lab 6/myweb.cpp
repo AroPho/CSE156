@@ -162,8 +162,8 @@ void https(int sock, string file, string hostname){
         
         // Checks for what type of http request needs to be sent
         if(head_bool){
-            printf("%s\n", head_req);
-            int len = SSL_write(ssl_sock, head_req, strlen(head_req));
+            // printf("%s\n", head_req);
+            int len = SSL_write(ssl_sock, header_send.c_str(), header_send.length());
             if (len < 0) {
                 int err = SSL_get_error(ssl_sock, len);
                 switch (err) {
