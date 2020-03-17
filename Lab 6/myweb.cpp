@@ -109,7 +109,7 @@ void https(int sock, string file, string hostname){
     if(ssl_err <= 0)
     {
         //Error occurred, log and close down ssl
-        printf("Error creating SSL connection.  err=%x\n", err);
+        printf("Error creating SSL connection.  err=%x\n", ssl_err);
         // log_ssl();
         fflush(stdout);
         ShutdownSSL();
