@@ -99,6 +99,8 @@ int catch_length(string line){
 }
 
 void https(int sock, string file, string hostname){
+    InitializeSSL();
+    
     sslctx = SSL_CTX_new( TLSv1_2_client_method());
     SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
@@ -353,9 +355,6 @@ int main(int argc, char * argv[]){
 
     // Creates appropriate GET and HEAD HTTP Request
 
-
-
-    InitializeSSL();
 
     struct addrinfo hints, *addrs;
 	// struct sockaddr_storage their_addr;
