@@ -28,7 +28,7 @@ using namespace std;
 // #define KEY_FILE  HOME  "1024ckey.pem"
 // #define CIPHER_LIST "AES128-SHA"
 #define CAFILE NULL
-#define CApath  "etc/ssl/certs"
+#define CApath  "etc/ssl/certs/ca-bundle.crt"
 // #define KEY_PASSWD "keypass"
 
 bool head_bool = false;
@@ -133,8 +133,7 @@ void https(int sock, string file, string hostname){
 
     SSL_CTX_load_verify_locations(ctx, CAFILE, CApath);
     // printf("%d\n", verify);
-    int verify = SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
-    printf("%d\n", verify);
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
 
     SSL *ssl_sock = SSL_new(ctx);
     SSL_set_fd(ssl_sock, sock);
