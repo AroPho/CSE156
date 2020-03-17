@@ -92,8 +92,8 @@ void https(int sock, string file, string hostname){
     SSL_CTX *ctx = SSL_CTX_new (meth);
     // SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
     SSL *ssl_sock = SSL_new(ctx);
-    int sockfd = SSL_get_fd(ssl_sock);
     SSL_set_fd(ssl_sock, sock);
     //Here is the SSL Accept portion.  Now all reads and writes must use SSL
     int ssl_err = SSL_connect(ssl_sock);
