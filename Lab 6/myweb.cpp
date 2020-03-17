@@ -135,7 +135,7 @@ void https(int sock, string file, string hostname){
     // int use_prv = SSL_CTX_use_PrivateKey_file(ctx, "/serverCertificate.pem", SSL_FILETYPE_PEM);
 
     SSL_CTX_load_verify_locations(ctx, CA_FILE, CA_DIR);
-    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
+    // SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
 
     SSL *ssl_sock = SSL_new(ctx);
     SSL_set_fd(ssl_sock, sock);
