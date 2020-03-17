@@ -86,7 +86,7 @@ int catch_length(string line){
 	return -1;
 }
 
-void https_send(int sock, string file, string hostname){
+void https(int sock, string file, string hostname){
     sslctx = SSL_CTX_new( TLSv1_2_client_method());
     SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
@@ -104,6 +104,8 @@ void https_send(int sock, string file, string hostname){
         string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
         string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
         // connect(sockfd,res->ai_addr,res->ai_addrlen);
+        char *head_req = new char [header_send.lengh() + 1];
+        strcpy(head_req, header_send.c_str());
         
         // Checks for what type of http request needs to be sent
         if(head_bool){
@@ -343,7 +345,7 @@ int main(int argc, char * argv[]){
 
     if(path.substr(0,5) == "https"){
         printf("here\n");
-        https_send(sockfd, file, hostname_str);
+        https(sockfd, file, hostname_str);
     }else{
         no_https(sockfd, file, hostname_str);
     }
