@@ -53,13 +53,14 @@ void ShutdownSSL(SSL *cSSL)
  void log_ssl()
 {
     int err;
-    while (err = ERR_get_error()) {
-        char *str = ERR_error_string(err, 0);
-        if (!str)
-            return;
-        printf("%s\n", str);
-        fflush(stdout);
+    err = ERR_get_error()
+    char *str = ERR_error_string(err, 0);
+    if (!str){
+        return;
     }
+    printf("%s\n", str);
+    fflush(stdout);
+
 }
 
 
@@ -142,14 +143,8 @@ void https(int sock, string file, string hostname){
     } else {
 
         /* verification failed, end conn, print error message */
-        printf("cert\n");
+        printf("Website Failed Certificate Verification Closing Connection\n");
         exit(0);
-
-    }
-
-    } else {
-
-    /* invalid certificate, end connections, print error message */
 
     }
 
@@ -314,8 +309,9 @@ void no_https(int sockfd, string file, string hostname){
 int main(int argc, char * argv[]){
     
     //Checks for appropriate number of args
-    if(argc < 3){
-        printf("ree\n");
+    if(argc != 3 && argc != 2){
+        printf("Wrong amount of Args\n");
+        printf("./myweb (website):(optional port)/(optional path) (optional -h)")
     }
     // bool head_bool = false;
 
@@ -362,6 +358,7 @@ int main(int argc, char * argv[]){
 
         }else{
 
+
             port = "443";
             last = getnthindex(path, '/', 3);
             first = path.find("://") + 3;
@@ -379,13 +376,16 @@ int main(int argc, char * argv[]){
         }else{
 
             hostname_str = path.substr(0, path.find("/"));
-            port = "443";
+            port = "80";
         
         }
         file = path.substr(path.find("/"));
     }
     // printf("%s %s\n", hostname_str.c_str(), port.c_str());
     path = hostname;
+    if(path.substr(0,5) != "https"){
+        port = "80";
+    }
 
 
     
