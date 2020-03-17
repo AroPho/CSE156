@@ -100,7 +100,7 @@ int catch_length(string line){
 
 void https(int sock, string file, string hostname){
     sslctx = SSL_CTX_new( TLSv1_2_client_method());
-    // SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+    SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
     cSSL = SSL_new(sslctx);
     SSL_set_fd(cSSL, sock);
