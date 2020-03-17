@@ -112,7 +112,7 @@ void https(int sock, string file, string hostname){
             printf("%s\n", head_req);
             int len = SSL_write(cSSL, "hi\r\n\r\n", 6);
             if (len < 0) {
-                int err = SSL_get_error(Cssl, len);
+                int err = SSL_get_error(cSSL, len);
                 switch (err) {
                 case SSL_ERROR_WANT_WRITE:
                     return 0;
