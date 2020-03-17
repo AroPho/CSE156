@@ -91,9 +91,9 @@ void ssl_communication(int sock, string file, string hostname){
     SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
     cSSL = SSL_new(sslctx);
-    SSL_set_fd(cSSL, sock );
+    SSL_set_fd(cSSL, sock);
     //Here is the SSL Accept portion.  Now all reads and writes must use SSL
-    ssl_err = SSL_connect(cSSL);
+    int ssl_err = SSL_connect(cSSL);
     if(ssl_err <= 0)
     {
         //Error occurred, log and close down ssl
@@ -110,7 +110,7 @@ void ssl_communication(int sock, string file, string hostname){
             SSL_write()(cSSL, header_send.c_str(), header_send.length());
         }
         if(!head_bool){
-            SSL_write()(cSSL get_request.c_str(), get_request.length();
+            SSL_write()(cSSL, get_request.c_str(), get_request.length();
         }
         // cout << "here";
         int numbytes;
