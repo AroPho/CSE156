@@ -122,6 +122,8 @@ int catch_length(string line){
 
 void https(int sock, string file, string hostname){
     
+    X509 *cert;
+
     InitializeSSL();
     
 
