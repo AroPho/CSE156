@@ -27,8 +27,8 @@ using namespace std;
 // #define CERT_FILE  HOME "1024ccert.pem"
 // #define KEY_FILE  HOME  "1024ckey.pem"
 // #define CIPHER_LIST "AES128-SHA"
-// #define CA_FILE "/certs/1024ccert.pem"
-// #define CA_DIR  NULL
+#define CA_FILE NULL
+#define CA_DIR  "etc/ssl/certs"
 // #define KEY_PASSWD "keypass"
 
 bool head_bool = false;
@@ -134,13 +134,13 @@ void https(int sock, string file, string hostname){
 
     // int use_prv = SSL_CTX_use_PrivateKey_file(ctx, "/serverCertificate.pem", SSL_FILETYPE_PEM);
 
+    SSL_CTX_load_verify_locations(ctx, caName, "etc/ssl/certs")
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
 
     SSL *ssl_sock = SSL_new(ctx);
     SSL_set_fd(ssl_sock, sock);
     //Here is the SSL Accept portion.  Now all reads and writes must use SSL
     int ssl_err = SSL_connect(ssl_sock);
-    ShowCerts(ssl_sock);
-    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
 
     if(ssl_err <= 0)
     {
