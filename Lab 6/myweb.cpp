@@ -24,8 +24,8 @@
 
 using namespace std;
 
-#define CApath  "etc/ssl/certs"
-#define CAFILE "etc/ssl/certs/ca-bundle.crt"
+#define CApath  "/etc/ssl/certs"
+#define CAFILE "/etc/ssl/certs/ca-bundle.crt"
 
 
 bool head_bool = false;
