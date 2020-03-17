@@ -291,7 +291,7 @@ int main(int argc, char * argv[]){
             port = "80";
             last = getnthindex(path, '/', 3);
             first = path.find("://") + 3;
-            file = path.substr(first);
+            file = path.substr(last);
             hostname_str = path.substr(first, last - first);
 
         }
