@@ -77,9 +77,9 @@ int catch_length(string line){
 }
 
 void https(int sock, string file, string hostname){
-    SSL_load_error_strings();
     SSL_library_init();
     OpenSSL_add_all_algorithms();
+    SSL_load_error_strings();
     
     SSL_CTX *ssl_method;
     SSL *ssl_sock;
@@ -339,7 +339,6 @@ int main(int argc, char * argv[]){
     }
     printf("%s %s\n", hostname_str.c_str(), port.c_str());
     path = hostname;
-    hostname_str = "https://www.example.com";
 
 
     
