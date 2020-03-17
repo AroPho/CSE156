@@ -276,7 +276,7 @@ int main(int argc, char * argv[]){
 
     string hostname_str = "";
     if(path.substr(0,4) == "http"){
-        first = getnthindex(path, ':', 2);
+        first = getnthindex(path, ':', 3);
         if(first != -1){
 
             hostname_str = path.substr(0, first); 
