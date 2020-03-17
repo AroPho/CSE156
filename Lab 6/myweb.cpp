@@ -33,6 +33,26 @@ using namespace std;
 
 bool head_bool = false;
 
+
+void InitializeSSL()
+{
+    SSL_load_error_strings();
+    SSL_library_init();
+    OpenSSL_add_all_algorithms();
+}
+
+void DestroySSL()
+{
+    ERR_free_strings();
+    EVP_cleanup();
+}
+
+void ShutdownSSL()
+{
+    SSL_shutdown(cSSL);
+    SSL_free(cSSL);
+}
+
  void log_ssl()
 {
     int err;
@@ -81,16 +101,19 @@ int catch_length(string line){
 }
 
 void https(int sock, string file, string hostname){
-    SSL_library_init();
-    OpenSSL_add_all_algorithms();
-    SSL_load_error_strings();
+    
+    InitializeSSL();
     
 
     const SSL_METHOD *meth = TLSv1_2_client_method();
     
     
     SSL_CTX *ctx = SSL_CTX_new (meth);
-    // SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+    SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+    int use_cert = SSL_CTX_use_certificate_file(sslctx, "/serverCertificate.pem" , SSL_FILETYPE_PEM);
+
+    int use_prv = SSL_CTX_use_PrivateKey_file(sslctx, "/serverCertificate.pem", SSL_FILETYPE_PEM);
+
 
     SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, NULL);
     SSL *ssl_sock = SSL_new(ctx);
@@ -103,8 +126,7 @@ void https(int sock, string file, string hostname){
         printf("Error creating SSL connection.  err=%x\n", ssl_err);
         log_ssl();
         fflush(stdout);
-        SSL_shutdown(ssl_sock);
-        SSL_free(ssl_sock);
+        ShutdownSSL();
         //printf("error %d\n", ssl_err);
         exit(0);
     }
@@ -184,13 +206,11 @@ void https(int sock, string file, string hostname){
             }
         }
         close(fd);
-        SSL_shutdown(ssl_sock);
-        SSL_free(ssl_sock);
+        ShutdownSSL();
         close(sock);
     }catch(...){
         close(sock);
-        SSL_shutdown(ssl_sock);
-        SSL_free(ssl_sock);
+        ShutdownSSL();
         warn("Warning internal server error closing connections");
     }
 }
