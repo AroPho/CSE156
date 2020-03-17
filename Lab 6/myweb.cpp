@@ -339,7 +339,7 @@ int main(int argc, char * argv[]){
     }
     printf("%s %s\n", hostname_str.c_str(), port.c_str());
     path = hostname;
-    hostname = "https://www.example.com";
+    hostname_str = "https://www.example.com";
 
 
     
