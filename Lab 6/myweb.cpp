@@ -14,22 +14,17 @@
 #include <iostream>
 #include <fstream>
 
-#include <openssl/applink.c>
-#include <openssl/bio.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
-#include <openssl/crypto.h>
-#include <openssl/x509.h>
-#include <openssl/pem.h>
 
 using namespace std;
 
-#define CERT_FILE  HOME "1024ccert.pem"
-#define KEY_FILE  HOME  "1024ckey.pem"
-#define CIPHER_LIST "AES128-SHA"
-#define CA_FILE "/certs/1024ccert.pem"
-#define CA_DIR  NULL
-#define KEY_PASSWD "keypass"
+// #define CERT_FILE  HOME "1024ccert.pem"
+// #define KEY_FILE  HOME  "1024ckey.pem"
+// #define CIPHER_LIST "AES128-SHA"
+// #define CA_FILE "/certs/1024ccert.pem"
+// #define CA_DIR  NULL
+// #define KEY_PASSWD "keypass"
 
 SSL_CTX *sslctx;
 SSL *cSSL;
