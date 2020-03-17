@@ -102,7 +102,7 @@ void https(int sock, string file, string hostname){
     InitializeSSL();
 
     if(!(sslctx = SSL_CTX_new( TLSv1_2_client_method()))){
-
+        exit(1);
     }
     SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
 
