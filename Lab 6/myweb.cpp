@@ -329,6 +329,8 @@ int main(int argc, char * argv[]){
     hints.ai_socktype = SOCK_STREAM;
     getaddrinfo(hostname_str.c_str(), port.c_str(), &hints, &addrs);
     int sockfd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
+    string ip = inet_ntoa(addr.sin_addr);
+    printf("%s\n", ip.c_str());
 
     connect(sockfd,addrs->ai_addr,addrs->ai_addrlen);
     if(hostname_str.substr(0,5) == "https"){
