@@ -268,6 +268,7 @@ int main(int argc, char * argv[]){
     int last;
     string file;
     if((last = getnthindex(path, '/', 3)) == -1){
+        printf("here");
         path += "/";
     }
 
