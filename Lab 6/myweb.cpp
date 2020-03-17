@@ -53,7 +53,7 @@ void ShutdownSSL(SSL *cSSL)
  void log_ssl()
 {
     int err;
-    err = ERR_get_error()
+    err = ERR_get_error();
     char *str = ERR_error_string(err, 0);
     if (!str){
         return;
