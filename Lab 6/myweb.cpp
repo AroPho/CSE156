@@ -267,8 +267,10 @@ int main(int argc, char * argv[]){
     int first;
     int last;
     string file;
-    if((last = getnthindex(path, '/', 3)) == -1){
+    if((last = getnthindex(path, '/', 3)) == -1 && path.substr(0,4) == "http"){
         printf("here");
+        path += "/";
+    }elif(path.find("/") == -1){
         path += "/";
     }
 
