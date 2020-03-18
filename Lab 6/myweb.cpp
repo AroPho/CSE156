@@ -38,12 +38,6 @@ void InitializeSSL()
     OpenSSL_add_all_algorithms();
 }
 
-void DestroySSL()
-{
-    ERR_free_strings();
-    EVP_cleanup();
-}
-
 void ShutdownSSL(SSL *cSSL)
 {
     SSL_shutdown(cSSL);
@@ -154,9 +148,6 @@ void https(int sock, string file, string hostname){
 
         string get_request = "GET " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
         string header_send = "HEAD " + file + " HTTP/1.1\r\nHost: " + hostname + "\r\n\r\n";
-        // connect(sockfd,res->ai_addr,res->ai_addrlen);
-        char *head_req = new char [header_send.length() + 1];
-        strcpy(head_req, header_send.c_str());
         
         // Checks for what type of http request needs to be sent
         if(head_bool){
@@ -245,11 +236,11 @@ void no_https(int sockfd, string file, string hostname){
         
         // Checks for what type of http request needs to be sent
         if(head_bool){
-            printf("%s\n", header_send.c_str());
+            // printf("%s\n", header_send.c_str());
             send(sockfd, header_send.c_str(), header_send.length(), 0);
         }
         if(!head_bool){
-            printf("%s\n", get_request.c_str());
+            // printf("%s\n", get_request.c_str());
             send(sockfd, get_request.c_str(), get_request.length(), 0);
         }
         // cout << "here";
@@ -402,11 +393,27 @@ int main(int argc, char * argv[]){
     memset(&hints, 0,sizeof hints);
     hints.ai_family=AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
-    getaddrinfo(hostname_str.c_str(), port.c_str(), &hints, &addrs);
+    int err = getaddrinfo(hostname_str.c_str(), port.c_str(), &hints, &addrs);
+
+    if (err){
+        if (err == EAI_SYSTEM){
+            fprintf(stderr, "looking up www.example.com: %s\n", strerror(errno));
+        }
+        else{
+            fprintf(stderr, "looking up www.example.com: %s\n", gai_strerror(err));
+        }
+        exit(0);
+    }
+
+
     int sockfd = socket(addrs->ai_family,addrs->ai_socktype,addrs->ai_protocol);
 
-    connect(sockfd,addrs->ai_addr,addrs->ai_addrlen);
+    err = connect(sockfd,addrs->ai_addr,addrs->ai_addrlen);
 
+    if( err != 0){
+        cout << "Unable to connect to server\n";
+        exit(0);
+    }
     // struct sockaddr_in addr;
     // socklen_t addr_size = sizeof(addr);
     // getpeername(sockfd, (struct sockaddr *)&addr, &addr_size);
